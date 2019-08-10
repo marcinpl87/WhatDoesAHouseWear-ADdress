@@ -1,0 +1,19 @@
+{
+    "name": "szon",
+    "version": "0.0.1",
+    "dependencies": {
+        "react": "16.7.0",
+        "react-dom": "16.7.0"
+    },
+    "devDependencies": {
+        "@babel/core": "7.5.5",
+        "@babel/preset-env": "7.5.5",
+        "@babel/preset-react": "7.0.0",
+        "babel-loader": "8.0.6",
+        "browser-sync": "2.26.7",
+        "gulp": "4.0.2",
+        "gulp-connect-php": "1.0.3",
+        "webpack": "4.17.1",
+        "webpack-cli": "3.1.0"
+    }
+}
