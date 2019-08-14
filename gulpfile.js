@@ -3,34 +3,45 @@ var gulp = require('gulp'),
     connect = require('gulp-connect-php'),
     browserSync = require('browser-sync');
 
+var webpackConfig = {
+    mode: 'development',
+    module: {
+        rules: [{
+            test: /\.js$/,
+            exclude: /node_modules/,
+            use: {
+                loader: 'babel-loader',
+                options: {
+                    presets: ['@babel/preset-react']
+                }
+            }
+        }]
+    },
+    plugins: [
+        new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery"
+        })
+    ],
+    resolve: {
+        extensions: ['*', '.js', '.jsx']
+    },
+    entry: './src',
+    output: {
+        filename: '../app/bundle.js'
+    }
+};
+
 gulp.task('serve', function() {
-    connect.server({base: 'src', port: 8010, keepalive: true});
+    connect.server({base: 'app', port: 8010, keepalive: true});
     browserSync({
         proxy: '127.0.0.1:8010'
     });
-    gulp.watch('src/*.*').on('change', function () {
-        webpack({
-            mode: 'development',
-            module: {
-                rules: [{
-                    test: /\.js$/,
-                    use: {
-                        loader: 'babel-loader',
-                        options: {
-                            presets: ['@babel/preset-react']
-                        }
-                    }
-                }]
-            },
-            resolve: {
-                extensions: ['*', '.js', '.jsx']
-            },
-            entry: './src',
-            output: {
-                filename: '../app/bundle.js'
-            }
-        }, () => {
-            browserSync.reload();
+    webpack(webpackConfig, () => {
+        gulp.watch('src/*.*').on('change', function () {
+            webpack(webpackConfig, () => {
+                browserSync.reload();
+            });
         });
     });
 });
