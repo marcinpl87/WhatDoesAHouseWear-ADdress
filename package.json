@@ -8,7 +8,8 @@
         "popper.js": "1.14.7",
         "bootstrap": "4.3.1",
         "chart.js": "2.8.0",
-        "dropzone": "4.3.0"
+        "dropzone": "4.3.0",
+        "fullcalendar": "3.9.0"
     },
     "devDependencies": {
         "@babel/core": "7.5.5",
@@ -17,7 +18,9 @@
         "babel-loader": "8.0.6",
         "browser-sync": "2.26.7",
         "gulp": "4.0.2",
+        "gulp-sass": "4.0.2",
         "gulp-connect-php": "1.0.3",
+        "node-sass": "4.8.3",
         "webpack": "4.17.1",
         "webpack-cli": "3.1.0"
     }

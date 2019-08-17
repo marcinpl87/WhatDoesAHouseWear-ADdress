@@ -6,12 +6,12 @@ import StructureHeader from './StructureHeader';
 import StructureTheme from './StructureTheme';
 import MMenu from './MMenu';
 import PageTenants from './PageTenants';
+import PageTenant from './PageTenant';
 
 const menuElements = [
     // ['home', PageHome, 'pe-7s-home', 'Strona główna'],
     // ['apartments', PageApartments, 'pe-7s-world', 'Nieruchomości'],
-    ['tenants', PageTenants, 'pe-7s-users', 'Najemcy'],
-    // ['tenant', PageTenant, 'pe-7s-user', '1 Najemca'],
+    ['tenants', PageTenants, 'pe-7s-users', 'Najemcy', PageTenant],
     // ['documents', PageFinance, 'pe-7s-note2', 'Dokumenty'],
     // ['finance', PageFinance, 'pe-7s-cash', 'Finanse']
 ];
@@ -23,10 +23,11 @@ class Wrapper extends React.Component {
     }
     route() {
         menuElements.map((page, index) => {
-            if (window.location.hash.substr(1) == page[0]) {
+            var url = window.location.hash.substr(1).split("/");
+            if (url[0] == page[0]) {
                 this.showPage(page);
             }
-            else if (!window.location.hash.substr(1)) {
+            else if (!url[0]) {
                 this.showPage(menuElements[0]);
             }
         })
@@ -38,7 +39,7 @@ class Wrapper extends React.Component {
     }
     generatePageComponent(pageArr) {
         return {
-            subPage: pageArr[1],
+            subPage: window.location.hash.includes("/") ? pageArr[4] : pageArr[1],
             subPageProps: {
                 showAddButton: false,
                 showBreadcrumbs: pageArr[0] !== "home",

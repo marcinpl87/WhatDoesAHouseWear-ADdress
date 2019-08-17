@@ -17,13 +17,13 @@ class PageTenants extends React.Component {
     createTableStructure(data) {
         return {
             title: false,
-            headers: ["Id", "Imię", "Nazwisko", "Mieszkanie", "Saldo"],
+            clickableHash: "tenants",
+            headers: ["Id", "Imię", "Nazwisko", "Mieszkanie", "Pokój", "Saldo"],
             rows: data.map(x => Object.values(x))
         };
     }
     componentDidMount() {
         $.get("/api.php?r=tenants", (data) => {
-
             this.setState((prevState, props) => {
                 return {
                     isReady: true,

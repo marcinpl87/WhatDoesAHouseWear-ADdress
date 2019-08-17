@@ -1,7 +1,15 @@
 var gulp = require('gulp'),
+    sass = require('gulp-sass'),
     webpack = require('webpack'),
     connect = require('gulp-connect-php'),
     browserSync = require('browser-sync');
+
+var sassCompile = (callback) => {
+    return gulp.src('./sass/**/*.scss')
+        .pipe(sass().on('error', sass.logError))
+        .pipe(gulp.dest('./app'))
+        .on('end', callback);
+}
 
 var webpackConfig = {
     mode: 'development',
@@ -32,15 +40,18 @@ var webpackConfig = {
     }
 };
 
-gulp.task('serve', function() {
+gulp.task('serve', () => {
     connect.server({base: 'app', port: 8010, keepalive: true});
     browserSync({
         proxy: '127.0.0.1:8010'
     });
-    webpack(webpackConfig, () => {
-        gulp.watch('src/*.*').on('change', function () {
-            webpack(webpackConfig, () => {
-                browserSync.reload();
+    sassCompile(() => {
+        webpack(webpackConfig, () => {
+            gulp.watch('./src/**/*.js').on('change', () => {
+                webpack(webpackConfig, browserSync.reload);
+            });
+            gulp.watch('./sass/**/*.scss').on('change', () => {
+                sassCompile(browserSync.reload);
             });
         });
     });
