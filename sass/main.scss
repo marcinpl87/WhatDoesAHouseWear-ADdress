@@ -1,0 +1,181 @@
+@import './node_modules/bootstrap/dist/css/bootstrap';
+@import './node_modules/hamburgers/dist/hamburgers';
+@import './node_modules/pixeden-stroke-7-icon/pe-icon-7-stroke/dist/pe-icon-7-stroke';
+@import './node_modules/@fortawesome/fontawesome-free/css/all';
+
+@import 'animated-tabs';
+@import 'theme-editor';
+@import 'bootstrap-custom-1';
+@import 'bootstrap-custom-2';
+
+/* PROGRESS BAR ANIMATION */
+    .progress-bar-animated-alt.progress-bar,
+    .progress-bar-animated-alt .progress-bar {
+        position: relative
+    }
+    .progress-bar-animated-alt.progress-bar:after,
+    .progress-bar-animated-alt .progress-bar:after {
+        content: "";
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: #fff;
+        -webkit-animation: progress-active 2s ease infinite;
+        animation: progress-active 2s ease infinite
+    }
+    @-webkit-keyframes progress-active {
+        0% {
+            opacity: .4;
+            width: 0
+        }
+        to {
+            opacity: 0;
+            width: 100%
+        }
+    }
+    @keyframes progress-active {
+        0% {
+            opacity: .4;
+            width: 0
+        }
+        to {
+            opacity: 0;
+            width: 100%
+        }
+    }
+/* PROGRESS BAR ANIMATION END */
+
+/* LOADING ANIMATION */
+    .vertical-center {
+        height:100%;
+        width:100%;
+        text-align: center;
+    }
+    .vertical-center:before {
+        content: ' ';
+        display: inline-block;
+        vertical-align: middle;
+        height: 100%;
+    }
+    .vertical-center > .container {
+        max-width: 100%;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .vertical-center > .container img {
+        width: 500px;
+    }
+/* LOADING ANIMATION END */
+
+/* BADGE BUTTON */
+    .btn-group .btn .badge-dot.badge-dot-lg {
+        right: -25px;
+    }
+    .btn .badge-dot.badge-dot-lg {
+        width: 14px;
+        height: 14px;
+        min-width: 2px;
+        margin-left: -12px;
+        padding: 0;
+        position: relative;
+        top: -12px;
+        right: -17px;
+        border: 2px solid #fff;
+        border-radius: 30px;
+        text-indent: -999em;
+    }
+/* BADGE BUTTON END */
+
+/* FADE OUT TABLE */
+    .table-responsive.fade-out table tbody tr:nth-last-child(3) {
+        color: #878787;
+    }
+    .table-responsive.fade-out table tbody tr:nth-last-child(2) {
+        color: #bdbdbd;
+    }
+    .table-responsive.fade-out table tbody tr:nth-last-child(1) {
+        color: #e0e0e0;
+    }
+/* FADE OUT TABLE END */
+
+/* CLICKABLE TABLE */
+    table.table-hover.clickable tbody tr {
+        cursor: pointer;
+    }
+/* CLICKABLE TABLE END */
+
+/* FONTS */
+    @font-face {
+        font-family: 'Font Awesome 5 Free';
+        font-style: normal;
+        font-weight: 900;
+        src: url(/assets/fonts/fa-solid-900.eot);
+        src: url(/assets/fonts/fa-solid-900.eot?#iefix) format("embedded-opentype"), url(/assets/fonts/fa-solid-900.woff2) format("woff2"), url(/assets/fonts/fa-solid-900.woff) format("woff"), url(/assets/fonts/fa-solid-900.ttf) format("truetype"), url(/assets/fonts/fa-solid-900.svg#fontawesome) format("svg")
+    }
+    @font-face {
+        font-family: 'Pe-icon-7-stroke';
+        src: url(/assets/fonts/Pe-icon-7-stroke.eot);
+        src: url(/assets/fonts/Pe-icon-7-stroke.eot?#iefixd7yf1v) format("embedded-opentype"), url(/assets/fonts/Pe-icon-7-stroke.woff) format("woff"), url(/assets/fonts/Pe-icon-7-stroke.ttf) format("truetype"), url(/assets/fonts/Pe-icon-7-stroke.svg#Pe-icon-7-stroke) format("svg");
+        font-weight: normal;
+        font-style: normal
+    }
+    [class^="pe-7s-"],
+    [class*=" pe-7s-"] {
+        display: inline-block;
+        font-family: 'Pe-icon-7-stroke';
+        speak: none;
+        font-style: normal;
+        font-weight: normal;
+        font-variant: normal;
+        text-transform: none;
+        line-height: 1;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale
+    }
+/* FONTS END */
+
+/* HAMBURGER */
+    .hamburger {
+        padding: 0px 0px;
+    }
+    .hamburger.is-active .hamburger-inner, .hamburger.is-active .hamburger-inner::before, .hamburger.is-active .hamburger-inner::after {
+        background-color: #3f6ad8;
+    }
+    .hamburger-box {
+        width: 24px;
+        height: 14px;
+    }
+    .hamburger-inner {
+        margin-top: -1px;
+    }
+    .hamburger-inner, .hamburger-inner::before, .hamburger-inner::after {
+        width: 24px;
+        height: 2px;
+        background-color: #3f6ad8;
+        border-radius: 10px;
+    }
+    .hamburger-inner::before {
+        top: -6px;
+    }
+    .hamburger-inner::after {
+        bottom: -6px;
+    }
+    .hamburger--elastic .hamburger-inner {
+        top: 1px;
+    }
+    .hamburger--elastic .hamburger-inner::before {
+        top: 6px;
+    }
+    .hamburger--elastic .hamburger-inner::after {
+        top: 12px;
+    }
+    .hamburger--elastic.is-active .hamburger-inner {
+        transform: translate3d(0, 6px, 0) rotate(135deg);
+    }
+    .hamburger--elastic.is-active .hamburger-inner::after {
+        transform: translate3d(0, -12px, 0) rotate(-270deg);
+    }
+/* HAMBURGER END */
