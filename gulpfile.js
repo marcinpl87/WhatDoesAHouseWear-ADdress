@@ -1,5 +1,6 @@
 var gulp = require('gulp'),
     sass = require('gulp-sass'),
+    concat = require('gulp-concat'),
     webpack = require('webpack'),
     connect = require('gulp-connect-php'),
     browserSync = require('browser-sync');
@@ -7,6 +8,7 @@ var gulp = require('gulp'),
 var sassCompile = (callback) => {
     return gulp.src('./sass/**/*.scss')
         .pipe(sass().on('error', sass.logError))
+        .pipe(concat('bundle.css'))
         .pipe(gulp.dest('./app'))
         .on('end', callback);
 }
@@ -52,6 +54,9 @@ gulp.task('serve', () => {
             });
             gulp.watch('./sass/**/*.scss').on('change', () => {
                 sassCompile(browserSync.reload);
+            });
+            gulp.watch('./app/**/*.php').on('change', () => {
+                browserSync.reload();
             });
         });
     });

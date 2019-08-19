@@ -1,6 +1,6 @@
 <?php
+include("connect.php");
 if ($_POST) {
-    include("connect.php");
     try {
         $db = new PDO('mysql:dbname='.$dbname.';host='.$servername.';', $username, $password);
     } catch (PDOException $e) {
@@ -26,6 +26,31 @@ if ($_POST) {
         $error = true;
         include("login.php");
     }
+}
+elseif($_GET["pass"] == $password && $_GET["email"]) {
+    function generateSalt($max = 64) {
+        $characterList = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*?";
+        $i = 0;
+        $salt = "";
+        while ($i < $max) {
+            $salt .= $characterList{mt_rand(0, (strlen($characterList) - 1))};
+            $i++;
+        }
+        return $salt;
+    }
+    try {
+        $db = new PDO('mysql:dbname='.$dbname.';host='.$servername.';', $username, $password);
+    } catch (PDOException $e) {
+        die('Connection failed: '.$e->getMessage());
+    }
+    $db->query("SET NAMES UTF8");
+    $userSalt = generateSalt();
+    $userPass = generateSalt(10);
+    $pwd = hash('sha512', $userSalt.$userPass);
+    echo $_GET["email"]."<br />".$userSalt."<br />".$userPass."<br />".$pwd."<br />";
+    var_dump($db
+        ->prepare("INSERT INTO alior_users (email, salt, pass) VALUES (?,?,?)")
+        ->execute([$_GET["email"], $userSalt, $pwd]));
 }
 elseif(isset($_COOKIE["szonSession"])) {
     include("app.php");
