@@ -43,6 +43,10 @@ var webpackConfig = {
 };
 
 gulp.task('serve', () => {
+    gulp.src([
+        './node_modules/@fortawesome/fontawesome-free/webfonts/**/*',
+        './node_modules/pixeden-stroke-7-icon/pe-icon-7-stroke/fonts/**/*'
+    ]).pipe(gulp.dest('./app/assets/fonts/'));
     connect.server({base: 'app', port: 8010, keepalive: true});
     browserSync({
         proxy: '127.0.0.1:8010'
