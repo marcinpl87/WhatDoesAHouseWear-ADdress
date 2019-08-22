@@ -32,21 +32,33 @@ if ($_GET) {
         );
     }
     else if ($_GET["r"] == "tenant") {
-        echo json_encode(
-            array(
-                $db->query('
-                    select *
-                    from alior_tenants
-                    where id = '.$_GET["id"].'
-                ')->fetchAll(PDO::FETCH_ASSOC),
-                $db->query('
-                    select val
-                    from alior_config
-                    where key_name = "contract"
-                ')->fetchAll(PDO::FETCH_ASSOC)
-            ),
-            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
-        );
+        if (isset($_GET["mode"])) {
+            echo json_encode(
+                array(
+                    $db
+                        ->prepare("UPDATE alior_tenants SET ".$_GET["field"]."=? WHERE id=?")
+                        ->execute([$_GET["val"], $_GET["id"]])
+                ),
+                JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
+            );
+        }
+        else {
+            echo json_encode(
+                array(
+                    $db->query('
+                        select *
+                        from alior_tenants
+                        where id = '.$_GET["id"].'
+                    ')->fetchAll(PDO::FETCH_ASSOC),
+                    $db->query('
+                        select val
+                        from alior_config
+                        where key_name = "contract"
+                    ')->fetchAll(PDO::FETCH_ASSOC)
+                ),
+                JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
+            );
+        }
     }
     else if ($_GET["r"] == "tenants") {
         echo json_encode(

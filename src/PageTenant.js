@@ -10,6 +10,8 @@ class PageTenant extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            dbTable: 'tenant',
+            id: window.location.hash.split("/")[1],
             isReady: false,
             data: {},
             contract: ""
@@ -17,38 +19,46 @@ class PageTenant extends React.Component {
     }
     createTableStructure(data) {
         return [{
+            dbTable: this.state.dbTable,
+            id: this.state.id,
             title: "Informacje kontaktowe",
             headers: false,
             rows: [
-                ["Imię i Nazwisko", data[0].name + " " + data[0].lastname],
-                ["Dowód osobisty", data[0].id_number],
-                ["Pesel", data[0].national_insurance_number],
-                ["Data urodzenia", data[0].birth_date],
-                ["E-mail", data[0].email],
-                ["Telefon Kontaktowy", data[0].phone],
-                ["Adres korespondencyjny", data[0].address],
-                ["Pokój", data[0].room_id],
-                ["Czynsz", data[0].rent],
-                ["Kaucja", data[0].deposit],
-                ["Konto bankowe", data[0].account]
+                ["Imię i Nazwisko", ["name", data[0].name]],
+                ["Dowód osobisty", ["id_number", data[0].id_number]],
+                ["Pesel", ["national_insurance_number", data[0].national_insurance_number]],
+                ["Data urodzenia", ["birth_date", data[0].birth_date]],
+                ["E-mail", ["email", data[0].email]],
+                ["Telefon Kontaktowy", ["phone", data[0].phone]],
+                ["Adres korespondencyjny", ["address", data[0].address]],
+                ["Pokój", ["room_id", data[0].room_id]],
+                ["Czynsz", ["rent", data[0].rent]],
+                ["Kaucja", ["deposit", data[0].deposit]],
+                ["Konto bankowe", ["account", data[0].account]]
             ]
         }, {
+            dbTable: this.state.dbTable,
+            id: this.state.id,
             title: "Poręczyciel",
             headers: false,
             rows: [
-                ["Imię i Nazwisko", data[0].ice_name + " " + data[0].ice_lastname],
-                ["Dowód osobisty", data[0].ice_id_number],
-                ["Pesel", data[0].ice_national_insurance_number],
-                ["E-mail", data[0].ice_email],
-                ["Telefon Kontaktowy", data[0].ice_phone],
-                ["Adres korespondencyjny", data[0].ice_address]
+                ["Imię i Nazwisko", ["ice_name", data[0].ice_name]],
+                ["Dowód osobisty", ["ice_id_number", data[0].ice_id_number]],
+                ["Pesel", ["ice_national_insurance_number", data[0].ice_national_insurance_number]],
+                ["E-mail", ["ice_email", data[0].ice_email]],
+                ["Telefon Kontaktowy", ["ice_phone", data[0].ice_phone]],
+                ["Adres korespondencyjny", ["ice_address", data[0].ice_address]]
             ]
         }, {
+            dbTable: this.state.dbTable,
+            id: this.state.id,
             title: "Ubezpieczenie",
             headers: ["Nazwa Firmy", "Numer Polisy", "Data Ważności"],
-            rows: [
-                [data[0].insurance_name, data[0].insurance_number, data[0].insurance_date]
-            ]
+            rows: [[
+                ["insurance_name", data[0].insurance_name],
+                ["insurance_number", data[0].insurance_number],
+                ["insurance_date", data[0].insurance_date]
+            ]]
         }];
     }
     toArray(_Object){
@@ -76,7 +86,7 @@ class PageTenant extends React.Component {
         return content;
     }
     componentDidMount() {
-        $.get("/api.php?r=tenant", {id: window.location.hash.split("/")[1]}, (data) => {
+        $.get("/api.php?r="+this.state.dbTable, {id: this.state.id}, (data) => {
             this.setState((prevState, props) => {
                 return {
                     isReady: true,

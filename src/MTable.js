@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import 'bootstrap';
+
+import EditableCell from './EditableCell'
 
 class MTable extends React.Component {
     constructor(props) {
@@ -35,7 +36,14 @@ class MTable extends React.Component {
                                 return <tr key={index} onClick={() => this.goToSubPage(val)}>
                                     <th scope="row">{index+1}</th>
                                     {val.map((cellVal, cellIndex) => {
-                                        return <td key={cellIndex}>{cellVal}</td>
+                                        return <td key={cellIndex}>{Array.isArray(cellVal)
+                                            ? <EditableCell
+                                                cellName={cellVal[0]}
+                                                cellVal={cellVal[1] ? cellVal[1].toString() : ""}
+                                                cellId={this.props.tableData.id}
+                                                cellTable={this.props.tableData.dbTable}
+                                            />
+                                            : cellVal}</td>
                                     })}
                                 </tr>
                             })}

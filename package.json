@@ -4,6 +4,7 @@
     "dependencies": {
         "react": "16.7.0",
         "react-dom": "16.7.0",
+        "react-contenteditable": "3.3.2",
         "jquery": "3.4.0",
         "popper.js": "1.14.7",
         "bootstrap": "4.3.1",
