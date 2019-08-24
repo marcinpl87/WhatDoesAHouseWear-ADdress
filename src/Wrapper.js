@@ -7,19 +7,20 @@ import StructureTheme from './StructureTheme';
 import MMenu from './MMenu';
 import PageTenants from './PageTenants';
 import PageTenant from './PageTenant';
+import PageFinance from './PageFinance';
 
 const menuElements = [
     // ['home', PageHome, 'pe-7s-home', 'Strona główna'],
     // ['apartments', PageApartments, 'pe-7s-world', 'Nieruchomości'],
     ['tenants', PageTenants, 'pe-7s-users', 'Najemcy', PageTenant],
     // ['documents', PageFinance, 'pe-7s-note2', 'Dokumenty'],
-    // ['finance', PageFinance, 'pe-7s-cash', 'Finanse']
+    ['finance', PageFinance, 'pe-7s-cash', 'Finanse']
 ];
 
 class Wrapper extends React.Component {
     constructor() {
         super();
-        this.state = this.generatePageComponent(menuElements[0]);
+        this.state = false;
     }
     route() {
         menuElements.map((page, index) => {
@@ -94,7 +95,7 @@ class Wrapper extends React.Component {
                             <div className="app-sidebar__inner"><MMenu menuElements={menuElements} /></div>
                         </div>
                     </div>
-                    <div className="app-main__outer"><this.state.subPage headerData={this.state.subPageProps} /></div>
+                    <div className="app-main__outer">{this.state.subPage && <this.state.subPage headerData={this.state.subPageProps} />}</div>
                 </div>
             </React.Fragment>
         )

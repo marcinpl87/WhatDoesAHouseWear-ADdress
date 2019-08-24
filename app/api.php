@@ -75,6 +75,16 @@ if ($_GET) {
             ->prepare("INSERT INTO alior_rules (transaction_column, relation, value, cateogry_id) VALUES (?,?,?,?)")
             ->execute([$_GET["transaction_column"], $_GET["relation"], $_GET["value"], $_GET["category_id"]])));
     }
+    else if ($_GET["r"] == "categorise") {
+        echo json_encode(
+            array(
+                $db
+                    ->prepare("UPDATE alior_data SET category_id=? WHERE id=?")
+                    ->execute([$_GET["cat"], $_GET["id"]])
+            ),
+            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
+        );
+    }
 }
 if ($_POST) {
     if ($_POST["r"] == "transactions") {
