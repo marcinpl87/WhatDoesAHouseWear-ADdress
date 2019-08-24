@@ -5,6 +5,8 @@ import TabPaneTable from './TabPaneTable';
 import LoaderComponent from './LoaderComponent';
 import PageHeader from './PageHeader';
 import TabPane from './TabPane';
+import TaxPane from './TaxPane';
+import TabPaneUpload from './TabPaneUpload';
 import LongText from './LongText';
 import BadgeButton from './BadgeButton';
 import TabsComponent from './TabsComponent';
@@ -71,6 +73,7 @@ class PageFinance extends React.Component {
     render() {
         var config = [
             [TabPaneTable, "Wszystkie", this.state.dataAll],
+            [TabPaneUpload, "Upload", this.state.dataAll]
         ];
         return (
             <div className="app-main__inner">
