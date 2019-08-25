@@ -32,7 +32,10 @@ class PageTenant extends React.Component {
                 ["Telefon Kontaktowy", ["phone", data[0].phone]],
                 ["Adres korespondencyjny", ["address", data[0].address]],
                 ["Pokój", ["room_id", data[0].room_id]],
+                ["Mieszkanie", ["apartment_id", data[0].apartment_id]],
                 ["Czynsz", ["rent", data[0].rent]],
+                ["Pierwszy miesiąc", ["rent_first_month", data[0].rent_first_month]],
+                ["Czynsz za pierwszy miesiąc", ["rent_first_rent", data[0].rent_first_rent]],
                 ["Kaucja", ["deposit", data[0].deposit]],
                 ["Konto bankowe", ["account", data[0].account]]
             ]
@@ -48,6 +51,17 @@ class PageTenant extends React.Component {
                 ["E-mail", ["ice_email", data[0].ice_email]],
                 ["Telefon Kontaktowy", ["ice_phone", data[0].ice_phone]],
                 ["Adres korespondencyjny", ["ice_address", data[0].ice_address]]
+            ]
+        }, {
+            dbTable: this.state.dbTable,
+            id: this.state.id,
+            title: "Umowa",
+            headers: false,
+            rows: [
+                ["Data", ["contract_date", data[0].contract_date]],
+                ["Data rozpoczęcia najmu", ["contract_date_start", data[0].contract_date_start]],
+                ["Data zakończenia najmu", ["contract_date_end", data[0].contract_date_end]],
+                ["Data przekazania pokoju", ["contract_date_handoff", data[0].contract_date_handoff]]
             ]
         }, {
             dbTable: this.state.dbTable,
@@ -113,6 +127,9 @@ class PageTenant extends React.Component {
                             </div>
                             <div className="main-card mb-3 card">
                                 <MTable tableData={this.state.data[2]} />
+                            </div>
+                            <div className="main-card mb-3 card">
+                                <MTable tableData={this.state.data[3]} />
                             </div>
                         </div>
                     </div>
