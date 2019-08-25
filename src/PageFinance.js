@@ -73,6 +73,7 @@ class PageFinance extends React.Component {
     render() {
         var config = [
             [TabPaneTable, "Wszystkie", this.state.dataAll],
+            [TaxPane, "Poprzedni miesiąc", this.state.dataLastMonth],
             [TabPaneUpload, "Upload", this.state.dataAll]
         ];
         return (
