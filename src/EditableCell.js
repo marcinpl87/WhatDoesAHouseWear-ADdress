@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ContentEditable from 'react-contenteditable';
+import EditableCellSingleChoice from './EditableCellSingleChoice'
 
 class EditableCell extends React.Component {
     constructor(props) {
@@ -23,11 +24,16 @@ class EditableCell extends React.Component {
     }
     render() {
         return (
-            <ContentEditable
-                html={this.state.html}
-                onChange={this.handleChange}
-                tagName='span'
-            />
+            Array.isArray(this.props.cellChoices)
+                ? <EditableCellSingleChoice
+                    selectedVal={this.state.html}
+                    choices={this.props.cellChoices}
+                />
+                : <ContentEditable
+                    html={this.state.html}
+                    onChange={this.handleChange}
+                    tagName='span'
+                />
         );
     }
 }
