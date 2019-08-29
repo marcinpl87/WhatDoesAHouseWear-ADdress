@@ -69,6 +69,7 @@ class BadgeButton extends React.Component {
                         updateCat={this.updateCat}
                         selectedCat={proposedCat} />
                     : <ButtonDot
+                        dot={1}
                         buttonName={allCatObj[this.state.cat].name}
                         buttonColor={allCatObj[this.state.cat].color} />
                 }

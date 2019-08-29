@@ -7,9 +7,13 @@ class ButtonDot extends React.Component {
     }
     render() {
         return (
-            <button className="mb-2 mr-2 btn btn-link">
+            <button onClick={this.props.handleClick} className="mb-2 mr-2 btn btn-link">
                 {this.props.buttonName}
-                <span className={`badge badge-dot badge-dot-lg badge-${this.props.buttonColor}`}> </span>
+                {this.props.dot &&
+                    <span className={`
+                        badge badge-dot badge-dot-lg badge-${this.props.buttonColor
+                    }`}> </span>
+                }
             </button>
         )
     }
