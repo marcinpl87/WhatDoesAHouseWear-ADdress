@@ -7,7 +7,17 @@ class EditableCell extends React.Component {
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
-        this.state = {html: this.props.cellVal};
+        this.findArrValById = this.findArrValById.bind(this);
+        this.state = {
+            html: Array.isArray(this.props.cellChoices)
+                ? this.findArrValById(props.cellChoices, props.cellVal)
+                : this.props.cellVal
+        };
+    }
+    findArrValById(arr, id) {
+        return (arr.filter((value) => {
+            return value[0]==id;
+        }))[0][1];
     }
     handleChange(evt) {
         $.get("/api.php?r="+this.props.cellTable, {
@@ -28,6 +38,7 @@ class EditableCell extends React.Component {
                 ? <EditableCellSingleChoice
                     selectedVal={this.state.html}
                     choices={this.props.cellChoices}
+                    onChange={this.handleChange}
                 />
                 : <ContentEditable
                     html={this.state.html}

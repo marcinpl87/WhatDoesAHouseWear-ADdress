@@ -13,7 +13,7 @@ class EditableCellSingleChoice extends React.Component {
         };
     }
     showChoices(evt) {
-        !this.state.choicesVisible && this.setState((prevState, props) => {
+        !this.state.choicesVisible && this.setState(() => {
             return {
                 choicesVisible: true,
                 html: this.props.choices
@@ -21,7 +21,13 @@ class EditableCellSingleChoice extends React.Component {
         });
     }
     selectChoice(val) {
-        //todo send this value to parent component
+        this.props.onChange({target: {value: val[0]}});
+        this.setState(() => {
+            return {
+                choicesVisible: false,
+                html: val[1]
+            }
+        });
     }
     render() {
         return (
@@ -31,7 +37,7 @@ class EditableCellSingleChoice extends React.Component {
                         return <ButtonDot
                             key={i}
                             buttonName={v[1]}
-                            handleClick={() => {this.selectChoice(v[0])}}
+                            handleClick={() => {this.selectChoice(v)}}
                         />
                     })
                     : <span onClick={this.showChoices}>{this.state.html}</span>

@@ -31,7 +31,11 @@ class PageTenant extends React.Component {
                 ["E-mail", ["email", data[0].email]],
                 ["Telefon Kontaktowy", ["phone", data[0].phone]],
                 ["Adres korespondencyjny", ["address", data[0].address]],
-                ["Pokój", ["room_id", data[0].room_id]],
+                ["Pokój", [
+                    "room_id",
+                    data[0].room_id,
+                    [[1, "1"], [2, "2"], [3, "3"], [4, "4"], [5, "5"], [6, "6"]]
+                ]],
                 ["Mieszkanie", ["apartment_id", data[0].apartment_id]],
                 ["Czynsz", ["rent", data[0].rent]],
                 ["Pierwszy miesiąc", ["rent_first_month", data[0].rent_first_month]],
@@ -58,7 +62,7 @@ class PageTenant extends React.Component {
             title: "Umowa",
             headers: false,
             rows: [
-                ["Data", ["contract_date", data[0].contract_date]],
+                ["Data zawarcia umowy", ["contract_date", data[0].contract_date]],
                 ["Data rozpoczęcia najmu", ["contract_date_start", data[0].contract_date_start]],
                 ["Data zakończenia najmu", ["contract_date_end", data[0].contract_date_end]],
                 ["Data przekazania pokoju", ["contract_date_handoff", data[0].contract_date_handoff]]
