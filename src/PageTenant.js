@@ -10,7 +10,7 @@ class PageTenant extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            dbTable: 'tenant',
+            dbTable: 'tenants',
             id: window.location.hash.split("/")[1],
             isReady: false,
             data: {},

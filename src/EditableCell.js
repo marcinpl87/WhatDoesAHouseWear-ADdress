@@ -10,8 +10,8 @@ class EditableCell extends React.Component {
         this.findArrValById = this.findArrValById.bind(this);
         this.state = {
             html: Array.isArray(this.props.cellChoices)
-                ? this.findArrValById(props.cellChoices, props.cellVal)
-                : this.props.cellVal
+                ? (props.cellVal ? this.findArrValById(props.cellChoices, props.cellVal) : 0)
+                : (props.cellVal ? props.cellVal.toString() : "__________")
         };
     }
     findArrValById(arr, id) {

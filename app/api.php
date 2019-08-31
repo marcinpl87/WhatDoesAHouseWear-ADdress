@@ -31,18 +31,18 @@ if ($_GET) {
             JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
         );
     }
-    else if ($_GET["r"] == "tenant") {
-        if (isset($_GET["mode"])) {
-            echo json_encode(
-                array(
-                    $db
-                        ->prepare("UPDATE alior_tenants SET ".$_GET["field"]."=? WHERE id=?")
-                        ->execute([$_GET["val"], $_GET["id"]])
-                ),
-                JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
-            );
-        }
-        else {
+    else if (isset($_GET["mode"])) {
+        echo json_encode(
+            array(
+                $db
+                    ->prepare("UPDATE alior_".$_GET["r"]." SET ".$_GET["field"]."=? WHERE id=?")
+                    ->execute([$_GET["val"], $_GET["id"]])
+            ),
+            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
+        );
+    }
+    else if ($_GET["r"] == "tenants") {
+        if (isset($_GET["id"])) {
             echo json_encode(
                 array(
                     $db->query('
@@ -59,13 +59,23 @@ if ($_GET) {
                 JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
             );
         }
-    }
-    else if ($_GET["r"] == "tenants") {
+        else {
         echo json_encode(
             $db->query('
                 select id, name, lastname, apartment_id, room_id, rent
                 from alior_tenants
                 order by id desc
+            ')->fetchAll(PDO::FETCH_ASSOC),
+            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
+        );
+        }
+    }
+    else if ($_GET["r"] == "apartments") {
+        echo json_encode(
+            $db->query('
+                select *
+                from alior_apartments
+                order by id asc
             ')->fetchAll(PDO::FETCH_ASSOC),
             JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
         );

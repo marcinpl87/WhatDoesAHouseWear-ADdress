@@ -10,8 +10,7 @@ class PageTenants extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isReady: false,
-            data: {}
+            data: false
         };
     }
     createTableStructure(data) {
@@ -24,9 +23,8 @@ class PageTenants extends React.Component {
     }
     componentDidMount() {
         $.get("/api.php?r=tenants", (data) => {
-            this.setState((prevState, props) => {
+            this.setState(() => {
                 return {
-                    isReady: true,
                     data: this.createTableStructure(data)
                 }
             });
@@ -35,7 +33,7 @@ class PageTenants extends React.Component {
     render() {
         return (
             <div className="app-main__inner">
-                {this.state.isReady ? <React.Fragment>
+                {this.state.data ? <React.Fragment>
                     <PageHeader {...this.props.headerData} />
                     <div className="row">
                         <div className="col-md-12">
