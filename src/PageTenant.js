@@ -17,7 +17,8 @@ class PageTenant extends React.Component {
             contract: ""
         };
     }
-    createTableStructure(data) {
+    createTableStructure(data, apartments) {
+        apartments = apartments.map(a => [a.id, a.name]);
         return [{
             dbTable: this.state.dbTable,
             id: this.state.id,
@@ -36,7 +37,11 @@ class PageTenant extends React.Component {
                     data[0].room_id,
                     [[1, "1"], [2, "2"], [3, "3"], [4, "4"], [5, "5"], [6, "6"]]
                 ]],
-                ["Mieszkanie", ["apartment_id", data[0].apartment_id]],
+                ["Mieszkanie", [
+                    "apartment_id",
+                    data[0].apartment_id,
+                    apartments
+                ]],
                 ["Czynsz", ["rent", data[0].rent]],
                 ["Pierwszy miesiąc", ["rent_first_month", data[0].rent_first_month]],
                 ["Czynsz za pierwszy miesiąc", ["rent_first_rent", data[0].rent_first_rent]],
@@ -104,12 +109,15 @@ class PageTenant extends React.Component {
         return content;
     }
     componentDidMount() {
-        $.get("/api.php?r="+this.state.dbTable, {id: this.state.id}, (data) => {
-            this.setState((prevState, props) => {
+        $.when(
+            $.get("/api.php?r="+this.state.dbTable, {id: this.state.id}),
+            $.get("/api.php?r=apartments")
+        ).then((tenantData, apartmentsData) => {
+            this.setState(() => {
                 return {
                     isReady: true,
-                    data: this.createTableStructure(data[0]),
-                    contract: this.testReplace(data[1][0].val, data[0][0])
+                    data: this.createTableStructure(tenantData[0][0], apartmentsData[0]),
+                    contract: this.testReplace(tenantData[0][1][0].val, tenantData[0][0][0])
                 }
             });
         });
