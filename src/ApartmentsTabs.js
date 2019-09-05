@@ -38,27 +38,21 @@ class ApartmentsTabs extends React.Component {
                     dbTable: "apartments",
                     id: apartment.id,
                     title: "Dane",
-                    headers: false,
+                    rowsData: apartment,
                     rows: [
-                        ["Adres", ["address", apartment.address]],
+                        ["Adres", ["address"]],
                         ["Piętro", [
                             "floor",
-                            apartment.floor,
                             [[1, "1"], [2, "2"], [3, "3"], [4, "4"]]
                         ]],
-                        ["Domofon", ["code", apartment.code]]
+                        ["Domofon", ["code"]]
                     ]
                 },
                 insurance: {
                     title: "Ubezpieczenie",
                     headers: ["Numer polisy", "Nazwa firmy", "Data ważności"],
-                    rows: [
-                        [
-                            ["insurance_number", apartment.insurance_number],
-                            ["insurance_name", apartment.insurance_name],
-                            ["insurance_date", apartment.insurance_date]
-                        ]
-                    ]
+                    rowsData: apartment,
+                    rows: [[["insurance_number"], ["insurance_name"], ["insurance_date"]]]
                 }
             }]);
         });

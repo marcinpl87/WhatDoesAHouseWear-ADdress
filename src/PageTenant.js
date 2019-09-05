@@ -23,65 +23,60 @@ class PageTenant extends React.Component {
             dbTable: this.state.dbTable,
             id: this.state.id,
             title: "Informacje kontaktowe",
-            headers: false,
+            rowsData: data[0],
             rows: [
-                ["Imię i Nazwisko", ["name", data[0].name]],
-                ["Dowód osobisty", ["id_number", data[0].id_number]],
-                ["Pesel", ["national_insurance_number", data[0].national_insurance_number]],
-                ["Data urodzenia", ["birth_date", data[0].birth_date]],
-                ["E-mail", ["email", data[0].email]],
-                ["Telefon Kontaktowy", ["phone", data[0].phone]],
-                ["Adres korespondencyjny", ["address", data[0].address]],
+                ["Imię i Nazwisko", ["name"]],
+                ["Dowód osobisty", ["id_number"]],
+                ["Pesel", ["national_insurance_number"]],
+                ["Data urodzenia", ["birth_date"]],
+                ["E-mail", ["email"]],
+                ["Telefon Kontaktowy", ["phone"]],
+                ["Adres korespondencyjny", ["address"]],
                 ["Pokój", [
                     "room_id",
-                    data[0].room_id,
                     [[1, "1"], [2, "2"], [3, "3"], [4, "4"], [5, "5"], [6, "6"]]
                 ]],
                 ["Mieszkanie", [
                     "apartment_id",
-                    data[0].apartment_id,
                     apartments
                 ]],
-                ["Czynsz", ["rent", data[0].rent]],
-                ["Pierwszy miesiąc", ["rent_first_month", data[0].rent_first_month]],
-                ["Czynsz za pierwszy miesiąc", ["rent_first_rent", data[0].rent_first_rent]],
-                ["Kaucja", ["deposit", data[0].deposit]],
-                ["Konto bankowe", ["account", data[0].account]]
+                ["Czynsz", ["rent"]],
+                ["Pierwszy miesiąc", ["rent_first_month"]],
+                ["Czynsz za pierwszy miesiąc", ["rent_first_rent"]],
+                ["Kaucja", ["deposit"]],
+                ["Konto bankowe", ["account"]]
             ]
         }, {
             dbTable: this.state.dbTable,
             id: this.state.id,
             title: "Poręczyciel",
-            headers: false,
+            rowsData: data[0],
             rows: [
-                ["Imię i Nazwisko", ["ice_name", data[0].ice_name]],
-                ["Dowód osobisty", ["ice_id_number", data[0].ice_id_number]],
-                ["Pesel", ["ice_national_insurance_number", data[0].ice_national_insurance_number]],
-                ["E-mail", ["ice_email", data[0].ice_email]],
-                ["Telefon Kontaktowy", ["ice_phone", data[0].ice_phone]],
-                ["Adres korespondencyjny", ["ice_address", data[0].ice_address]]
+                ["Imię i Nazwisko", ["ice_name"]],
+                ["Dowód osobisty", ["ice_id_number"]],
+                ["Pesel", ["ice_national_insurance_number"]],
+                ["E-mail", ["ice_email"]],
+                ["Telefon Kontaktowy", ["ice_phone"]],
+                ["Adres korespondencyjny", ["ice_address"]]
             ]
         }, {
             dbTable: this.state.dbTable,
             id: this.state.id,
             title: "Umowa",
-            headers: false,
+            rowsData: data[0],
             rows: [
-                ["Data zawarcia umowy", ["contract_date", data[0].contract_date]],
-                ["Data rozpoczęcia najmu", ["contract_date_start", data[0].contract_date_start]],
-                ["Data zakończenia najmu", ["contract_date_end", data[0].contract_date_end]],
-                ["Data przekazania pokoju", ["contract_date_handoff", data[0].contract_date_handoff]]
+                ["Data zawarcia umowy", ["contract_date"]],
+                ["Data rozpoczęcia najmu", ["contract_date_start"]],
+                ["Data zakończenia najmu", ["contract_date_end"]],
+                ["Data przekazania pokoju", ["contract_date_handoff"]]
             ]
         }, {
             dbTable: this.state.dbTable,
             id: this.state.id,
             title: "Ubezpieczenie",
             headers: ["Nazwa Firmy", "Numer Polisy", "Data Ważności"],
-            rows: [[
-                ["insurance_name", data[0].insurance_name],
-                ["insurance_number", data[0].insurance_number],
-                ["insurance_date", data[0].insurance_date]
-            ]]
+            rowsData: data[0],
+            rows: [[["insurance_name"], ["insurance_number"], ["insurance_date"]]]
         }];
     }
     toArray(_Object){

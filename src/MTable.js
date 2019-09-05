@@ -8,9 +8,9 @@ class MTable extends React.Component {
         super(props);
         this.goToSubPage = this.goToSubPage.bind(this);
     }
-    goToSubPage(row) {
+    goToSubPage(id) {
         if (this.props.tableData.clickableHash) {
-            window.location.hash = "#" + this.props.tableData.clickableHash + "/" + row[0];
+            window.location.hash = "#" + this.props.tableData.clickableHash + "/" + id;
         }
     }
     render() {
@@ -33,14 +33,14 @@ class MTable extends React.Component {
                         }
                         <tbody>
                             {this.props.tableData.rows.map((val, index) => {
-                                return <tr key={index} onClick={() => this.goToSubPage(val)}>
+                                return <tr key={index} onClick={() => this.goToSubPage(val[0])}>
                                     <th scope="row">{index+1}</th>
                                     {val.map((cellVal, cellIndex) => {
                                         return <td key={cellIndex}>{Array.isArray(cellVal)
                                             ? <EditableCell
                                                 cellName={cellVal[0]}
-                                                cellVal={cellVal[1]}
-                                                cellChoices={cellVal[2]}
+                                                cellVal={this.props.tableData.rowsData[cellVal[0]]}
+                                                cellChoices={cellVal[1]}
                                                 cellId={this.props.tableData.id}
                                                 cellTable={this.props.tableData.dbTable}
                                             />
