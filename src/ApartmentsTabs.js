@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import TabPaneApartment from './TabPaneApartment';
 import TabsComponent from './TabsComponent';
 import LoaderComponent from './LoaderComponent';
+import Utils from './Utils';
 
 class ApartmentsTabs extends React.Component {
     constructor(props) {
@@ -12,18 +13,22 @@ class ApartmentsTabs extends React.Component {
             data: false
         };
     }
-    createTableStructure(data) {
+    createTableStructure(data, tenantsInApartment) {
         var config = [];
         data.map((apartment) => {
+            var occupiedRooms = Utils.findArrValById(
+                tenantsInApartment.map(x => Object.values(x)),
+                apartment.id
+            );
             config.push([TabPaneApartment, apartment.name, {
                 id: "tab-eg14-"+apartment.id,
                 notes: apartment.notes,
                 contracts: {
                     title: "Podpisane umowy",
                     subTitle: false,
-                    val: "1",
+                    val: occupiedRooms,
                     valGreen: true,
-                    percentage: "20",
+                    percentage: Math.round(occupiedRooms / apartment.rooms * 100),
                     percentageGreen: false,
                 },
                 payments: {
@@ -59,10 +64,13 @@ class ApartmentsTabs extends React.Component {
         return config;
     }
     componentDidMount() {
-        $.get("/api.php?r=apartments", (data) => {
+        $.when(
+            $.get("/api.php?r=apartments"),
+            $.get("/api.php?r=tenantsInApartment")
+        ).then((dataApartments, tenantsInApartment) => {
             this.setState(() => {
                 return {
-                    data: this.createTableStructure(data)
+                    data: this.createTableStructure(dataApartments[0], tenantsInApartment[0])
                 }
             });
         });

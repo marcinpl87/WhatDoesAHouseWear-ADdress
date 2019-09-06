@@ -2,22 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ContentEditable from 'react-contenteditable';
 import EditableCellSingleChoice from './EditableCellSingleChoice'
+import Utils from './Utils';
 
 class EditableCell extends React.Component {
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
-        this.findArrValById = this.findArrValById.bind(this);
         this.state = {
             html: Array.isArray(this.props.cellChoices)
-                ? (props.cellVal ? this.findArrValById(props.cellChoices, props.cellVal) : 0)
+                ? (props.cellVal ? Utils.findArrValById(props.cellChoices, props.cellVal) : 0)
                 : (props.cellVal ? props.cellVal.toString() : "__________")
         };
-    }
-    findArrValById(arr, id) {
-        return (arr.filter((value) => {
-            return value[0]==id;
-        }))[0][1];
     }
     handleChange(evt) {
         $.get("/api.php?r="+this.props.cellTable, {

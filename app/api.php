@@ -80,6 +80,16 @@ if ($_GET) {
             JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
         );
     }
+    else if ($_GET["r"] == "tenantsInApartment") {
+        echo json_encode(
+            $db->query('
+                select apartment_id, SUM(apartment_id) as sum
+                from alior_tenants
+                Group By apartment_id
+            ')->fetchAll(PDO::FETCH_ASSOC),
+            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
+        );
+    }
     else if ($_GET["r"] == "rules") {
         echo json_encode(array("status" => $db
             ->prepare("INSERT INTO alior_rules (transaction_column, relation, value, cateogry_id) VALUES (?,?,?,?)")

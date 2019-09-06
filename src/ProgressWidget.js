@@ -37,7 +37,7 @@ class ProgressWidget extends React.Component {
                                     </div>
                                     <div className="progress-sub-label">
                                         <div className="sub-label-left"></div>
-                                        <div className="sub-label-right">100%</div>
+                                        <div className="sub-label-right">{this.props.widgetData.percentage}%</div>
                                     </div>
                                 </div>
                             </div>
