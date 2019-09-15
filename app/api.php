@@ -83,7 +83,7 @@ if ($_GET) {
     else if ($_GET["r"] == "tenantsInApartment") {
         echo json_encode(
             $db->query('
-                select apartment_id, SUM(apartment_id) as sum
+                select apartment_id, COUNT(apartment_id) as count
                 from alior_tenants
                 Group By apartment_id
             ')->fetchAll(PDO::FETCH_ASSOC),
