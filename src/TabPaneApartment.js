@@ -1,33 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import LoaderComponent from './LoaderComponent';
+import TenantsComponent from './TenantsComponent';
 import ProgressWidget from './ProgressWidget';
 import MTable from './MTable';
 
 class TabPaneApartment extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            data: false
-        };
-    }
-    createTableStructure(data) {
-        return {
-            title: false,
-            clickableHash: "tenants",
-            headers: ["Id", "Imię", "Nazwisko", "Mieszkanie", "Pokój", "Saldo"],
-            rows: data.map(x => Object.values(x))
-        };
-    }
-    componentDidMount() {
-        $.get("/api.php?r=tenants", (data) => {
-            this.setState((prevState, props) => {
-                return {
-                    data: this.createTableStructure(data)
-                }
-            });
-        });
     }
     render() {
         return (
@@ -54,11 +34,7 @@ class TabPaneApartment extends React.Component {
                 </div>
                 <div className="row">
                     <div className="col-md-12">
-                        <div className="main-card mb-3 card">
-                            {this.state.data ? <React.Fragment>
-                                <MTable tableData={this.state.data} />
-                            </React.Fragment> : <LoaderComponent />}
-                        </div>
+                        <TenantsComponent />
                     </div>
                 </div>
                 <div className="row">
