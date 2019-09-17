@@ -5,16 +5,16 @@ import $ from 'jquery'
 import StructureHeader from './StructureHeader';
 import StructureTheme from './StructureTheme';
 import MMenu from './MMenu';
+import PageHome from './PageHome';
 import PageTenants from './PageTenants';
 import PageTenant from './PageTenant';
 import PageFinance from './PageFinance';
 import PageApartments from './PageApartments';
 
 const menuElements = [
-    // ['home', PageHome, 'pe-7s-home', 'Strona główna'],
+    ['home', PageHome, 'pe-7s-home', 'Strona główna'],
     ['apartments', PageApartments, 'pe-7s-world', 'Nieruchomości'],
     ['tenants', PageTenants, 'pe-7s-users', 'Najemcy', PageTenant],
-    // ['documents', PageFinance, 'pe-7s-note2', 'Dokumenty'],
     ['finance', PageFinance, 'pe-7s-cash', 'Finanse']
 ];
 
