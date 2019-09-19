@@ -105,6 +105,13 @@ if ($_GET) {
             JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
         );
     }
+    else if ($_GET["r"] == "charts") {
+        echo $db->query('
+            select val
+            from alior_config
+            where key_name = "charts"
+        ')->fetchAll(PDO::FETCH_ASSOC)[0]["val"];
+    }
 }
 if ($_POST) {
     if ($_POST["r"] == "transactions") {
