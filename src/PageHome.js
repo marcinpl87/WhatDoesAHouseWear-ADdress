@@ -3,12 +3,26 @@ import ReactDOM from 'react-dom';
 
 import PageHeader from './PageHeader';
 import ProgressWidget from './ProgressWidget';
+import ChartComponent from './ChartComponent';
+import LoaderComponent from './LoaderComponent';
 
 class PageHome extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            data: false
+        };
     }
     componentDidMount() {
+        $.when(
+            $.get("/api.php?r=charts")
+        ).then((chartsData) => {
+            this.setState(() => {
+                return {
+                    data: Object.values(chartsData)
+                }
+            });
+        });
     }
     render() {
         var dataContracts = {
@@ -38,6 +52,13 @@ class PageHome extends React.Component {
                         <ProgressWidget widgetData={dataPayments} />
                     </div>
                 </div>
+                {this.state.data ? this.state.data.map((c, i) => {
+                    return <div className="row" key={i}>
+                        <div className="col-md-12">
+                            <ChartComponent config={c} />
+                        </div>
+                    </div>
+                }) : <LoaderComponent />}
             </div>
         )
     }
