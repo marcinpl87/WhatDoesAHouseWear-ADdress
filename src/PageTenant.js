@@ -12,8 +12,7 @@ class PageTenant extends React.Component {
         this.state = {
             dbTable: 'tenants',
             id: window.location.hash.split("/")[1],
-            isReady: false,
-            data: {},
+            data: false,
             contract: ""
         };
     }
@@ -110,7 +109,6 @@ class PageTenant extends React.Component {
         ).then((tenantData, apartmentsData) => {
             this.setState(() => {
                 return {
-                    isReady: true,
                     data: this.createTableStructure(tenantData[0][0], apartmentsData[0]),
                     contract: this.testReplace(tenantData[0][1][0].val, tenantData[0][0][0])
                 }
@@ -120,7 +118,7 @@ class PageTenant extends React.Component {
     render() {
         return (
             <div className="app-main__inner">
-                {this.state.isReady ? <React.Fragment>
+                {this.state.data ? <React.Fragment>
                     <PageHeader {...this.props.headerData} />
                     <div className="row">
                         <div className="col-md-6">

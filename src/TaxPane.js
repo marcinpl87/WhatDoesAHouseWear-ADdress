@@ -22,9 +22,9 @@ class TaxPane extends React.Component {
         var msg = sumArr.length + " transakcji:\n"
         + sumArr.join("zł + ") + "zł = "
         + this.mRound(sum) + "\n\n"
-        + this.mRound(sum) + " * 0,085 = "
-        + this.mRound(sum*0.085) + " = "
-        + this.mRound(sum*0.085, 0 );
+        + this.mRound(sum) + " * 0,125 = "
+        + this.mRound(sum*0.125) + " = "
+        + this.mRound(sum*0.125, 0 );
         return (
             <React.Fragment>
                 <div className="row">
