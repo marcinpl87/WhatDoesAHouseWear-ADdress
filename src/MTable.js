@@ -43,6 +43,7 @@ class MTable extends React.Component {
                                                 cellChoices={cellVal[1]}
                                                 cellId={this.props.tableData.id}
                                                 cellTable={this.props.tableData.dbTable}
+                                                cellEditCallback={this.props.tableData.callback}
                                             />
                                             : cellVal}</td>
                                     })}

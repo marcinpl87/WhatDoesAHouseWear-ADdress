@@ -26,6 +26,7 @@ class EditableCell extends React.Component {
                 html: evt.target.value
             }
         });
+        this.props.cellEditCallback(this.props.cellName, evt.target.value);
     }
     render() {
         return (

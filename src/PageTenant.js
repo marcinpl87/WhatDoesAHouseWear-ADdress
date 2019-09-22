@@ -9,6 +9,7 @@ import LoaderComponent from './LoaderComponent';
 class PageTenant extends React.Component {
     constructor(props) {
         super(props);
+        this.editCallback = this.editCallback.bind(this);
         this.state = {
             dbTable: 'tenants',
             id: window.location.hash.split("/")[1],
@@ -16,11 +17,20 @@ class PageTenant extends React.Component {
             contract: ""
         };
     }
+    editCallback(name, val) {
+        this.state.tenantObj[name] = val;
+        this.setState(() => {
+            return {
+                tenantObj: this.state.tenantObj
+            }
+        });
+    }
     createTableStructure(data, apartments) {
         apartments = apartments.map(a => [a.id, a.name]);
         return [{
             dbTable: this.state.dbTable,
             id: this.state.id,
+            callback: this.editCallback,
             title: "Informacje kontaktowe",
             rowsData: data[0],
             rows: [
@@ -48,6 +58,7 @@ class PageTenant extends React.Component {
         }, {
             dbTable: this.state.dbTable,
             id: this.state.id,
+            callback: this.editCallback,
             title: "Poręczyciel",
             rowsData: data[0],
             rows: [
@@ -61,6 +72,7 @@ class PageTenant extends React.Component {
         }, {
             dbTable: this.state.dbTable,
             id: this.state.id,
+            callback: this.editCallback,
             title: "Umowa",
             rowsData: data[0],
             rows: [
@@ -72,6 +84,7 @@ class PageTenant extends React.Component {
         }, {
             dbTable: this.state.dbTable,
             id: this.state.id,
+            callback: this.editCallback,
             title: "Ubezpieczenie",
             headers: ["Nazwa Firmy", "Numer Polisy", "Data Ważności"],
             rowsData: data[0],
@@ -91,13 +104,13 @@ class PageTenant extends React.Component {
             replace
         );
     }
-    testReplace(content, tenantProps) {
+    contractFill(content, tenantProps) {
         var arr = this.toArray(tenantProps);
         for (var key in arr) {
             content = this.replaceAll(
                 content,
                "[" + key + "]",
-                arr[key]
+                arr[key] ? arr[key] : "__________"
             );
         }
         return content;
@@ -110,12 +123,14 @@ class PageTenant extends React.Component {
             this.setState(() => {
                 return {
                     data: this.createTableStructure(tenantData[0][0], apartmentsData[0]),
-                    contract: this.testReplace(tenantData[0][1][0].val, tenantData[0][0][0])
+                    contract: tenantData[0][1][0].val,
+                    tenantObj: tenantData[0][0][0]
                 }
             });
         });
     }
     render() {
+        var contract = this.state.data && this.contractFill(this.state.contract, this.state.tenantObj);
         return (
             <div className="app-main__inner">
                 {this.state.data ? <React.Fragment>
@@ -142,7 +157,7 @@ class PageTenant extends React.Component {
                         <div className="col-md-12">
                                 <div className="card-shadow-info border mb-3 card card-body border-info">
                                     <h5 className="card-title">Umowa</h5>
-                                    {this.state.contract.split('\n').map((item, i) => {
+                                    {contract.split('\n').map((item, i) => {
                                         return <span key={i}>{item}<br /></span>;
                                     })}
                                 </div>
