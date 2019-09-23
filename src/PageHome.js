@@ -15,11 +15,25 @@ class PageHome extends React.Component {
     }
     componentDidMount() {
         $.when(
-            $.get("/api.php?r=charts")
-        ).then((chartsData) => {
+            $.get("/api.php?r=charts"),
+            $.get("/api.php?r=apartments"),
+            $.get("/api.php?r=tenantsInApartment")
+        ).then((chartsData, apartments, tenantsInApartment) => {
+            var allRooms = 0;
+            var occupied = 0;
+            apartments[0].map((apartment) => {
+                allRooms += apartment.rooms;
+            });
+            tenantsInApartment[0].map((el) => {
+                if (el.apartment_id !== 0) {
+                    occupied += el.count;
+                }
+            });
             this.setState(() => {
                 return {
-                    data: Object.values(chartsData)
+                    data: Object.values(chartsData[0]),
+                    occupiedRooms: occupied,
+                    occupiedRoomsPercentage: Math.round(occupied / allRooms * 100)
                 }
             });
         });
@@ -28,9 +42,9 @@ class PageHome extends React.Component {
         var dataContracts = {
             title: "Podpisane umowy",
             subTitle: false,
-            val: "1",
+            val: this.state.occupiedRooms,
             valGreen: true,
-            percentage: "10",
+            percentage: this.state.occupiedRoomsPercentage,
             percentageGreen: false,
         }
         var dataPayments = {
