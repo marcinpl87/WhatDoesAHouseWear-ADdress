@@ -50,7 +50,9 @@ class ApartmentsTabs extends React.Component {
                             "floor",
                             [[1, "1"], [2, "2"], [3, "3"], [4, "4"]]
                         ]],
-                        ["Domofon", ["code"]]
+                        ["Domofon", ["code"]],
+                        ["Wifi", ["wifi_ssid"]],
+                        ["Wifi hasło", ["wifi_pass"]]
                     ]
                 },
                 insurance: {
