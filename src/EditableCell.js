@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import SanitizeHtml from "sanitize-html";
 import ContentEditable from 'react-contenteditable';
-import EditableCellSingleChoice from './EditableCellSingleChoice'
+import EditableCellSingleChoice from './EditableCellSingleChoice';
 import Utils from './Utils';
 
 class EditableCell extends React.Component {
@@ -15,18 +16,19 @@ class EditableCell extends React.Component {
         };
     }
     handleChange(evt) {
+        var val = SanitizeHtml(evt.target.value);
         $.get("/api.php?r="+this.props.cellTable, {
             id: this.props.cellId,
             field: this.props.cellName,
-            val: evt.target.value,
+            val: val,
             mode: "update",
         }, (data) => {});
         this.setState((prevState, props) => {
             return {
-                html: evt.target.value
+                html: val
             }
         });
-        this.props.cellEditCallback(this.props.cellName, evt.target.value);
+        this.props.cellEditCallback(this.props.cellName, val);
     }
     render() {
         return (
