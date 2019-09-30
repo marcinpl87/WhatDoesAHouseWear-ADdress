@@ -10,7 +10,10 @@ class PageHome extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: false
+            data: false,
+            rents: 0,
+            occupiedRooms: 0,
+            occupiedRoomsPercentage: 0,
         };
     }
     componentDidMount() {
@@ -21,17 +24,20 @@ class PageHome extends React.Component {
         ).then((chartsData, apartments, tenantsInApartment) => {
             var allRooms = 0;
             var occupied = 0;
+            var rents = 0;
             apartments[0].map((apartment) => {
                 allRooms += apartment.rooms;
             });
             tenantsInApartment[0].map((el) => {
                 if (el.apartment_id !== 0) {
                     occupied += el.count;
+                    rents += el.rents;
                 }
             });
             this.setState(() => {
                 return {
                     data: Object.values(chartsData[0]),
+                    rents: rents,
                     occupiedRooms: occupied,
                     occupiedRoomsPercentage: Math.round(occupied / allRooms * 100)
                 }
@@ -50,7 +56,7 @@ class PageHome extends React.Component {
         var dataPayments = {
             title: "Płatności",
             subTitle: "Opłacone w tym miesiącu",
-            val: "12999zł",
+            val: (this.state.rents || 0) + "zł",
             valGreen: false,
             percentage: "100",
             percentageGreen: true,

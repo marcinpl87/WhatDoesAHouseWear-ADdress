@@ -15,9 +15,10 @@ class ApartmentsTabs extends React.Component {
     }
     createTableStructure(data, tenantsInApartment) {
         var config = [];
+        var tenantsInApartmentFlat = tenantsInApartment.map(x => Object.values(x))
         data.map((apartment) => {
             var occupiedRooms = Utils.findArrValById(
-                tenantsInApartment.map(x => Object.values(x)),
+                tenantsInApartmentFlat,
                 apartment.id
             );
             config.push([TabPaneApartment, apartment.name, {
@@ -34,7 +35,7 @@ class ApartmentsTabs extends React.Component {
                 payments: {
                     title: "Płatności",
                     subTitle: "Opłacone w tym miesiącu",
-                    val: "4500zł",
+                    val: (Utils.findArrValById(tenantsInApartmentFlat, apartment.id, 2) || 0) + "zł",
                     valGreen: false,
                     percentage: "100",
                     percentageGreen: true,
