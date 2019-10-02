@@ -59,15 +59,26 @@ if ($_GET) {
                 JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
             );
         }
+        else if (isset($_GET["apartmentId"])) {
+            echo json_encode(
+                $db->query('
+                    select id, name, apartment_id, room_id, rent
+                    from alior_tenants
+                    where apartment_id = '.$_GET["apartmentId"].'
+                    order by id desc
+                ')->fetchAll(PDO::FETCH_ASSOC),
+                JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
+            );
+        }
         else {
-        echo json_encode(
-            $db->query('
-                select id, name, lastname, apartment_id, room_id, rent
-                from alior_tenants
-                order by id desc
-            ')->fetchAll(PDO::FETCH_ASSOC),
-            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
-        );
+            echo json_encode(
+                $db->query('
+                    select id, name, apartment_id, room_id, rent
+                    from alior_tenants
+                    order by id desc
+                ')->fetchAll(PDO::FETCH_ASSOC),
+                JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
+            );
         }
     }
     else if ($_GET["r"] == "apartments") {

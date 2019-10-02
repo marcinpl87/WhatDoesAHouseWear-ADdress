@@ -15,7 +15,7 @@ class ApartmentsTabs extends React.Component {
     }
     createTableStructure(data, tenantsInApartment) {
         var config = [];
-        var tenantsInApartmentFlat = tenantsInApartment.map(x => Object.values(x))
+        var tenantsInApartmentFlat = tenantsInApartment.map(x => Object.values(x));
         data.map((apartment) => {
             var occupiedRooms = Utils.findArrValById(
                 tenantsInApartmentFlat,

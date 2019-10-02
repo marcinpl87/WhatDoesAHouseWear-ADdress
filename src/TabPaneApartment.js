@@ -34,7 +34,7 @@ class TabPaneApartment extends React.Component {
                 </div>
                 <div className="row">
                     <div className="col-md-12">
-                        <TenantsComponent />
+                        <TenantsComponent apartmentId={this.props.paneData.properties.id} />
                     </div>
                 </div>
                 <div className="row">

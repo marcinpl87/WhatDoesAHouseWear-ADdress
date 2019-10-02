@@ -16,7 +16,7 @@ class TenantsComponent extends React.Component {
         return {
             title: false,
             clickableHash: "tenants",
-            headers: ["Id", "Imię", "Nazwisko", "Mieszkanie", "Pokój", "Czynsz"],
+            headers: ["Id", "Imię i Nazwisko", "Mieszkanie", "Pokój", "Czynsz"],
             rows: data.map(x => {
                 x.apartment_id = Utils.findArrValById(
                     apartments.map(a => [a.id, a.name]),
@@ -28,7 +28,7 @@ class TenantsComponent extends React.Component {
     }
     componentDidMount() {
         $.when(
-            $.get("/api.php?r=tenants"),
+            $.get("/api.php?r=tenants", {apartmentId: this.props.apartmentId}),
             $.get("/api.php?r=apartments")
         ).then((tenantData, apartmentsData) => {
             this.setState(() => {
