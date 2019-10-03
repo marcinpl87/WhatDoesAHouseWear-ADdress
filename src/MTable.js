@@ -6,11 +6,28 @@ import EditableCell from './EditableCell'
 class MTable extends React.Component {
     constructor(props) {
         super(props);
+        this.sort = this.sort.bind(this);
         this.goToSubPage = this.goToSubPage.bind(this);
+        this.state = {
+            rows: this.props.tableData.rows,
+        };
     }
     goToSubPage(id) {
         if (this.props.tableData.clickableHash) {
             window.location.hash = "#" + this.props.tableData.clickableHash + "/" + id;
+        }
+    }
+    sort(i) {
+        if (this.props.tableData.headers) {
+            this.setState(() => {
+                return {
+                    rows: this.state.rows.sort((a, b) => {
+                        if (a[i] < b[i]) return -1;
+                        if (a[i] > b[i]) return 1;
+                        return 0;
+                    })
+                };
+            });
         }
     }
     render() {
@@ -26,13 +43,13 @@ class MTable extends React.Component {
                                 <tr>
                                     <th>#</th>
                                     {this.props.tableData.headers.map((val, index) => {
-                                        return <th key={index}>{val}</th>
+                                        return <th key={index} onClick={() => this.sort(index)}>{val}</th>
                                     })}
                                 </tr>
                             </thead>
                         }
                         <tbody>
-                            {this.props.tableData.rows.map((val, index) => {
+                            {this.state.rows.map((val, index) => {
                                 return <tr key={index} onClick={() => this.goToSubPage(val[0])}>
                                     <th scope="row">{index+1}</th>
                                     {val.map((cellVal, cellIndex) => {

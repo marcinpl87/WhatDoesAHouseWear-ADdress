@@ -46,6 +46,7 @@ class ApartmentsTabs extends React.Component {
                     title: "Dane",
                     rowsData: apartment,
                     rows: [
+                        ["Nazwa", ["name"]],
                         ["Adres", ["address"]],
                         ["Piętro", [
                             "floor",
