@@ -53,6 +53,9 @@ class ApartmentsTabs extends React.Component {
                             [[1, "1"], [2, "2"], [3, "3"], [4, "4"]]
                         ]],
                         ["Domofon", ["code"]],
+                        ["Wkładka w drzwiach zewnętrznych", ["lock_out"]],
+                        ["Wkładka w drzwiach wewnętrznych", ["lock_in"]],
+                        ["Sejf", ["safe"]],
                         ["Wifi", ["wifi_ssid"]],
                         ["Wifi hasło", ["wifi_pass"]]
                     ]
