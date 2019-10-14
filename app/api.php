@@ -81,6 +81,28 @@ if ($_GET) {
             );
         }
     }
+    else if ($_GET["r"] == "fixes") {
+        if (isset($_GET["id"])) {
+            echo json_encode(
+                $db->query('
+                    select *
+                    from alior_fixes
+                    where id = '.$_GET["id"].'
+                ')->fetchAll(PDO::FETCH_ASSOC),
+                JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
+            );
+        }
+        else {
+            echo json_encode(
+                $db->query('
+                    select *
+                    from alior_fixes
+                    order by id desc
+                ')->fetchAll(PDO::FETCH_ASSOC),
+                JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
+            );
+        }
+    }
     else if ($_GET["r"] == "apartments") {
         echo json_encode(
             $db->query('

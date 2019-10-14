@@ -10,12 +10,15 @@ import PageTenants from './PageTenants';
 import PageTenant from './PageTenant';
 import PageFinance from './PageFinance';
 import PageApartments from './PageApartments';
+import PageFixes from './PageFixes';
+import PageFix from './PageFix';
 
 const menuElements = [
     ['home', PageHome, 'pe-7s-home', 'Strona główna'],
     ['apartments', PageApartments, 'pe-7s-world', 'Nieruchomości'],
     ['tenants', PageTenants, 'pe-7s-users', 'Najemcy', PageTenant],
-    ['finance', PageFinance, 'pe-7s-cash', 'Finanse']
+    ['finance', PageFinance, 'pe-7s-cash', 'Finanse'],
+    ['fixes', PageFixes, 'pe-7s-tools', 'Usterki', PageFix]
 ];
 
 class Wrapper extends React.Component {

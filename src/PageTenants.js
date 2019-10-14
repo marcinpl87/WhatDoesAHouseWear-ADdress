@@ -2,8 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import 'bootstrap';
 
-import Utils from './Utils';
-import MTable from './MTable';
 import PageHeader from './PageHeader';
 import TenantsComponent from './TenantsComponent';
 
@@ -14,12 +12,12 @@ class PageTenants extends React.Component {
     render() {
         return (
             <div className="app-main__inner">
-                    <PageHeader {...this.props.headerData} />
-                    <div className="row">
-                        <div className="col-md-12">
-                            <TenantsComponent />
-                        </div>
+                <PageHeader {...this.props.headerData} />
+                <div className="row">
+                    <div className="col-md-12">
+                        <TenantsComponent />
                     </div>
+                </div>
             </div>
         )
     }
