@@ -53,7 +53,8 @@ class PageTenant extends React.Component {
                 ["Pierwszy miesiąc", ["rent_first_month"]],
                 ["Czynsz za pierwszy miesiąc", ["rent_first_rent"]],
                 ["Kaucja", ["deposit"]],
-                ["Konto bankowe", ["account"]]
+                ["Konto bankowe", ["account"]],
+                ["Notatki", ["notes"]]
             ]
         }, {
             dbTable: this.state.dbTable,

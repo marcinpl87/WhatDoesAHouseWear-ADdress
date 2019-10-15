@@ -14,11 +14,11 @@ import PageFixes from './PageFixes';
 import PageFix from './PageFix';
 
 const menuElements = [
-    ['home', PageHome, 'pe-7s-home', 'Strona główna'],
-    ['apartments', PageApartments, 'pe-7s-world', 'Nieruchomości'],
-    ['tenants', PageTenants, 'pe-7s-users', 'Najemcy', PageTenant],
-    ['finance', PageFinance, 'pe-7s-cash', 'Finanse'],
-    ['fixes', PageFixes, 'pe-7s-tools', 'Usterki', PageFix]
+    ['home', PageHome, 'pe-7s-home', 'Strona główna', false],
+    ['apartments', PageApartments, 'pe-7s-world', 'Nieruchomości', false],
+    ['tenants', PageTenants, 'pe-7s-users', 'Najemcy', false, PageTenant],
+    ['finance', PageFinance, 'pe-7s-cash', 'Finanse', false],
+    ['fixes', PageFixes, 'pe-7s-tools', 'Usterki', true, PageFix]
 ];
 
 class Wrapper extends React.Component {
@@ -44,9 +44,9 @@ class Wrapper extends React.Component {
     }
     generatePageComponent(pageArr) {
         return {
-            subPage: window.location.hash.includes("/") ? pageArr[4] : pageArr[1],
+            subPage: window.location.hash.includes("/") ? pageArr[5] : pageArr[1],
             subPageProps: {
-                showAddButton: false,
+                showAddButton: pageArr[4],
                 showBreadcrumbs: pageArr[0] !== "home",
                 dataTitle: pageArr[3],
                 dataIcon: pageArr[2]

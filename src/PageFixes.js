@@ -12,6 +12,21 @@ class PageFixes extends React.Component {
         this.state = {
             data: false
         };
+        this.addRow = this.addRow.bind(this);
+        this.getData = this.getData.bind(this);
+        this.props.headerData.add = this.addRow;
+    }
+    addRow() {
+        this.setState(() => {
+            return {
+                data: false,
+            }
+        });
+        $.when(
+            $.get("/api.php", {r: "fixes", task: "add"}),
+        ).then(() => {
+            this.getData();
+        });
     }
     createTableStructure(data, apartments) {
         return {
@@ -23,11 +38,15 @@ class PageFixes extends React.Component {
                     apartments.map(a => [a.id, a.name]),
                     x.apartment_id
                 );
+                x.apartment_id = x.apartment_id || "";
                 return Object.values(x);
             })
         };
     }
     componentDidMount() {
+        this.getData();
+    }
+    getData() {
         $.when(
             $.get("/api.php?r=fixes", {apartmentId: this.props.apartmentId}),
             $.get("/api.php?r=apartments")

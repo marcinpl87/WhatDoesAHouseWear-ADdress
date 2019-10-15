@@ -92,6 +92,11 @@ if ($_GET) {
                 JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
             );
         }
+        else if (isset($_GET["task"])) {
+            echo json_encode(array("status" => $db
+                ->prepare("INSERT INTO alior_fixes (date_add, date_event) VALUES (now(),now())")
+                ->execute()));
+        }
         else {
             echo json_encode(
                 $db->query('
