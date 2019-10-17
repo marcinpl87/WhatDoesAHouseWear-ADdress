@@ -61,10 +61,16 @@ class PageFinance extends React.Component {
                     && row.date_transaction.substr(8, 2) == prevMonthDate[1].slice(-2);
             });
             lastMonth.transactions = filtered;
+            var forTax = JSON.parse(JSON.stringify(lastMonth)); //clone
+            var forTaxFiltered = forTax.transactions.filter((row) => {
+                return row.value > 0;
+            });
+            forTax.transactions = forTaxFiltered;
             this.setState((prevState, props) => {
                 return {
                     isReady: true,
                     dataAll: this.createTableStructure(data),
+                    dataForTax: this.createTableStructure(forTax),
                     dataLastMonth: this.createTableStructure(lastMonth)
                 }
             });
@@ -74,6 +80,7 @@ class PageFinance extends React.Component {
         var config = [
             [TabPaneTable, "Wszystkie", this.state.dataAll],
             [TaxPane, "Poprzedni miesiąc", this.state.dataLastMonth],
+            [TaxPane, "Podatek", this.state.dataForTax],
             [TabPaneUpload, "Upload", this.state.dataAll]
         ];
         return (
