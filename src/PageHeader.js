@@ -30,9 +30,13 @@ class PageHeader extends React.Component {
                         </div>
                     </div>
                     {this.props.showAddButton && <div className="page-title-actions">
-                        <button type="button" className="btn-shadow mr-3 btn btn-success" onClick={this.props.add}>
-                            <i className="fa fa-fw"></i>
-                        </button>
+                        {window.location.hash.includes("/")
+                            ? <button type="button" className="btn-shadow mr-3 btn btn-danger" onClick={this.props.del}>
+                                <i className="fa fa-fw"></i>
+                            </button>
+                            : <button type="button" className="btn-shadow mr-3 btn btn-success" onClick={this.props.add}>
+                                <i className="fa fa-fw"></i>
+                            </button>}
                     </div>}
                 </div>
             </div>

@@ -82,7 +82,17 @@ if ($_GET) {
         }
     }
     else if ($_GET["r"] == "fixes") {
-        if (isset($_GET["id"])) {
+        if (isset($_GET["task"]) && $_GET["task"] == "add") {
+            echo json_encode(array("status" => $db
+                ->prepare("INSERT INTO alior_fixes (date_add, date_event) VALUES (now(),now())")
+                ->execute()));
+        }
+        else if (isset($_GET["task"]) && $_GET["task"] == "del") {
+            echo json_encode(array("status" => $db
+                ->prepare("DELETE FROM alior_fixes WHERE id = ".$_GET["id"])
+                ->execute()));
+        }
+        else if (isset($_GET["id"])) {
             echo json_encode(
                 $db->query('
                     select *
@@ -91,11 +101,6 @@ if ($_GET) {
                 ')->fetchAll(PDO::FETCH_ASSOC),
                 JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
             );
-        }
-        else if (isset($_GET["task"])) {
-            echo json_encode(array("status" => $db
-                ->prepare("INSERT INTO alior_fixes (date_add, date_event) VALUES (now(),now())")
-                ->execute()));
         }
         else {
             echo json_encode(

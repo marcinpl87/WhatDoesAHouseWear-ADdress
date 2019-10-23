@@ -13,6 +13,20 @@ class PageFix extends React.Component {
             id: window.location.hash.split("/")[1],
             data: false
         };
+        this.delRow = this.delRow.bind(this);
+        this.props.headerData.del = this.delRow;
+    }
+    delRow() {
+        this.setState(() => {
+            return {
+                data: false
+            }
+        });
+        $.when(
+            $.get("/api.php", {r: "fixes", task: "del", id: this.state.id}),
+        ).then(() => {
+            window.location.hash = window.location.hash.split("/")[0];
+        });
     }
     createTableStructure(data, apartments) {
         apartments = apartments.map(a => [a.id, a.name]);
