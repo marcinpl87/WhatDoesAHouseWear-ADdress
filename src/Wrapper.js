@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery'
 
-import StructureHeader from './StructureHeader';
 import StructureTheme from './StructureTheme';
 import MMenu from './MMenu';
 import PageHome from './PageHome';
@@ -18,7 +17,10 @@ const menuElements = [
     ['apartments', PageApartments, 'pe-7s-world', 'Nieruchomości', false],
     ['tenants', PageTenants, 'pe-7s-users', 'Najemcy', false, PageTenant],
     ['finance', PageFinance, 'pe-7s-cash', 'Finanse', false],
-    ['fixes', PageFixes, 'pe-7s-tools', 'Usterki', true, PageFix]
+    ['fixes', PageFixes, 'pe-7s-tools', 'Usterki', true, PageFix],
+    ['fixes', PageFixes, 'pe-7s-server', 'Logi', false],
+    ['fixes', PageFixes, 'pe-7s-paint-bucket', 'Wygląd', false],
+    ['fixes', PageFixes, 'pe-7s-config', 'Ustawienia', false]
 ];
 
 class Wrapper extends React.Component {
@@ -61,7 +63,6 @@ class Wrapper extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <StructureHeader />
                 <StructureTheme />
                 <div className="app-main">
                     <div className="app-sidebar sidebar-shadow">

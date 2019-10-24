@@ -12,7 +12,7 @@
         <link href="bundle.css" rel="stylesheet">
     </head>
     <body>
-        <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">Wczytywanie...</div>
+        <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar">Wczytywanie...</div>
         <script src="bundle.js"></script>
     </body>
 </html>
