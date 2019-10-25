@@ -113,6 +113,38 @@ if ($_GET) {
             );
         }
     }
+    else if ($_GET["r"] == "config") {
+        if (isset($_GET["task"]) && $_GET["task"] == "add") {
+            echo json_encode(array("status" => $db
+                ->prepare("INSERT INTO alior_config () VALUES ()")
+                ->execute()));
+        }
+        else if (isset($_GET["task"]) && $_GET["task"] == "del") {
+            echo json_encode(array("status" => $db
+                ->prepare("DELETE FROM alior_config WHERE id = ".$_GET["id"])
+                ->execute()));
+        }
+        else if (isset($_GET["id"])) {
+            echo json_encode(
+                $db->query('
+                    select *
+                    from alior_config
+                    where id = '.$_GET["id"].'
+                ')->fetchAll(PDO::FETCH_ASSOC),
+                JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
+            );
+        }
+        else {
+            echo json_encode(
+                $db->query('
+                    select *
+                    from alior_config
+                    order by id desc
+                ')->fetchAll(PDO::FETCH_ASSOC),
+                JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
+            );
+        }
+    }
     else if ($_GET["r"] == "apartments") {
         echo json_encode(
             $db->query('

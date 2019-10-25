@@ -16,7 +16,11 @@ class EditableCell extends React.Component {
         };
     }
     handleChange(evt) {
-        var val = SanitizeHtml(evt.target.value);
+        var val = SanitizeHtml(evt.target.value, {
+            textFilter: (text) => {
+                return text.replace(/&quot;/g, '"');
+            }
+        });
         $.get("/api.php?r="+this.props.cellTable, {
             id: this.props.cellId,
             field: this.props.cellName,

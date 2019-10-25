@@ -1,12 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Utils from './Utils';
 import MTable from './MTable';
 import PageHeader from './PageHeader';
 import LoaderComponent from './LoaderComponent';
 
-class PageFixes extends React.Component {
+class PageConfigs extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -28,17 +27,12 @@ class PageFixes extends React.Component {
             this.getData();
         });
     }
-    createTableStructure(data, apartments) {
+    createTableStructure(data) {
         return {
             title: false,
             clickableHash: this.props.headerData.hash,
-            headers: ["Id", "Data zgłoszenia", "Data naprawy", "Opis", "Cena", "Mieszkanie"],
+            headers: ["Id", "Klucz", "Wartość"],
             rows: data.map(x => {
-                x.apartment_id = Utils.findArrValById(
-                    apartments.map(a => [a.id, a.name]),
-                    x.apartment_id
-                );
-                x.apartment_id = x.apartment_id || "";
                 return Object.values(x);
             })
         };
@@ -48,12 +42,11 @@ class PageFixes extends React.Component {
     }
     getData() {
         $.when(
-            $.get("/api.php", {r: this.props.headerData.hash}),
-            $.get("/api.php", {r: "apartments"})
-        ).then((tenantData, apartmentsData) => {
+            $.get("/api.php", {r: this.props.headerData.hash})
+        ).then((data) => {
             this.setState(() => {
                 return {
-                    data: this.createTableStructure(tenantData[0], apartmentsData[0]),
+                    data: this.createTableStructure(data),
                 }
             });
         });
@@ -76,4 +69,4 @@ class PageFixes extends React.Component {
     }
 }
 
-export default PageFixes;
+export default PageConfigs;

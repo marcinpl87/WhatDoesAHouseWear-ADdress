@@ -11,6 +11,8 @@ import PageFinance from './PageFinance';
 import PageApartments from './PageApartments';
 import PageFixes from './PageFixes';
 import PageFix from './PageFix';
+import PageConfigs from './PageConfigs';
+import PageConfig from './PageConfig';
 
 const menuElements = [
     ['home', PageHome, 'pe-7s-home', 'Strona główna', false],
@@ -18,9 +20,9 @@ const menuElements = [
     ['tenants', PageTenants, 'pe-7s-users', 'Najemcy', false, PageTenant],
     ['finance', PageFinance, 'pe-7s-cash', 'Finanse', false],
     ['fixes', PageFixes, 'pe-7s-tools', 'Usterki', true, PageFix],
-    ['fixes', PageFixes, 'pe-7s-server', 'Logi', false],
-    ['fixes', PageFixes, 'pe-7s-paint-bucket', 'Wygląd', false],
-    ['fixes', PageFixes, 'pe-7s-config', 'Ustawienia', false]
+//    ['fixes', PageFixes, 'pe-7s-server', 'Logi', false],
+//    ['fixes', PageFixes, 'pe-7s-paint-bucket', 'Wygląd', false],
+    ['config', PageConfigs, 'pe-7s-config', 'Ustawienia', true, PageConfig]
 ];
 
 class Wrapper extends React.Component {
@@ -48,6 +50,7 @@ class Wrapper extends React.Component {
         return {
             subPage: window.location.hash.includes("/") ? pageArr[5] : pageArr[1],
             subPageProps: {
+                hash: pageArr[0],
                 showAddButton: pageArr[4],
                 showBreadcrumbs: pageArr[0] !== "home",
                 dataTitle: pageArr[3],

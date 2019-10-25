@@ -5,6 +5,7 @@ import 'bootstrap';
 import MTable from './MTable';
 import PageHeader from './PageHeader';
 import LoaderComponent from './LoaderComponent';
+import Utils from './Utils';
 
 class PageTenant extends React.Component {
     constructor(props) {
@@ -99,16 +100,10 @@ class PageTenant extends React.Component {
        }
        return _Array;
     }
-    replaceAll(str, find, replace) {
-        return str.replace(
-            new RegExp(find.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1"), 'g'),
-            replace
-        );
-    }
     contractFill(content, tenantProps) {
         var arr = this.toArray(tenantProps);
         for (var key in arr) {
-            content = this.replaceAll(
+            content = Utils.replaceAll(
                 content,
                "[" + key + "]",
                 arr[key] ? arr[key] : "__________"
