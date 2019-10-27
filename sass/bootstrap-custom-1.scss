@@ -817,14 +817,19 @@ button,
 .fixed-sidebar:not(.fixed-header) .app-sidebar .app-header__logo {
     display: flex
 }
-.fixed-sidebar:not(.fixed-header) .app-header {
-    margin-left: 280px
+.app-container.fixed-sidebar .app-header {
+    height: 0px;
+}
+.fixed-sidebar.closed-sidebar-mobile .app-header,
+.fixed-sidebar.sidebar-mobile-open .app-header {
+    height: 60px;
+}
+.fixed-sidebar.closed-sidebar-mobile .app-main .app-sidebar,
+.fixed-sidebar.sidebar-mobile-open .app-main .app-sidebar {
+    margin-bottom: -60px;
 }
 .fixed-sidebar:not(.fixed-header) .app-header .app-header__logo {
     display: none
-}
-.fixed-sidebar.closed-sidebar:not(.fixed-header) .app-header {
-    margin-left: 80px
 }
 .fixed-sidebar.closed-sidebar:not(.fixed-header) .app-sidebar .app-header__logo {
     width: 80px;

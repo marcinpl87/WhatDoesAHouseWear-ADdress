@@ -66,6 +66,17 @@ class Wrapper extends React.Component {
     render() {
         return (
             <React.Fragment>
+                <div className="app-header header-shadow">
+                    <div className="app-header__mobile-menu">
+                        <div>
+                            <button type="button" className="hamburger hamburger--elastic mobile-toggle-nav">
+                                <span className="hamburger-box">
+                                    <span className="hamburger-inner"></span>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
                 <StructureTheme />
                 <div className="app-main">
                     <div className="app-sidebar sidebar-shadow">

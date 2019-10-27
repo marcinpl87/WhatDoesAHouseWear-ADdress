@@ -3,19 +3,20 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery'
 import Wrapper from './Wrapper';
 
+var setSidebarSize = () => {
+    window.innerWidth < 1250
+        ? $(".app-container").addClass("closed-sidebar-mobile closed-sidebar")
+        : $(".app-container").removeClass("closed-sidebar-mobile closed-sidebar");
+};
+
 $(() => {
+    setSidebarSize();
     ReactDOM.render(
         <Wrapper />,
         document.getElementsByClassName('app-container')[0]
     );
     $("body").tooltip({
         selector: '[data-toggle="tooltip"]'
-    });
-    $(".search-icon").click(function() {
-        $(this).parent().parent().addClass("active");
-    });
-    $(".search-wrapper .close").click(function() {
-        $(this).parent().removeClass("active");
     });
     $(".mobile-toggle-nav").click(function() {
         $(this).toggleClass("is-active"), $(".app-container").toggleClass("sidebar-mobile-open");
@@ -24,7 +25,7 @@ $(() => {
         $(this).toggleClass("active"), $(".app-header__content").toggleClass("header-mobile-open");
     });
     $(window).on("resize", function() {
-        $(this).width() < 1250 ? $(".app-container").addClass("closed-sidebar-mobile closed-sidebar") : $(".app-container").removeClass("closed-sidebar-mobile closed-sidebar");
+        setSidebarSize();
     });
     $(".btn-open-options").click(function() {
         $(".ui-theme-settings").toggleClass("settings-open")
