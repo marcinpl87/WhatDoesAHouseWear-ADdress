@@ -6,6 +6,8 @@ $pe-7s-font-path: "assets/fonts";
 @import './node_modules/pixeden-stroke-7-icon/pe-icon-7-stroke/scss/pe-icon-7-stroke';
 @import './node_modules/@fortawesome/fontawesome-free/scss/fontawesome';
 @import './node_modules/@fortawesome/fontawesome-free/scss/solid';
+@import './node_modules/react-datepicker/dist/react-datepicker';
+@import './node_modules/react-datepicker/dist/react-datepicker-cssmodules';
 
 @import 'animated-tabs';
 @import 'theme-editor';

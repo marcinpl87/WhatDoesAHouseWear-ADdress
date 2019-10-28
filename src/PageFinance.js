@@ -17,7 +17,8 @@ class PageFinance extends React.Component {
         this.state = {
             isReady: false,
             dataAll: {},
-            dataLastMonth: {}
+            dataAPI: {},
+            dataForTax: {}
         };
     }
     prepareData(data) {
@@ -45,41 +46,54 @@ class PageFinance extends React.Component {
         return {
             data: data,
             title: false,
+            onDateChange: date => {this.filterData(date)},
             headers: ["Id", "Data", "Kwota", "Nadawca", "Odbiorca", "Tytuł", "Kategoria_Transakcji____"],
             rawData: this.prepareRawData(JSON.parse(JSON.stringify(data)).transactions), //clone
             rows: this.prepareData(data)
         };
     }
+    filterData(inputDate = new Date((new Date()).getFullYear(), (new Date()).getMonth() - 1, 1)) {
+        var selected = inputDate
+            .toLocaleDateString("en-US", {year: 'numeric', month: 'numeric'})
+            .split("/");
+        var oneMonth = JSON.parse(JSON.stringify(this.state.dataAPI)); //clone
+        var filtered = oneMonth.transactions.filter((row) => {
+            return row.date_transaction.substr(3, 2) == String("0" + selected[0]).slice(-2)
+                && row.date_transaction.substr(8, 2) == selected[1].slice(-2);
+        });
+        oneMonth.transactions = filtered;
+        var forTax = JSON.parse(JSON.stringify(oneMonth)); //clone
+        var forTaxFiltered = forTax.transactions.filter((row) => {
+            return row.value > 0;
+        });
+        forTax.transactions = forTaxFiltered;
+        this.setState(() => {
+            return {
+                isReady: true,
+                dataForTax: this.createTableStructure(forTax)
+            }
+        });
+    }
     componentDidMount() {
-        $.get("/api.php?r=finance", (data) => {
-            var prevMonthDate = new Date((new Date()).getFullYear(), (new Date()).getMonth() - 1, 1)
-                .toLocaleDateString("en-US", {year: 'numeric', month: 'numeric'})
-                .split("/");
-            var lastMonth = JSON.parse(JSON.stringify(data)); //clone
-            var filtered = lastMonth.transactions.filter((row) => {
-                return row.date_transaction.substr(3, 2) == String("0" + prevMonthDate[0]).slice(-2)
-                    && row.date_transaction.substr(8, 2) == prevMonthDate[1].slice(-2);
+        $.get("/api.php", {r: "finance"}, (data) => {
+            data.firstYear = new Date().getFullYear();
+            data.transactions.map((row) => {
+                data.firstYear = data.firstYear >= row.date_transaction.substr(6, 4)
+                    ? row.date_transaction.substr(6, 4)
+                    : data.firstYear;
             });
-            lastMonth.transactions = filtered;
-            var forTax = JSON.parse(JSON.stringify(lastMonth)); //clone
-            var forTaxFiltered = forTax.transactions.filter((row) => {
-                return row.value > 0;
-            });
-            forTax.transactions = forTaxFiltered;
-            this.setState((prevState, props) => {
+            this.setState(() => {
                 return {
-                    isReady: true,
                     dataAll: this.createTableStructure(data),
-                    dataForTax: this.createTableStructure(forTax),
-                    dataLastMonth: this.createTableStructure(lastMonth)
+                    dataAPI: data,
                 }
             });
+            this.filterData();
         });
     }
     render() {
         var config = [
             [TabPaneTable, "Wszystkie", this.state.dataAll],
-            [TaxPane, "Poprzedni miesiąc", this.state.dataLastMonth],
             [TaxPane, "Podatek", this.state.dataForTax],
             [TabPaneUpload, "Upload", this.state.dataAll]
         ];

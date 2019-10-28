@@ -6,6 +6,8 @@
         "react-dom": "16.7.0",
         "react-contenteditable": "3.3.2",
         "jquery": "3.4.0",
+        "date-fns": "2.0.1",
+        "react-datepicker": "2.9.6",
         "popper.js": "1.14.7",
         "bootstrap": "4.3.1",
         "chart.js": "2.8.0",

@@ -7,10 +7,10 @@ class TabPaneTable extends React.Component {
     constructor(props) {
         super(props);
     }
-    render() {
+    render() { //I need random key for table to force constructor call for every re-render
         return (
             <div className="main-card mb-3 card">
-                <MTable tableData={this.props.paneData} />
+                <MTable key={Math.floor(Math.random() * 999999)} tableData={this.props.paneData} />
             </div>
         )
     }
