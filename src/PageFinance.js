@@ -46,31 +46,27 @@ class PageFinance extends React.Component {
         return {
             data: data,
             title: false,
-            onDateChange: date => {this.filterData(date)},
+            onDateChange: (date, filter) => {this.filterData(date, filter)},
             headers: ["Id", "Data", "Kwota", "Nadawca", "Odbiorca", "Tytuł", "Kategoria_Transakcji____"],
             rawData: this.prepareRawData(JSON.parse(JSON.stringify(data)).transactions), //clone
             rows: this.prepareData(data)
         };
     }
-    filterData(inputDate = new Date((new Date()).getFullYear(), (new Date()).getMonth() - 1, 1)) {
+    filterData(inputDate = new Date((new Date()).getFullYear(), (new Date()).getMonth() - 1, 1), filter = true) {
         var selected = inputDate
             .toLocaleDateString("en-US", {year: 'numeric', month: 'numeric'})
             .split("/");
         var oneMonth = JSON.parse(JSON.stringify(this.state.dataAPI)); //clone
-        var filtered = oneMonth.transactions.filter((row) => {
+        oneMonth.transactions = oneMonth.transactions.filter((row) => {
             return row.date_transaction.substr(3, 2) == String("0" + selected[0]).slice(-2)
                 && row.date_transaction.substr(8, 2) == selected[1].slice(-2);
+        }).filter((row) => {
+            return filter ? row.value > 0 : true;
         });
-        oneMonth.transactions = filtered;
-        var forTax = JSON.parse(JSON.stringify(oneMonth)); //clone
-        var forTaxFiltered = forTax.transactions.filter((row) => {
-            return row.value > 0;
-        });
-        forTax.transactions = forTaxFiltered;
         this.setState(() => {
             return {
                 isReady: true,
-                dataForTax: this.createTableStructure(forTax)
+                dataForTax: this.createTableStructure(oneMonth)
             }
         });
     }

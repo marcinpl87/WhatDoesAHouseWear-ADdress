@@ -10,7 +10,8 @@ class TaxPane extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            selected: new Date((new Date()).getFullYear(), (new Date()).getMonth() - 1, 1)
+            filter: true,
+            date: new Date((new Date()).getFullYear(), (new Date()).getMonth() - 1, 1)
         };
     }
     mRound(num, position = 2) {
@@ -38,14 +39,23 @@ class TaxPane extends React.Component {
                         <DatePicker
                             dateFormat={"pl"}
                             locale="pl"
-                            selected={this.state.selected}
+                            selected={this.state.date}
                             onChange={date => {
-                                this.props.paneData.onDateChange(date);
-                                this.setState(() => {return {selected: date}});
+                                this.setState(() => {return {date: date}}, () => {
+                                    this.props.paneData.onDateChange(this.state.date, this.state.filter);
+                                });
                             }}
                             showMonthYearPicker
                             inline
                         />
+                        <div className="form-group form-check">
+                            <input type="checkbox" className="form-check-input" id="exampleCheck1" defaultChecked onChange={() => {
+                                this.setState(prev => {return {filter: !prev.filter}}, () => {
+                                    this.props.paneData.onDateChange(this.state.date, this.state.filter);
+                                });
+                            }} />
+                            <label className="form-check-label" htmlFor="exampleCheck1">Tylko przychody</label>
+                        </div>
                     </div>
                     <div className="col-md-9">
                         <div className="card-shadow-info border mb-3 card card-body border-info">
