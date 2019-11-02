@@ -15,10 +15,10 @@ class PageFinance extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isReady: false,
             dataAll: {},
             dataAPI: {},
-            dataForTax: {}
+            dataYear: false,
+            dataMonth: false
         };
     }
     prepareData(data) {
@@ -46,13 +46,17 @@ class PageFinance extends React.Component {
         return {
             data: data,
             title: false,
-            onDateChange: (date, filter) => {this.filterData(date, filter)},
+            onDateChange: (date, filter, isMonth) => {
+                isMonth
+                    ? this.filterMonth(date, filter)
+                    : this.filterYear(new Date().getFullYear(), filter);
+            },
             headers: ["Id", "Data", "Kwota", "Nadawca", "Odbiorca", "Tytuł", "Kategoria_Transakcji____"],
             rawData: this.prepareRawData(JSON.parse(JSON.stringify(data)).transactions), //clone
             rows: this.prepareData(data)
         };
     }
-    filterData(inputDate = new Date((new Date()).getFullYear(), (new Date()).getMonth() - 1, 1), filter = true) {
+    filterMonth(inputDate = new Date((new Date()).getFullYear(), (new Date()).getMonth() - 1, 1), filter = true, isMonth) {
         var selected = inputDate
             .toLocaleDateString("en-US", {year: 'numeric', month: 'numeric'})
             .split("/");
@@ -63,10 +67,24 @@ class PageFinance extends React.Component {
         }).filter((row) => {
             return filter ? row.value > 0 : true;
         });
+        oneMonth.monthView = true;
         this.setState(() => {
             return {
-                isReady: true,
-                dataForTax: this.createTableStructure(oneMonth)
+                dataMonth: this.createTableStructure(oneMonth)
+            }
+        });
+    }
+    filterYear(inputDate = new Date().getFullYear(), filter = true) {
+        var oneYear = JSON.parse(JSON.stringify(this.state.dataAPI)); //clone
+        oneYear.transactions = oneYear.transactions.filter((row) => {
+            return row.date_transaction.substr(6, 4) == inputDate
+        }).filter((row) => {
+            return filter ? row.value > 0 : true;
+        });
+        oneYear.monthView = false;
+        this.setState(() => {
+            return {
+                dataYear: this.createTableStructure(oneYear)
             }
         });
     }
@@ -83,19 +101,22 @@ class PageFinance extends React.Component {
                     dataAll: this.createTableStructure(data),
                     dataAPI: data,
                 }
+            }, () => {
+                this.filterMonth();
+                this.filterYear();
             });
-            this.filterData();
         });
     }
     render() {
         var config = [
             [TabPaneTable, "Wszystkie", this.state.dataAll],
-            [TaxPane, "Podatek", this.state.dataForTax],
+            [TaxPane, "Miesiąc", this.state.dataMonth],
+            [TaxPane, "Rok", this.state.dataYear],
             [TabPaneUpload, "Upload", this.state.dataAll]
         ];
         return (
             <div className="app-main__inner">
-                {this.state.isReady ? <React.Fragment>
+                {this.state.dataMonth ? <React.Fragment>
                     <PageHeader {...this.props.headerData} />
                     <TabsComponent tabsConfig={config} />
                 </React.Fragment> : <LoaderComponent />}

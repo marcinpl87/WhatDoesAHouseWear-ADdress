@@ -17,6 +17,13 @@ class TaxPane extends React.Component {
     mRound(num, position = 2) {
         return Number(parseFloat(num).toFixed(position));
     }
+    filter() {
+        this.props.paneData.onDateChange(
+            this.state.date,
+            this.state.filter,
+            this.props.paneData.data.monthView
+        );
+    }
     render() {
         var sum = 0;
         var sumArr = [];
@@ -32,29 +39,40 @@ class TaxPane extends React.Component {
         + this.mRound(sum) + " * 0,125 = "
         + this.mRound(sum*0.125) + " = "
         + this.mRound(sum*0.125, 0 );
+        var mvStr = this.props.paneData.data.monthView.toString();
         return (
             <React.Fragment>
                 <div className="row">
                     <div className="col-md-3">
-                        <DatePicker
+                        {this.props.paneData.data.monthView && <DatePicker
                             dateFormat={"pl"}
                             locale="pl"
                             selected={this.state.date}
                             onChange={date => {
-                                this.setState(() => {return {date: date}}, () => {
-                                    this.props.paneData.onDateChange(this.state.date, this.state.filter);
-                                });
+                                this.setState(
+                                    () => {return {date: date}},
+                                    () => {this.filter()}
+                                );
                             }}
                             showMonthYearPicker
                             inline
-                        />
+                        />}
                         <div className="form-group form-check">
-                            <input type="checkbox" className="form-check-input" id="exampleCheck1" defaultChecked onChange={() => {
-                                this.setState(prev => {return {filter: !prev.filter}}, () => {
-                                    this.props.paneData.onDateChange(this.state.date, this.state.filter);
-                                });
-                            }} />
-                            <label className="form-check-label" htmlFor="exampleCheck1">Tylko przychody</label>
+                            <input
+                                type="checkbox"
+                                className="form-check-input"
+                                id={`check${mvStr}`}
+                                defaultChecked
+                                onChange={() => {
+                                    this.setState(
+                                        prev => {return {filter: !prev.filter}},
+                                        () => {this.filter()}
+                                    );
+                                }}
+                            />
+                            <label className="form-check-label" htmlFor={`check${mvStr}`}>
+                                Tylko przychody
+                            </label>
                         </div>
                     </div>
                     <div className="col-md-9">
