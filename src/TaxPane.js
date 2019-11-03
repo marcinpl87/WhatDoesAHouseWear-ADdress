@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import DatePicker, { registerLocale } from "react-datepicker";
 import pl from "date-fns/locale/pl";
 
+import Utils from './Utils';
 import TabPaneTable from './TabPaneTable';
 registerLocale("pl", pl);
 
@@ -14,9 +15,6 @@ class TaxPane extends React.Component {
             date: new Date((new Date()).getFullYear(), (new Date()).getMonth() - 1, 1)
         };
     }
-    mRound(num, position = 2) {
-        return Number(parseFloat(num).toFixed(position));
-    }
     filter() {
         this.props.paneData.onDateChange(
             this.state.date,
@@ -25,20 +23,22 @@ class TaxPane extends React.Component {
         );
     }
     render() {
-        var sum = 0;
-        var sumArr = [];
-        this.props.paneData.data.transactions.map((el) => {
-            if (el.category_id == 5) {
-                sumArr.push(this.mRound(el.value));
-                sum = this.mRound(sum) + this.mRound(el.value);
-            }
-        });
-        var msg = sumArr.length + " transakcji:\n"
-        + sumArr.join("zł + ") + "zł = "
-        + this.mRound(sum) + "\n\n"
-        + this.mRound(sum) + " * 0,125 = "
-        + this.mRound(sum*0.125) + " = "
-        + this.mRound(sum*0.125, 0 );
+        if (this.props.paneData.data.yearReport) {
+            var taxSum = this.props.paneData.data.yearReport;
+            var msg = taxSum[1].length + " transakcji w roku:\n"
+            + taxSum[1].join("zł + ") + "zł\n\n= "
+            + Utils.mRound(taxSum[0], 0);
+        }
+        else {
+            var taxSum = Utils.sumTax(this.props.paneData.data.transactions);
+            var msg = taxSum[1].length + " transakcji:\n"
+            + taxSum[1].join("zł + ") + "zł = "
+            + Utils.mRound(taxSum[0]) + "\n\n"
+            + Utils.mRound(taxSum[0]) + " * 0,125 = "
+            + Utils.mRound(taxSum[0]*0.125) + " = "
+            + Utils.mRound(taxSum[0]*0.125, 0);
+        }
+
         var mvStr = this.props.paneData.data.monthView.toString();
         return (
             <React.Fragment>

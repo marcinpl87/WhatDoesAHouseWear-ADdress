@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import Utils from './Utils';
 import TabPaneTable from './TabPaneTable';
 import LoaderComponent from './LoaderComponent';
 import PageHeader from './PageHeader';
@@ -82,6 +83,7 @@ class PageFinance extends React.Component {
             return filter ? row.value > 0 : true;
         });
         oneYear.monthView = false;
+        oneYear.yearReport = Utils.sumTax(oneYear.transactions);
         this.setState(() => {
             return {
                 dataYear: this.createTableStructure(oneYear)
