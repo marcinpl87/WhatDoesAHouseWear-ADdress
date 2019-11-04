@@ -14,11 +14,11 @@ class Utils {
     mRound(num, position = 2) {
         return Number(parseFloat(num).toFixed(position));
     }
-    sumTax(transactions) {
+    sumTax(transactions, cat=5) {
         var sum = 0;
         var sumArr = [];
         transactions.map((el) => {
-            if (el.category_id == 5) {
+            if (el.category_id == cat) {
                 sumArr.push(this.mRound(el.value));
                 sum = this.mRound(sum) + this.mRound(el.value);
             }

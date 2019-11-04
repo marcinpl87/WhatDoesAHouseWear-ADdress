@@ -57,7 +57,7 @@ class PageFinance extends React.Component {
             rows: this.prepareData(data)
         };
     }
-    filterMonth(inputDate = new Date((new Date()).getFullYear(), (new Date()).getMonth() - 1, 1), filter = true, isMonth) {
+    filterMonth(inputDate = new Date((new Date()).getFullYear(), (new Date()).getMonth() - 1, 1), filter = false, isMonth) {
         var selected = inputDate
             .toLocaleDateString("en-US", {year: 'numeric', month: 'numeric'})
             .split("/");
@@ -75,7 +75,7 @@ class PageFinance extends React.Component {
             }
         });
     }
-    filterYear(inputDate = new Date().getFullYear(), filter = true) {
+    filterYear(inputDate = new Date().getFullYear(), filter = false) {
         var oneYear = JSON.parse(JSON.stringify(this.state.dataAPI)); //clone
         oneYear.transactions = oneYear.transactions.filter((row) => {
             return row.date_transaction.substr(6, 4) == inputDate
@@ -84,6 +84,7 @@ class PageFinance extends React.Component {
         });
         oneYear.monthView = false;
         oneYear.yearReport = Utils.sumTax(oneYear.transactions);
+        oneYear.yearTaxOfficeReport = Utils.sumTax(oneYear.transactions, 7);
         this.setState(() => {
             return {
                 dataYear: this.createTableStructure(oneYear)
