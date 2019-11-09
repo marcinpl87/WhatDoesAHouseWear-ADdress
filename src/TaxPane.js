@@ -27,7 +27,7 @@ class TaxPane extends React.Component {
             var taxSum = this.props.paneData.data.yearReport;
             var taxOfficeSum = this.props.paneData.data.yearTaxOfficeReport;
             var msg = taxSum[1].length + " transakcji w roku:\n"
-            + taxSum[1].join("zł + ") + "zł\n= "
+            + taxSum[1].join(" + ") + "\n= "
             + Utils.mRound(taxSum[0], 0) + "zł\n\n";
             if (taxSum[0] < 100000) {
                 msg += "Łącznie suma podatku do zapłacenia: " + Utils.mRound(taxSum[0] * 0.085) + "zł\n\n";
@@ -45,8 +45,8 @@ class TaxPane extends React.Component {
         else {
             var taxSum = Utils.sumTax(this.props.paneData.data.transactions);
             var msg = taxSum[1].length + " transakcji:\n"
-            + taxSum[1].join("zł + ") + "zł = "
-            + Utils.mRound(taxSum[0]) + "\n\n"
+            + taxSum[1].join(" + ") + " = "
+            + Utils.mRound(taxSum[0]) + "zł\n\n"
             + Utils.mRound(taxSum[0]) + " * 0,125 = "
             + Utils.mRound(taxSum[0]*0.125) + " = "
             + Utils.mRound(taxSum[0]*0.125, 0) + "zł";

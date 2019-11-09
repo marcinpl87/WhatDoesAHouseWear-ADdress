@@ -19,7 +19,8 @@ class PageFinance extends React.Component {
             dataAll: {},
             dataAPI: {},
             dataYear: false,
-            dataMonth: false
+            dataMonth: false,
+            dataPayments: false
         };
     }
     prepareData(data) {
@@ -91,6 +92,21 @@ class PageFinance extends React.Component {
             }
         });
     }
+    filterPayments() {
+        var oneYear = JSON.parse(JSON.stringify(this.state.dataAPI)); //clone
+        oneYear.transactions = oneYear.transactions.filter((row) => {
+            return row.date_transaction.substr(6, 4) == new Date().getFullYear();
+        }).filter((row) => {
+            return row.value > 0;
+        }).filter((row) => {
+            return row.category_id == 5;
+        });
+        this.setState(() => {
+            return {
+                dataPayments: this.createTableStructure(oneYear)
+            }
+        });
+    }
     componentDidMount() {
         $.get("/api.php", {r: "finance"}, (data) => {
             data.firstYear = new Date().getFullYear();
@@ -107,6 +123,7 @@ class PageFinance extends React.Component {
             }, () => {
                 this.filterMonth();
                 this.filterYear();
+                this.filterPayments();
             });
         });
     }
@@ -115,6 +132,7 @@ class PageFinance extends React.Component {
             [TabPaneTable, "Wszystkie", this.state.dataAll],
             [TaxPane, "Miesiąc", this.state.dataMonth],
             [TaxPane, "Rok", this.state.dataYear],
+            [TabPaneTable, "Płatności", this.state.dataPayments],
             [TabPaneUpload, "Upload", this.state.dataAll]
         ];
         return (
