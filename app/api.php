@@ -62,7 +62,7 @@ if ($_GET) {
         else if (isset($_GET["apartmentId"])) {
             echo json_encode(
                 $db->query('
-                    select id, name, apartment_id, room_id, rent, email
+                    select id, name, apartment_id, room_id, rent, email, sender_name
                     from alior_tenants
                     where apartment_id = '.$_GET["apartmentId"].'
                     order by id desc
@@ -73,7 +73,7 @@ if ($_GET) {
         else {
             echo json_encode(
                 $db->query('
-                    select id, name, apartment_id, room_id, rent, email
+                    select id, name, apartment_id, room_id, rent, email, sender_name
                     from alior_tenants
                     order by id desc
                 ')->fetchAll(PDO::FETCH_ASSOC),

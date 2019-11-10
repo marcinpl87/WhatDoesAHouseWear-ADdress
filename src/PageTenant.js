@@ -36,6 +36,7 @@ class PageTenant extends React.Component {
             rowsData: data[0],
             rows: [
                 ["Imię i Nazwisko", ["name"]],
+                ["Nadawca przelewu", ["sender_name"]],
                 ["Dowód osobisty", ["id_number"]],
                 ["Pesel", ["national_insurance_number"]],
                 ["Data urodzenia", ["birth_date"]],
