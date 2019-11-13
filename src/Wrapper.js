@@ -19,7 +19,19 @@ const menuElements = [
     ['apartments', PageApartments, 'pe-7s-world', 'Nieruchomości', false],
     ['tenants', PageTenants, 'pe-7s-users', 'Najemcy', false, PageTenant],
     ['finance', PageFinance, 'pe-7s-cash', 'Finanse', false],
-    ['fixes', PageFixes, 'pe-7s-tools', 'Usterki', true, PageFix],
+    ['fixes', PageFixes, 'pe-7s-tools', 'Usterki', true, PageFix, [
+        ["Data zgłoszenia",
+        ["date_add"]],
+        ["Data naprawy",
+        ["date_event"]],
+        ["Opis", ["description"]],
+        ["Cena", ["price"]],
+        ["Mieszkanie", ["apartment_id", "--data--"]]
+    ]],
+    ['mails', PageFixes, 'pe-7s-mail', 'Emaile', true, PageFix, [
+        ["Data dodania", ["date_add"]],
+        ["Email", ["description"]]
+    ]],
 //    ['fixes', PageFixes, 'pe-7s-server', 'Logi', false],
 //    ['fixes', PageFixes, 'pe-7s-paint-bucket', 'Wygląd', false],
     ['config', PageConfigs, 'pe-7s-config', 'Ustawienia', true, PageConfig]
@@ -53,6 +65,7 @@ class Wrapper extends React.Component {
                 hash: pageArr[0],
                 showAddButton: pageArr[4],
                 showBreadcrumbs: pageArr[0] !== "home",
+                headers: pageArr[6],
                 dataTitle: pageArr[3],
                 dataIcon: pageArr[2]
             }
@@ -114,7 +127,11 @@ class Wrapper extends React.Component {
                             <div className="app-sidebar__inner"><MMenu menuElements={menuElements} /></div>
                         </div>
                     </div>
-                    <div className="app-main__outer">{this.state.subPage && <this.state.subPage headerData={this.state.subPageProps} />}</div>
+                    <div className="app-main__outer">{
+                        this.state.subPage && <this.state.subPage
+                            key={this.state.subPageProps.hash}
+                            headerData={this.state.subPageProps} />
+                    }</div>
                 </div>
             </React.Fragment>
         )

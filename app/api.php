@@ -81,10 +81,11 @@ if ($_GET) {
             );
         }
     }
+/* -- refactor this -- */
     else if ($_GET["r"] == "fixes") {
         if (isset($_GET["task"]) && $_GET["task"] == "add") {
             echo json_encode(array("status" => $db
-                ->prepare("INSERT INTO alior_fixes (date_add, date_event) VALUES (now(),now())")
+                ->prepare("INSERT INTO alior_fixes (date_add) VALUES (now())")
                 ->execute()));
         }
         else if (isset($_GET["task"]) && $_GET["task"] == "del") {
@@ -113,6 +114,40 @@ if ($_GET) {
             );
         }
     }
+/* -- refactor this -- */
+    else if ($_GET["r"] == "mails") {
+        if (isset($_GET["task"]) && $_GET["task"] == "add") {
+            echo json_encode(array("status" => $db
+                ->prepare("INSERT INTO alior_mails (date_add) VALUES (now())")
+                ->execute()));
+        }
+        else if (isset($_GET["task"]) && $_GET["task"] == "del") {
+            echo json_encode(array("status" => $db
+                ->prepare("DELETE FROM alior_mails WHERE id = ".$_GET["id"])
+                ->execute()));
+        }
+        else if (isset($_GET["id"])) {
+            echo json_encode(
+                $db->query('
+                    select *
+                    from alior_mails
+                    where id = '.$_GET["id"].'
+                ')->fetchAll(PDO::FETCH_ASSOC),
+                JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
+            );
+        }
+        else {
+            echo json_encode(
+                $db->query('
+                    select *
+                    from alior_mails
+                    order by id desc
+                ')->fetchAll(PDO::FETCH_ASSOC),
+                JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
+            );
+        }
+    }
+/* -- refactor this -- */
     else if ($_GET["r"] == "config") {
         if (isset($_GET["task"]) && $_GET["task"] == "add") {
             echo json_encode(array("status" => $db

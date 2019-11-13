@@ -9,7 +9,7 @@ class PageFix extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            dbTable: 'fixes',
+            dbTable: props.headerData.hash,
             id: window.location.hash.split("/")[1],
             data: false
         };
@@ -23,24 +23,22 @@ class PageFix extends React.Component {
             }
         });
         $.when(
-            $.get("/api.php", {r: "fixes", task: "del", id: this.state.id}),
+            $.get("/api.php", {r: this.props.headerData.hash, task: "del", id: this.state.id}),
         ).then(() => {
             window.location.hash = window.location.hash.split("/")[0];
         });
     }
     createTableStructure(data, apartments) {
         apartments = apartments.map(a => [a.id, a.name]);
+        this.props.headerData.headers.map(header => {
+            header[1][1] = (header[1][1] == "--data--") ? apartments : header[1][1];
+            return header;
+        });
         return [{
             dbTable: this.state.dbTable,
             id: this.state.id,
             rowsData: data[0],
-            rows: [
-                ["Data dodania", ["date_add"]],
-                ["Data usterki", ["date_event"]],
-                ["Opis", ["description"]],
-                ["Kwota", ["price"]],
-                ["Mieszkanie", ["apartment_id", apartments]]
-            ]
+            rows: this.props.headerData.headers
         }];
     }
     componentDidMount() {

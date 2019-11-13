@@ -23,16 +23,20 @@ class PageFixes extends React.Component {
             }
         });
         $.when(
-            $.get("/api.php", {r: "fixes", task: "add"}),
+            $.get("/api.php", {r: this.props.headerData.hash, task: "add"}),
         ).then(() => {
             this.getData();
         });
     }
     createTableStructure(data, apartments) {
+        var headers = this.props.headerData.headers.map(function(x) {
+            return x[0];
+        });
+        headers.unshift("Id");
         return {
             title: false,
             clickableHash: this.props.headerData.hash,
-            headers: ["Id", "Data zgłoszenia", "Data naprawy", "Opis", "Cena", "Mieszkanie"],
+            headers: headers,
             rows: data.map(x => {
                 x.apartment_id = Utils.findArrValById(
                     apartments.map(a => [a.id, a.name]),
