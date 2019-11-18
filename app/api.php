@@ -1,32 +1,33 @@
 <?php
 include("connect.php");
 error_reporting(E_ALL);
-ini_set('display_errors', 'On');
-header('Content-type:application/json;charset=utf-8');
+ini_set("display_errors", "On");
+header("Content-type:application/json;charset=utf-8");
 try {
-    $db = new PDO('mysql:dbname='.$dbname.';host='.$servername.';', $username, $password);
+    $db = new PDO("mysql:dbname=".$dbname.";host=".$servername.";", $username, $password);
 } catch (PDOException $e) {
-    die('Connection failed: '.$e->getMessage());
+    die("Connection failed: ".$e->getMessage());
 }
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $db->query("SET NAMES UTF8");
+define("PREFIX", "alior_");
 if ($_GET) {
     if ($_GET["r"] == "finance") {
         echo json_encode(
             array(
-                "transactions" => $db->query('
+                "transactions" => $db->query("
                     select id, date_transaction, value, sender, receiver, title, category_id
-                    from alior_data
+                    from ".PREFIX."data
                     order by id desc
-                ')->fetchAll(PDO::FETCH_ASSOC),
-                "categories" => $db->query('
+                ")->fetchAll(PDO::FETCH_ASSOC),
+                "categories" => $db->query("
                     select *
-                    from alior_categories
-                ')->fetchAll(PDO::FETCH_ASSOC),
-                "rules" => $db->query('
+                    from ".PREFIX."categories
+                ")->fetchAll(PDO::FETCH_ASSOC),
+                "rules" => $db->query("
                     select *
-                    from alior_rules
-                ')->fetchAll(PDO::FETCH_ASSOC)
+                    from ".PREFIX."rules
+                ")->fetchAll(PDO::FETCH_ASSOC)
             ),
             JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
         );
@@ -35,7 +36,7 @@ if ($_GET) {
         echo json_encode(
             array(
                 $db
-                    ->prepare("UPDATE alior_".$_GET["r"]." SET ".$_GET["field"]."=? WHERE id=?")
+                    ->prepare("UPDATE ".PREFIX."".$_GET["r"]." SET ".$_GET["field"]."=? WHERE id=?")
                     ->execute([$_GET["val"], $_GET["id"]])
             ),
             JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
@@ -45,38 +46,38 @@ if ($_GET) {
         if (isset($_GET["id"])) {
             echo json_encode(
                 array(
-                    $db->query('
+                    $db->query("
                         select *
-                        from alior_tenants
-                        where id = '.$_GET["id"].'
-                    ')->fetchAll(PDO::FETCH_ASSOC),
-                    $db->query('
+                        from ".PREFIX."tenants
+                        where id = ".$_GET["id"]."
+                    ")->fetchAll(PDO::FETCH_ASSOC),
+                    $db->query("
                         select val
-                        from alior_config
-                        where key_name = "contract"
-                    ')->fetchAll(PDO::FETCH_ASSOC)
+                        from ".PREFIX."config
+                        where key_name = \"contract\"
+                    ")->fetchAll(PDO::FETCH_ASSOC)
                 ),
                 JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
             );
         }
         else if (isset($_GET["apartmentId"])) {
             echo json_encode(
-                $db->query('
+                $db->query("
                     select id, name, apartment_id, room_id, rent, email, sender_name
-                    from alior_tenants
-                    where apartment_id = '.$_GET["apartmentId"].'
+                    from ".PREFIX."tenants
+                    where apartment_id = ".$_GET["apartmentId"]."
                     order by id desc
-                ')->fetchAll(PDO::FETCH_ASSOC),
+                ")->fetchAll(PDO::FETCH_ASSOC),
                 JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
             );
         }
         else {
             echo json_encode(
-                $db->query('
+                $db->query("
                     select id, name, apartment_id, room_id, rent, email, sender_name
-                    from alior_tenants
+                    from ".PREFIX."tenants
                     order by id desc
-                ')->fetchAll(PDO::FETCH_ASSOC),
+                ")->fetchAll(PDO::FETCH_ASSOC),
                 JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
             );
         }
@@ -85,31 +86,31 @@ if ($_GET) {
     else if ($_GET["r"] == "fixes") {
         if (isset($_GET["task"]) && $_GET["task"] == "add") {
             echo json_encode(array("status" => $db
-                ->prepare("INSERT INTO alior_fixes (date_add) VALUES (now())")
+                ->prepare("INSERT INTO ".PREFIX."fixes (date_add) VALUES (now())")
                 ->execute()));
         }
         else if (isset($_GET["task"]) && $_GET["task"] == "del") {
             echo json_encode(array("status" => $db
-                ->prepare("DELETE FROM alior_fixes WHERE id = ".$_GET["id"])
+                ->prepare("DELETE FROM ".PREFIX."fixes WHERE id = ".$_GET["id"])
                 ->execute()));
         }
         else if (isset($_GET["id"])) {
             echo json_encode(
-                $db->query('
+                $db->query("
                     select *
-                    from alior_fixes
-                    where id = '.$_GET["id"].'
-                ')->fetchAll(PDO::FETCH_ASSOC),
+                    from ".PREFIX."fixes
+                    where id = ".$_GET["id"]."
+                ")->fetchAll(PDO::FETCH_ASSOC),
                 JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
             );
         }
         else {
             echo json_encode(
-                $db->query('
+                $db->query("
                     select *
-                    from alior_fixes
+                    from ".PREFIX."fixes
                     order by id desc
-                ')->fetchAll(PDO::FETCH_ASSOC),
+                ")->fetchAll(PDO::FETCH_ASSOC),
                 JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
             );
         }
@@ -118,31 +119,31 @@ if ($_GET) {
     else if ($_GET["r"] == "mails") {
         if (isset($_GET["task"]) && $_GET["task"] == "add") {
             echo json_encode(array("status" => $db
-                ->prepare("INSERT INTO alior_mails (date_add) VALUES (now())")
+                ->prepare("INSERT INTO ".PREFIX."mails (date_add) VALUES (now())")
                 ->execute()));
         }
         else if (isset($_GET["task"]) && $_GET["task"] == "del") {
             echo json_encode(array("status" => $db
-                ->prepare("DELETE FROM alior_mails WHERE id = ".$_GET["id"])
+                ->prepare("DELETE FROM ".PREFIX."mails WHERE id = ".$_GET["id"])
                 ->execute()));
         }
         else if (isset($_GET["id"])) {
             echo json_encode(
-                $db->query('
+                $db->query("
                     select *
-                    from alior_mails
-                    where id = '.$_GET["id"].'
-                ')->fetchAll(PDO::FETCH_ASSOC),
+                    from ".PREFIX."mails
+                    where id = ".$_GET["id"]."
+                ")->fetchAll(PDO::FETCH_ASSOC),
                 JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
             );
         }
         else {
             echo json_encode(
-                $db->query('
+                $db->query("
                     select *
-                    from alior_mails
+                    from ".PREFIX."mails
                     order by id desc
-                ')->fetchAll(PDO::FETCH_ASSOC),
+                ")->fetchAll(PDO::FETCH_ASSOC),
                 JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
             );
         }
@@ -151,81 +152,81 @@ if ($_GET) {
     else if ($_GET["r"] == "config") {
         if (isset($_GET["task"]) && $_GET["task"] == "add") {
             echo json_encode(array("status" => $db
-                ->prepare("INSERT INTO alior_config () VALUES ()")
+                ->prepare("INSERT INTO ".PREFIX."config () VALUES ()")
                 ->execute()));
         }
         else if (isset($_GET["task"]) && $_GET["task"] == "del") {
             echo json_encode(array("status" => $db
-                ->prepare("DELETE FROM alior_config WHERE id = ".$_GET["id"])
+                ->prepare("DELETE FROM ".PREFIX."config WHERE id = ".$_GET["id"])
                 ->execute()));
         }
         else if (isset($_GET["id"])) {
             echo json_encode(
-                $db->query('
+                $db->query("
                     select *
-                    from alior_config
-                    where id = '.$_GET["id"].'
-                ')->fetchAll(PDO::FETCH_ASSOC),
+                    from ".PREFIX."config
+                    where id = ".$_GET["id"]."
+                ")->fetchAll(PDO::FETCH_ASSOC),
                 JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
             );
         }
         else {
             echo json_encode(
-                $db->query('
+                $db->query("
                     select *
-                    from alior_config
+                    from ".PREFIX."config
                     order by id desc
-                ')->fetchAll(PDO::FETCH_ASSOC),
+                ")->fetchAll(PDO::FETCH_ASSOC),
                 JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
             );
         }
     }
     else if ($_GET["r"] == "apartments") {
         echo json_encode(
-            $db->query('
+            $db->query("
                 select *
-                from alior_apartments
+                from ".PREFIX."apartments
                 order by id asc
-            ')->fetchAll(PDO::FETCH_ASSOC),
+            ")->fetchAll(PDO::FETCH_ASSOC),
             JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
         );
     }
     else if ($_GET["r"] == "tenantsInApartment") {
         echo json_encode(
-            $db->query('
+            $db->query("
                 select apartment_id, COUNT(apartment_id) as count, SUM(rent) as rents
-                from alior_tenants
+                from ".PREFIX."tenants
                 Group By apartment_id
-            ')->fetchAll(PDO::FETCH_ASSOC),
+            ")->fetchAll(PDO::FETCH_ASSOC),
             JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
         );
     }
     else if ($_GET["r"] == "rules") {
         echo json_encode(array("status" => $db
-            ->prepare("INSERT INTO alior_rules (transaction_column, relation, value, cateogry_id) VALUES (?,?,?,?)")
+            ->prepare("INSERT INTO ".PREFIX."rules (transaction_column, relation, value, cateogry_id) VALUES (?,?,?,?)")
             ->execute([$_GET["transaction_column"], $_GET["relation"], $_GET["value"], $_GET["category_id"]])));
     }
     else if ($_GET["r"] == "categorise") {
         echo json_encode(
             array(
                 $db
-                    ->prepare("UPDATE alior_data SET category_id=? WHERE id=?")
+                    ->prepare("UPDATE ".PREFIX."data SET category_id=? WHERE id=?")
                     ->execute([$_GET["cat"], $_GET["id"]])
             ),
             JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
         );
     }
     else if ($_GET["r"] == "charts") {
-        echo $db->query('
+        echo $db->query("
             select val
-            from alior_config
-            where key_name = "charts"
-        ')->fetchAll(PDO::FETCH_ASSOC)[0]["val"];
+            from ".PREFIX."config
+            where key_name = \"charts\"
+        ")->fetchAll(PDO::FETCH_ASSOC)[0]["val"];
     }
 }
 if ($_POST) {
     if ($_POST["r"] == "transactions") {
-        $prep = $db->prepare("INSERT INTO alior_data (
+        $prep = $db->prepare("INSERT INTO ".PREFIX."data (
             date_timestamp,
             date_transaction,
             date_accounting,
@@ -239,7 +240,7 @@ if ($_POST) {
         try {
             foreach($_POST["data"] as &$row) {
                 $prep->execute([
-                    date('Y-m-d H:i:s', strtotime($row[0])),
+                    date("Y-m-d H:i:s", strtotime($row[0])),
                     $row[0],
                     $row[0],
                     $row[2],
