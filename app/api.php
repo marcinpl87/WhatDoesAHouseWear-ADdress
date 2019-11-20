@@ -82,23 +82,22 @@ if ($_GET) {
             );
         }
     }
-/* -- refactor this -- */
-    else if ($_GET["r"] == "fixes") {
+    else if ($_GET["r"] == "fixes" || $_GET["r"] == "mails") {
         if (isset($_GET["task"]) && $_GET["task"] == "add") {
             echo json_encode(array("status" => $db
-                ->prepare("INSERT INTO ".PREFIX."fixes (date_add) VALUES (now())")
+                ->prepare("INSERT INTO ".PREFIX.$_GET["r"]." (date_add) VALUES (now())")
                 ->execute()));
         }
         else if (isset($_GET["task"]) && $_GET["task"] == "del") {
             echo json_encode(array("status" => $db
-                ->prepare("DELETE FROM ".PREFIX."fixes WHERE id = ".$_GET["id"])
+                ->prepare("DELETE FROM ".PREFIX.$_GET["r"]." WHERE id = ".$_GET["id"])
                 ->execute()));
         }
         else if (isset($_GET["id"])) {
             echo json_encode(
                 $db->query("
                     select *
-                    from ".PREFIX."fixes
+                    from ".PREFIX.$_GET["r"]."
                     where id = ".$_GET["id"]."
                 ")->fetchAll(PDO::FETCH_ASSOC),
                 JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
@@ -108,47 +107,13 @@ if ($_GET) {
             echo json_encode(
                 $db->query("
                     select *
-                    from ".PREFIX."fixes
+                    from ".PREFIX.$_GET["r"]."
                     order by id desc
                 ")->fetchAll(PDO::FETCH_ASSOC),
                 JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
             );
         }
     }
-/* -- refactor this -- */
-    else if ($_GET["r"] == "mails") {
-        if (isset($_GET["task"]) && $_GET["task"] == "add") {
-            echo json_encode(array("status" => $db
-                ->prepare("INSERT INTO ".PREFIX."mails (date_add) VALUES (now())")
-                ->execute()));
-        }
-        else if (isset($_GET["task"]) && $_GET["task"] == "del") {
-            echo json_encode(array("status" => $db
-                ->prepare("DELETE FROM ".PREFIX."mails WHERE id = ".$_GET["id"])
-                ->execute()));
-        }
-        else if (isset($_GET["id"])) {
-            echo json_encode(
-                $db->query("
-                    select *
-                    from ".PREFIX."mails
-                    where id = ".$_GET["id"]."
-                ")->fetchAll(PDO::FETCH_ASSOC),
-                JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
-            );
-        }
-        else {
-            echo json_encode(
-                $db->query("
-                    select *
-                    from ".PREFIX."mails
-                    order by id desc
-                ")->fetchAll(PDO::FETCH_ASSOC),
-                JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
-            );
-        }
-    }
-/* -- refactor this -- */
     else if ($_GET["r"] == "config") {
         if (isset($_GET["task"]) && $_GET["task"] == "add") {
             echo json_encode(array("status" => $db
@@ -224,7 +189,7 @@ if ($_GET) {
         ")->fetchAll(PDO::FETCH_ASSOC)[0]["val"];
     }
 }
-if ($_POST) {
+else if ($_POST) {
     if ($_POST["r"] == "transactions") {
         $prep = $db->prepare("INSERT INTO ".PREFIX."data (
             date_timestamp,
