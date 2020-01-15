@@ -70,13 +70,15 @@ class PageFinance extends React.Component {
             return filter ? row.value > 0 : true;
         });
         oneMonth.monthView = true;
+        oneMonth.taxPayed = Utils.sumTax(oneMonth.transactions, 7)[0];
         this.setState(() => {
             return {
                 dataMonth: this.createTableStructure(oneMonth)
             }
         });
     }
-    filterYear(inputDate = new Date().getFullYear(), filter = false) {
+    // filterYear(inputDate = new Date().getFullYear(), filter = false) {
+    filterYear(inputDate = "2019", filter = false) {
         var oneYear = JSON.parse(JSON.stringify(this.state.dataAPI)); //clone
         oneYear.transactions = oneYear.transactions.filter((row) => {
             return row.date_transaction.substr(6, 4) == inputDate
