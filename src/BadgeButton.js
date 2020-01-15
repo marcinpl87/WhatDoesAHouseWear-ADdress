@@ -11,20 +11,18 @@ class BadgeButton extends React.Component {
             cat: props.cat
         };
         this.updateCat = this.updateCat.bind(this);
-        this.resetCat = this.resetCat.bind(this);
     }
-    updateCat(cat) {
-        this.setState((prevState, props) => {
-            return {
-                cat: cat
-            }
-        });
-    }
-    resetCat(cat) {
-        this.setState((prevState, props) => {
-            return {
-                cat: 0
-            }
+    updateCat(cat = 0) {
+        $.get("/api.php", {
+            r: "categorise",
+            id: this.props.transactionData[0],
+            cat: cat
+        }, (data) => {
+            this.setState((prevState, props) => {
+                return {
+                    cat: cat
+                }
+            });
         });
     }
     arrayToObject(arr) {
@@ -78,7 +76,7 @@ class BadgeButton extends React.Component {
                         selectedCat={proposedCat} />
                     : <ButtonDot
                         dot={1}
-                        handleClick={this.resetCat}
+                        handleClick={() => this.updateCat(0)}
                         buttonName={allCatObj[this.state.cat].name}
                         buttonColor={allCatObj[this.state.cat].color} />
                 }

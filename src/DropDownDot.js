@@ -13,13 +13,7 @@ class DropDownDot extends React.Component {
         this.setState(() => {
             return {loading: true}
         });
-        $.get("/api.php", {
-            r: "categorise",
-            id: this.props.transactionId,
-            cat: cat
-        }, (data) => {
-            this.props.updateCat(cat);
-        });
+        this.props.updateCat(cat);
     }
     render() {
         var v = !!this.props.selectedCat
