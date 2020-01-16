@@ -155,3 +155,7 @@ $pe-7s-font-path: "assets/fonts";
         transform: translate3d(0, -12px, 0) rotate(-270deg);
     }
 /* HAMBURGER END */
+
+.app-main__outer.finance .btn-link {
+    font-weight: bold;
+}

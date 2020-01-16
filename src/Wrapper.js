@@ -127,7 +127,7 @@ class Wrapper extends React.Component {
                             <div className="app-sidebar__inner"><MMenu menuElements={menuElements} /></div>
                         </div>
                     </div>
-                    <div className="app-main__outer">{
+                    <div className={`app-main__outer ${this.state.subPage && this.state.subPageProps.hash}`}>{
                         this.state.subPage && <this.state.subPage
                             key={this.state.subPageProps.hash}
                             headerData={this.state.subPageProps} />
