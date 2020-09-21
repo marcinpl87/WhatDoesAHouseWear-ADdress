@@ -25,7 +25,11 @@ class TenantsComponent extends React.Component {
             rows: data.map(x => {
                 var paid = 0;
                 transactions.map(t => {
-                    if (x.sender_name.toLowerCase() == t.sender.toLowerCase()) {
+                    if (
+                        (x.sender_name !== null)
+                        && (t.sender !== null)
+                        && (x.sender_name.toLowerCase() == t.sender.toLowerCase())
+                    ) {
                         paid += t.value;
                     }
                 });
