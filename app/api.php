@@ -50,6 +50,7 @@ if ($_GET) {
                         select *
                         from ".PREFIX."tenants
                         where id = ".$_GET["id"]."
+                        and status = 1
                     ")->fetchAll(PDO::FETCH_ASSOC),
                     $db->query("
                         select val
@@ -66,6 +67,7 @@ if ($_GET) {
                     select id, name, apartment_id, room_id, rent, email, sender_name
                     from ".PREFIX."tenants
                     where apartment_id = ".$_GET["apartmentId"]."
+                    and status = 1
                     order by id desc
                 ")->fetchAll(PDO::FETCH_ASSOC),
                 JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
@@ -76,6 +78,7 @@ if ($_GET) {
                 $db->query("
                     select id, name, apartment_id, room_id, rent, email, sender_name
                     from ".PREFIX."tenants
+                    where status = 1
                     order by id desc
                 ")->fetchAll(PDO::FETCH_ASSOC),
                 JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
@@ -161,6 +164,7 @@ if ($_GET) {
             $db->query("
                 select apartment_id, COUNT(apartment_id) as count, SUM(rent) as rents
                 from ".PREFIX."tenants
+                where status = 1
                 Group By apartment_id
             ")->fetchAll(PDO::FETCH_ASSOC),
             JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
