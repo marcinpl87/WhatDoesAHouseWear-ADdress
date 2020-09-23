@@ -9,6 +9,7 @@ class EditableCell extends React.Component {
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
+        this.debounce = false;
         this.state = {
             html: Array.isArray(this.props.cellChoices)
                 ? (props.cellVal ? Utils.findArrValById(props.cellChoices, props.cellVal) : 0)
@@ -21,15 +22,18 @@ class EditableCell extends React.Component {
                 return text.replace(/&quot;/g, '"');
             }
         });
+        clearTimeout(this.debounce);
+        this.debounce = setTimeout(() => {
         $.get("/api.php?r="+this.props.cellTable, {
             id: this.props.cellId,
             field: this.props.cellName,
             val: val,
             mode: "update",
         }, (data) => {});
+        }, 1000);
         this.setState((prevState, props) => {
             return {
-                html: val
+                html: evt.target.value
             }
         });
         this.props.cellEditCallback && this.props.cellEditCallback(this.props.cellName, val);
