@@ -62,6 +62,42 @@ class PageTenant extends React.Component {
             dbTable: this.state.dbTable,
             id: this.state.id,
             callback: this.editCallback,
+            title: "Onboarding",
+            rowsData: data[0],
+            rows: [
+                ["Umowa podpisana", [
+                    "is_contract",
+                    [[1, "1"]]
+                ]],
+                ["Kaucja opłacona", [
+                    "is_deposit",
+                    [[1, "1"]]
+                ]],
+                ["1 czynsz opłacony", [
+                    "is_1st_rent",
+                    [[1, "1"]]
+                ]],
+                ["Polisa odebrana", [
+                    "is_insurance",
+                    [[1, "1"]]
+                ]],
+                ["Poręczenie odebrane", [
+                    "is_warranty",
+                    [[1, "1"]]
+                ]],
+                ["Klucze wydane", [
+                    "is_key",
+                    [[1, "1"]]
+                ]],
+                ["Protokół podpisany", [
+                    "is_protocol",
+                    [[1, "1"]]
+                ]],
+            ]
+        }, {
+            dbTable: this.state.dbTable,
+            id: this.state.id,
+            callback: this.editCallback,
             title: "Poręczyciel",
             rowsData: data[0],
             rows: [

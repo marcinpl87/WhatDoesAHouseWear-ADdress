@@ -42,6 +42,17 @@ if ($_GET) {
             JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
         );
     }
+    else if ($_GET["r"] == "tenantsOnboarding") {
+        echo json_encode(
+            $db->query("
+                select id, name, is_contract, is_deposit, is_1st_rent, is_insurance, is_warranty, is_key, is_protocol
+                from ".PREFIX."tenants
+                where status = 1
+                order by id desc
+            ")->fetchAll(PDO::FETCH_ASSOC),
+            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
+        );
+    }
     else if ($_GET["r"] == "tenants") {
         if (isset($_GET["id"])) {
             echo json_encode(

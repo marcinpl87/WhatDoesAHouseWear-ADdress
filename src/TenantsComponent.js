@@ -9,6 +9,7 @@ class TenantsComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            onboarding: false,
             data: false
         };
     }
@@ -44,12 +45,28 @@ class TenantsComponent extends React.Component {
             })
         };
     }
+    createOnboardingStructure(data) {
+        return {
+            title: false,
+            clickableHash: "tenants",
+            headers: ["Id", "Imię i Nazwisko", "Umowa podpisana", "Kaucja opłacona", "1 czynsz opłacony", "Polisa odebrana", "Poręczenie odebrane", "Klucze wydane", "Protokół podpisany"],
+            rows: data.map(x => {
+                var checkboxes = Object.values(x).map(binaryValue => {
+                    return (binaryValue == "1") ? "☑" : "";
+                });
+                checkboxes[0] = x.id;
+                checkboxes[1] = x.name;
+                return checkboxes;
+            })
+        };
+    }
     componentDidMount() {
         $.when(
+            $.get("/api.php", {r: "tenantsOnboarding"}),
             $.get("/api.php", {r: "tenants", apartmentId: this.props.apartmentId}),
             $.get("/api.php", {r: "apartments"}),
             $.get("/api.php", {r: "finance"})
-        ).then((tenantData, apartmentsData, financeData) => {
+        ).then((onboardingData, tenantData, apartmentsData, financeData) => {
             financeData[0].transactions = financeData[0].transactions.filter((row) => {
                 return row.date_transaction.substr(6, 4) == new Date().getFullYear();
             }).filter((row) => {
@@ -59,6 +76,7 @@ class TenantsComponent extends React.Component {
             });
             this.setState(() => {
                 return {
+                    onboarding: this.createOnboardingStructure(onboardingData[0]),
                     data: this.createTableStructure(tenantData[0], apartmentsData[0], financeData[0].transactions),
                 }
             });
@@ -70,6 +88,9 @@ class TenantsComponent extends React.Component {
             {this.state.data ? <React.Fragment>
                 <div className="main-card mb-3 card">
                     <MTable tableData={this.state.data} />
+                </div>
+                <div className="main-card mb-3 card">
+                    <MTable tableData={this.state.onboarding} />
                 </div>
                 <div className="card-shadow-info border mb-3 card card-body border-info">
                     <h5 className="card-title">Emaile najemców</h5>
