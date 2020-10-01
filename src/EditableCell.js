@@ -24,12 +24,12 @@ class EditableCell extends React.Component {
         });
         clearTimeout(this.debounce);
         this.debounce = setTimeout(() => {
-        $.get("/api.php?r="+this.props.cellTable, {
-            id: this.props.cellId,
-            field: this.props.cellName,
-            val: val,
-            mode: "update",
-        }, (data) => {});
+            $.get("/api.php?r="+this.props.cellTable, {
+                id: this.props.cellId,
+                field: this.props.cellName,
+                val: val,
+                mode: "update",
+            }, (data) => {});
         }, 1000);
         this.setState((prevState, props) => {
             return {
@@ -39,19 +39,25 @@ class EditableCell extends React.Component {
         this.props.cellEditCallback && this.props.cellEditCallback(this.props.cellName, val);
     }
     render() {
-        return (
-            Array.isArray(this.props.cellChoices)
-                ? <EditableCellSingleChoice
+        if (Array.isArray(this.props.cellChoices)) {
+            if (this.props.cellChoices.length == 1) {
+                return <input type="checkbox" name="test" />
+            }
+            else {
+                return <EditableCellSingleChoice
                     selectedVal={this.state.html}
                     choices={this.props.cellChoices}
                     onChange={this.handleChange}
                 />
-                : <ContentEditable
-                    html={this.state.html}
-                    onChange={this.handleChange}
-                    tagName='span'
-                />
-        );
+            }
+        }
+        else {
+            return <ContentEditable
+                html={this.state.html}
+                onChange={this.handleChange}
+                tagName='span'
+            />
+        }
     }
 }
 
