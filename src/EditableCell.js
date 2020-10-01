@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import SanitizeHtml from "sanitize-html";
 import ContentEditable from 'react-contenteditable';
+import EditableCellCheckbox from './EditableCellCheckbox';
 import EditableCellSingleChoice from './EditableCellSingleChoice';
 import Utils from './Utils';
 
@@ -41,7 +42,10 @@ class EditableCell extends React.Component {
     render() {
         if (Array.isArray(this.props.cellChoices)) {
             if (this.props.cellChoices.length == 1) {
-                return <input type="checkbox" name="test" />
+                return <EditableCellCheckbox
+                    selectedVal={this.state.html}
+                    onChange={this.handleChange}
+                />
             }
             else {
                 return <EditableCellSingleChoice
