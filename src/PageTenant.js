@@ -184,6 +184,9 @@ class PageTenant extends React.Component {
                             <div className="main-card mb-3 card">
                                 <MTable tableData={this.state.data[3]} />
                             </div>
+                            <div className="main-card mb-3 card">
+                                <MTable tableData={this.state.data[4]} />
+                            </div>
                         </div>
                     </div>
                     <div className="row">
