@@ -55,9 +55,8 @@ class MTable extends React.Component {
                                     {val.map((cellVal, cellIndex) => {
                                         return <td key={cellIndex}>{Array.isArray(cellVal)
                                             ? <EditableCell
-                                                cellName={cellVal[0]}
-                                                cellVal={this.props.tableData.rowsData[cellVal[0]]}
-                                                cellChoices={cellVal[1]}
+                                                cellConfig={cellVal}
+                                                cellData={this.props.tableData.rowsData[cellVal[0]]}
                                                 cellId={this.props.tableData.id}
                                                 cellTable={this.props.tableData.dbTable}
                                                 cellEditCallback={this.props.tableData.callback}

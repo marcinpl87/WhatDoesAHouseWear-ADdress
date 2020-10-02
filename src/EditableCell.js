@@ -11,10 +11,12 @@ class EditableCell extends React.Component {
         super(props);
         this.handleChange = this.handleChange.bind(this);
         this.debounce = false;
+        this.cellName = this.props.cellConfig[0];
+        this.cellOptions = this.props.cellConfig[1];
         this.state = {
-            html: Array.isArray(this.props.cellChoices)
-                ? (props.cellVal ? Utils.findArrValById(props.cellChoices, props.cellVal) : 0)
-                : (props.cellVal ? props.cellVal.toString() : "__________")
+            html: Array.isArray(this.cellOptions)
+                ? (props.cellData ? Utils.findArrValById(this.cellOptions, props.cellData) : 0)
+                : (props.cellData ? props.cellData.toString() : "__________")
         };
     }
     handleChange(evt) {
@@ -27,7 +29,7 @@ class EditableCell extends React.Component {
         this.debounce = setTimeout(() => {
             $.get("/api.php?r="+this.props.cellTable, {
                 id: this.props.cellId,
-                field: this.props.cellName,
+                field: this.cellName,
                 val: val,
                 mode: "update",
             }, (data) => {});
@@ -37,11 +39,11 @@ class EditableCell extends React.Component {
                 html: evt.target.value
             }
         });
-        this.props.cellEditCallback && this.props.cellEditCallback(this.props.cellName, val);
+        this.props.cellEditCallback && this.props.cellEditCallback(this.cellName, val);
     }
     render() {
-        if (Array.isArray(this.props.cellChoices)) {
-            if (this.props.cellChoices.length == 1) {
+        if (Array.isArray(this.cellOptions)) {
+            if (this.cellOptions.length == 1) {
                 return <EditableCellCheckbox
                     selectedVal={this.state.html}
                     onChange={this.handleChange}
@@ -50,7 +52,7 @@ class EditableCell extends React.Component {
             else {
                 return <EditableCellSingleChoice
                     selectedVal={this.state.html}
-                    choices={this.props.cellChoices}
+                    choices={this.cellOptions}
                     onChange={this.handleChange}
                 />
             }
