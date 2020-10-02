@@ -46,26 +46,31 @@ class ApartmentsTabs extends React.Component {
                     title: "Dane",
                     rowsData: apartment,
                     rows: [
-                        ["Nazwa", ["name"]],
-                        ["Adres", ["address"]],
+                        ["Nazwa", ["text", "name"]],
+                        ["Adres", ["text", "address"]],
                         ["Piętro", [
+                            "list",
                             "floor",
                             [[1, "1"], [2, "2"], [3, "3"], [4, "4"]]
                         ]],
-                        ["Domofon", ["code"]],
-                        ["Wkładka w drzwiach zewnętrznych", ["lock_out"]],
-                        ["Wkładka w drzwiach wewnętrznych", ["lock_in"]],
-                        ["Sejf", ["safe"]],
-                        ["Wifi", ["wifi_ssid"]],
-                        ["Wifi hasło", ["wifi_pass"]],
-                        ["Notatki", ["notes"]]
+                        ["Domofon", ["text", "code"]],
+                        ["Wkładka w drzwiach zewnętrznych", ["text", "lock_out"]],
+                        ["Wkładka w drzwiach wewnętrznych", ["text", "lock_in"]],
+                        ["Sejf", ["text", "safe"]],
+                        ["Wifi", ["text", "wifi_ssid"]],
+                        ["Wifi hasło", ["text", "wifi_pass"]],
+                        ["Notatki", ["text", "notes"]]
                     ]
                 },
                 insurance: {
                     title: "Ubezpieczenie",
                     headers: ["Numer polisy", "Nazwa firmy", "Data ważności"],
                     rowsData: apartment,
-                    rows: [[["insurance_number"], ["insurance_name"], ["insurance_date"]]]
+                    rows: [[
+                        ["text", "insurance_number"],
+                        ["text", "insurance_name"],
+                        ["text", "insurance_date"]
+                    ]]
                 }
             }]);
         });

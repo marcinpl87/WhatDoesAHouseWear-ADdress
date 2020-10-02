@@ -31,7 +31,7 @@ class PageFix extends React.Component {
     createTableStructure(data, apartments) {
         apartments = apartments.map(a => [a.id, a.name]);
         this.props.headerData.headers.map(header => {
-            header[1][1] = (header[1][1] == "--data--") ? apartments : header[1][1];
+            header[1][2] = (header[1][2] == "--data--") ? apartments : header[1][2];
             return header;
         });
         return [{

@@ -35,28 +35,30 @@ class PageTenant extends React.Component {
             title: "Informacje kontaktowe",
             rowsData: data[0],
             rows: [
-                ["Imię i Nazwisko", ["name"]],
-                ["Nadawca przelewu", ["sender_name"]],
-                ["Dowód osobisty", ["id_number"]],
-                ["Pesel", ["national_insurance_number"]],
-                ["Data urodzenia", ["birth_date"]],
-                ["E-mail", ["email"]],
-                ["Telefon Kontaktowy", ["phone"]],
-                ["Adres korespondencyjny", ["address"]],
+                ["Imię i Nazwisko", ["text", "name"]],
+                ["Nadawca przelewu", ["text", "sender_name"]],
+                ["Dowód osobisty", ["text", "id_number"]],
+                ["Pesel", ["text", "national_insurance_number"]],
+                ["Data urodzenia", ["text", "birth_date"]],
+                ["E-mail", ["text", "email"]],
+                ["Telefon Kontaktowy", ["text", "phone"]],
+                ["Adres korespondencyjny", ["text", "address"]],
                 ["Pokój", [
+                    "list",
                     "room_id",
                     [[1, "1"], [2, "2"], [3, "3"], [4, "4"], [5, "5"], [6, "6"]]
                 ]],
                 ["Mieszkanie", [
+                    "list",
                     "apartment_id",
                     apartments
                 ]],
-                ["Czynsz", ["rent"]],
-                ["Pierwszy miesiąc", ["rent_first_month"]],
-                ["Czynsz za pierwszy miesiąc", ["rent_first_rent"]],
-                ["Kaucja", ["deposit"]],
-                ["Konto bankowe", ["account"]],
-                ["Notatki", ["notes"]]
+                ["Czynsz", ["text", "rent"]],
+                ["Pierwszy miesiąc", ["text", "rent_first_month"]],
+                ["Czynsz za pierwszy miesiąc", ["text", "rent_first_rent"]],
+                ["Kaucja", ["text", "deposit"]],
+                ["Konto bankowe", ["text", "account"]],
+                ["Notatki", ["text", "notes"]]
             ]
         }, {
             dbTable: this.state.dbTable,
@@ -66,30 +68,37 @@ class PageTenant extends React.Component {
             rowsData: data[0],
             rows: [
                 ["Umowa podpisana", [
+                    "checkbox",
                     "is_contract",
                     [[1, "1"]]
                 ]],
                 ["Kaucja opłacona", [
+                    "checkbox",
                     "is_deposit",
                     [[1, "1"]]
                 ]],
                 ["1 czynsz opłacony", [
+                    "checkbox",
                     "is_1st_rent",
                     [[1, "1"]]
                 ]],
                 ["Polisa odebrana", [
+                    "checkbox",
                     "is_insurance",
                     [[1, "1"]]
                 ]],
                 ["Poręczenie odebrane", [
+                    "checkbox",
                     "is_warranty",
                     [[1, "1"]]
                 ]],
                 ["Klucze wydane", [
+                    "checkbox",
                     "is_key",
                     [[1, "1"]]
                 ]],
                 ["Protokół podpisany", [
+                    "checkbox",
                     "is_protocol",
                     [[1, "1"]]
                 ]],
@@ -101,12 +110,12 @@ class PageTenant extends React.Component {
             title: "Poręczyciel",
             rowsData: data[0],
             rows: [
-                ["Imię i Nazwisko", ["ice_name"]],
-                ["Dowód osobisty", ["ice_id_number"]],
-                ["Pesel", ["ice_national_insurance_number"]],
-                ["E-mail", ["ice_email"]],
-                ["Telefon Kontaktowy", ["ice_phone"]],
-                ["Adres korespondencyjny", ["ice_address"]]
+                ["Imię i Nazwisko", ["text", "ice_name"]],
+                ["Dowód osobisty", ["text", "ice_id_number"]],
+                ["Pesel", ["text", "ice_national_insurance_number"]],
+                ["E-mail", ["text", "ice_email"]],
+                ["Telefon Kontaktowy", ["text", "ice_phone"]],
+                ["Adres korespondencyjny", ["text", "ice_address"]]
             ]
         }, {
             dbTable: this.state.dbTable,
@@ -115,10 +124,10 @@ class PageTenant extends React.Component {
             title: "Umowa",
             rowsData: data[0],
             rows: [
-                ["Data zawarcia umowy", ["contract_date"]],
-                ["Data rozpoczęcia najmu", ["contract_date_start"]],
-                ["Data zakończenia najmu", ["contract_date_end"]],
-                ["Data przekazania pokoju", ["contract_date_handoff"]]
+                ["Data zawarcia umowy", ["text", "contract_date"]],
+                ["Data rozpoczęcia najmu", ["text", "contract_date_start"]],
+                ["Data zakończenia najmu", ["text", "contract_date_end"]],
+                ["Data przekazania pokoju", ["text", "contract_date_handoff"]]
             ]
         }, {
             dbTable: this.state.dbTable,
@@ -127,7 +136,11 @@ class PageTenant extends React.Component {
             title: "Ubezpieczenie",
             headers: ["Nazwa Firmy", "Numer Polisy", "Data Ważności"],
             rowsData: data[0],
-            rows: [[["insurance_name"], ["insurance_number"], ["insurance_date"]]]
+            rows: [[
+                ["text", "insurance_name"],
+                ["text", "insurance_number"],
+                ["text", "insurance_date"]
+            ]]
         }];
     }
     toArray(_Object){

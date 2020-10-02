@@ -34,8 +34,8 @@ class PageConfig extends React.Component {
             id: this.state.id,
             rowsData: data[0],
             rows: [
-                ["Klucz", ["key_name"]],
-                ["Wartość", ["val"]]
+                ["Klucz", ["text", "key_name"]],
+                ["Wartość", ["text", "val"]]
             ]
         }];
     }

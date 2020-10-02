@@ -10,8 +10,9 @@ class EditableCell extends React.Component {
         super(props);
         this.handleChange = this.handleChange.bind(this);
         this.debounce = false;
-        this.cellName = this.props.cellConfig[0];
-        this.cellOptions = this.props.cellConfig[1];
+        this.cellType = this.props.cellConfig[0];
+        this.cellName = this.props.cellConfig[1];
+        this.cellOptions = this.props.cellConfig[2];
         this.state = { //because of external contenteditable component I need to handle default value
             html: props.cellData ? props.cellData.toString() : "__________"
         };
