@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ButtonDot from './ButtonDot';
+import Utils from './Utils';
 
 class EditableCellSingleChoice extends React.Component {
     constructor(props) {
@@ -8,7 +9,7 @@ class EditableCellSingleChoice extends React.Component {
         this.selectChoice = this.selectChoice.bind(this);
         this.showChoices = this.showChoices.bind(this);
         this.state = {
-            html: this.props.selectedVal,
+            html: props.data ? Utils.findArrValById(props.options, props.data) : 0,
             choicesVisible: false
         };
     }
@@ -16,7 +17,7 @@ class EditableCellSingleChoice extends React.Component {
         !this.state.choicesVisible && this.setState(() => {
             return {
                 choicesVisible: true,
-                html: this.props.choices
+                html: this.props.options
             }
         });
     }

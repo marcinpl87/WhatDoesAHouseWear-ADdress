@@ -4,7 +4,6 @@ import SanitizeHtml from "sanitize-html";
 import ContentEditable from 'react-contenteditable';
 import EditableCellCheckbox from './EditableCellCheckbox';
 import EditableCellSingleChoice from './EditableCellSingleChoice';
-import Utils from './Utils';
 
 class EditableCell extends React.Component {
     constructor(props) {
@@ -13,10 +12,8 @@ class EditableCell extends React.Component {
         this.debounce = false;
         this.cellName = this.props.cellConfig[0];
         this.cellOptions = this.props.cellConfig[1];
-        this.state = {
-            html: Array.isArray(this.cellOptions)
-                ? (props.cellData ? Utils.findArrValById(this.cellOptions, props.cellData) : 0)
-                : (props.cellData ? props.cellData.toString() : "__________")
+        this.state = { //because of external contenteditable component I need to handle default value
+            html: props.cellData ? props.cellData.toString() : "__________"
         };
     }
     handleChange(evt) {
@@ -45,14 +42,14 @@ class EditableCell extends React.Component {
         if (Array.isArray(this.cellOptions)) {
             if (this.cellOptions.length == 1) {
                 return <EditableCellCheckbox
-                    selectedVal={this.state.html}
+                    data={this.props.cellData}
                     onChange={this.handleChange}
                 />
             }
             else {
                 return <EditableCellSingleChoice
-                    selectedVal={this.state.html}
-                    choices={this.cellOptions}
+                    options={this.cellOptions}
+                    data={this.props.cellData}
                     onChange={this.handleChange}
                 />
             }

@@ -9,7 +9,7 @@ class EditableCellCheckbox extends React.Component {
         super(props);
         this.selectChoice = this.selectChoice.bind(this);
         this.state = {
-            html: (this.props.selectedVal == 1) ? CHAR1 : CHAR0,
+            html: (!!props.data) ? CHAR1 : CHAR0,
             choicesVisible: false
         };
     }
