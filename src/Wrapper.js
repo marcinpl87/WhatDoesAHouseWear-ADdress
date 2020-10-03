@@ -20,14 +20,14 @@ const menuElements = [
     ['tenants', PageTenants, 'pe-7s-users', 'Najemcy', false, PageTenant],
     ['finance', PageFinance, 'pe-7s-cash', 'Finanse', false],
     ['fixes', PageFixes, 'pe-7s-tools', 'Usterki', true, PageFix, [
-        ["Data zgłoszenia", ["text", "date_add"]],
-        ["Data naprawy", ["text", "date_event"]],
+        ["Data zgłoszenia", ["date", "date_add"]],
+        ["Data naprawy", ["date", "date_event"]],
         ["Opis", ["text", "description"]],
         ["Cena", ["text", "price"]],
         ["Mieszkanie", ["list", "apartment_id", "--data--"]]
     ]],
     ['mails', PageFixes, 'pe-7s-mail', 'Emaile', true, PageFix, [
-        ["Data dodania", ["text", "date_add"]],
+        ["Data dodania", ["date", "date_add"]],
         ["Email", ["text", "description"]]
     ]],
 //    ['fixes', PageFixes, 'pe-7s-server', 'Logi', false],

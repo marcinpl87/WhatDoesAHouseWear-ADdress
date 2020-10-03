@@ -69,7 +69,7 @@ class ApartmentsTabs extends React.Component {
                     rows: [[
                         ["text", "insurance_number"],
                         ["text", "insurance_name"],
-                        ["text", "insurance_date"]
+                        ["date", "insurance_date"]
                     ]]
                 }
             }]);

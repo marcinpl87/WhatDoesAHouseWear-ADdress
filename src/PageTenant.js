@@ -39,7 +39,7 @@ class PageTenant extends React.Component {
                 ["Nadawca przelewu", ["text", "sender_name"]],
                 ["Dowód osobisty", ["text", "id_number"]],
                 ["Pesel", ["text", "national_insurance_number"]],
-                ["Data urodzenia", ["text", "birth_date"]],
+                ["Data urodzenia", ["date", "birth_date"]],
                 ["E-mail", ["text", "email"]],
                 ["Telefon Kontaktowy", ["text", "phone"]],
                 ["Adres korespondencyjny", ["text", "address"]],
@@ -124,10 +124,10 @@ class PageTenant extends React.Component {
             title: "Umowa",
             rowsData: data[0],
             rows: [
-                ["Data zawarcia umowy", ["text", "contract_date"]],
-                ["Data rozpoczęcia najmu", ["text", "contract_date_start"]],
-                ["Data zakończenia najmu", ["text", "contract_date_end"]],
-                ["Data przekazania pokoju", ["text", "contract_date_handoff"]]
+                ["Data zawarcia umowy", ["date", "contract_date"]],
+                ["Data rozpoczęcia najmu", ["date", "contract_date_start"]],
+                ["Data zakończenia najmu", ["date", "contract_date_end"]],
+                ["Data przekazania pokoju", ["date", "contract_date_handoff"]]
             ]
         }, {
             dbTable: this.state.dbTable,
@@ -139,7 +139,7 @@ class PageTenant extends React.Component {
             rows: [[
                 ["text", "insurance_name"],
                 ["text", "insurance_number"],
-                ["text", "insurance_date"]
+                ["date", "insurance_date"]
             ]]
         }];
     }
