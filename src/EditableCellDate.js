@@ -46,6 +46,7 @@ class EditableCellDate extends React.Component {
                                 )
                             }}
                             inline
+                            showYearDropdown
                         />
                         <button
                             className="btn-secondary"
