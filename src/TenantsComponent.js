@@ -62,7 +62,7 @@ class TenantsComponent extends React.Component {
     }
     componentDidMount() {
         $.when(
-            $.get("/api.php", {r: "tenantsOnboarding"}),
+            $.get("/api.php", {r: "tenantsOnboarding", apartmentId: this.props.apartmentId}),
             $.get("/api.php", {r: "tenants", apartmentId: this.props.apartmentId}),
             $.get("/api.php", {r: "apartments"}),
             $.get("/api.php", {r: "finance"})

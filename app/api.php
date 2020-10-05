@@ -48,6 +48,7 @@ if ($_GET) {
                 select id, name, is_contract, is_deposit, is_1st_rent, is_insurance, is_warranty, is_key, is_protocol
                 from ".PREFIX."tenants
                 where status = 1
+                ".(isset($_GET["apartmentId"]) ? ("and apartment_id = ".$_GET["apartmentId"]) : "")."
                 order by id desc
             ")->fetchAll(PDO::FETCH_ASSOC),
             JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
@@ -72,24 +73,13 @@ if ($_GET) {
                 JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
             );
         }
-        else if (isset($_GET["apartmentId"])) {
-            echo json_encode(
-                $db->query("
-                    select id, name, apartment_id, room_id, rent, email, sender_name
-                    from ".PREFIX."tenants
-                    where apartment_id = ".$_GET["apartmentId"]."
-                    and status = 1
-                    order by id desc
-                ")->fetchAll(PDO::FETCH_ASSOC),
-                JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
-            );
-        }
         else {
             echo json_encode(
                 $db->query("
                     select id, name, apartment_id, room_id, rent, email, sender_name
                     from ".PREFIX."tenants
                     where status = 1
+                    ".(isset($_GET["apartmentId"]) ? ("and apartment_id = ".$_GET["apartmentId"]) : "")."
                     order by id desc
                 ")->fetchAll(PDO::FETCH_ASSOC),
                 JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
