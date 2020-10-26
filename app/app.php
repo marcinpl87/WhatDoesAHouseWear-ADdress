@@ -9,10 +9,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
         <meta name="description" content="Szons">
         <meta name="msapplication-tap-highlight" content="no">
-        <link href="bundle.css" rel="stylesheet">
+        <link href="<?php echo get_template_directory_uri(); ?>/bundle.css" rel="stylesheet">
     </head>
     <body>
         <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar">Wczytywanie...</div>
-        <script src="bundle.js"></script>
+        <script src="<?php echo get_template_directory_uri(); ?>/bundle.js"></script>
     </body>
 </html>
