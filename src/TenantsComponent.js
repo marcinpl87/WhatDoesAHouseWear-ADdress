@@ -65,7 +65,7 @@ class TenantsComponent extends React.Component {
             $.get("/api.php", {r: "tenantsOnboarding", apartmentId: this.props.apartmentId}),
             $.get("/api.php", {r: "tenants", apartmentId: this.props.apartmentId}),
             $.get("/api.php", {r: "apartments"}),
-            $.get("/api.php", {r: "finance"})
+            Utils.ajax("get", "finance")
         ).then((onboardingData, tenantData, apartmentsData, financeData) => {
             financeData[0].transactions = financeData[0].transactions.filter((row) => {
                 return row.date_transaction.substr(6, 4) == new Date().getFullYear();

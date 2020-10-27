@@ -25,6 +25,19 @@ class Utils {
         });
         return [this.mRound(sum), sumArr];
     }
+    ajax(method, url) {
+        return $.ajax({
+            method: method,
+            url: "/wp-json/mapi/" + url,
+            dataType: "json",
+            beforeSend: (xhr) => {
+                xhr.setRequestHeader(
+                    "X-WP-Nonce",
+                    $(".app-container").data("nonce")
+                );
+            }
+        });
+    }
 }
 
 export default new Utils();
