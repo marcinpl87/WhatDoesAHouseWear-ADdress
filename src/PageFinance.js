@@ -40,7 +40,7 @@ class PageFinance extends React.Component {
     prepareRawData(data) {
         var flatArr = data.map(x => Object.values(x));
         flatArr.map((el) => {
-            el[2] = el[2].toFixed(2);
+            el[2] = parseFloat(el[2]).toFixed(2);
         });
         return flatArr;
     }
@@ -110,7 +110,17 @@ class PageFinance extends React.Component {
         });
     }
     componentDidMount() {
-        $.get("/api.php", {r: "finance"}, (data) => {
+        $.ajax({
+            url: "/wp-json/mapi/finance/",
+            method: "get",
+            beforeSend: (xhr) => {
+                xhr.setRequestHeader(
+                    "X-WP-Nonce",
+                    $(".app-container").data("nonce")
+                );
+            }
+        }).done((response) => {
+            var data = JSON.parse(response);
             data.firstYear = new Date().getFullYear();
             data.transactions.map((row) => {
                 data.firstYear = data.firstYear >= row.date_transaction.substr(6, 4)
@@ -127,6 +137,11 @@ class PageFinance extends React.Component {
                 this.filterYear();
                 this.filterPayments();
             });
+            if (data.status !== "1") {
+                window.location.reload(true);
+            }
+        }).fail((response) => {
+            window.location.reload(true);
         });
     }
     render() {

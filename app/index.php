@@ -12,7 +12,10 @@
         <link href="<?php echo get_template_directory_uri(); ?>/bundle.css" rel="stylesheet">
     </head>
     <body>
-        <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar">Wczytywanie...</div>
+        <div
+            class="app-container app-theme-white body-tabs-shadow fixed-sidebar"
+            data-nonce="<?php echo wp_create_nonce("wp_rest"); ?>"
+        >Wczytywanie...</div>
         <script src="<?php echo get_template_directory_uri(); ?>/bundle.js"></script>
     </body>
 </html>
