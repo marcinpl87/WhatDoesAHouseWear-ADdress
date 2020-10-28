@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Countdown from "react-countdown";
 import 'bootstrap';
 
 class ProgressWidget extends React.Component {
@@ -18,11 +19,17 @@ class ProgressWidget extends React.Component {
                                     <div className="widget-content-left">
                                         <div className="widget-heading">{this.props.widgetData.title}</div>
                                         <div className="widget-subheading" dangerouslySetInnerHTML={{
-                                            __html: this.props.widgetData.subTitle ? this.props.widgetData.subTitle : "&nbsp;"
+                                            __html: this.props.widgetData.subTitle
+                                                ? this.props.widgetData.subTitle
+                                                : "&nbsp;"
                                         }} />
                                     </div>
                                     <div className="widget-content-right">
-                                        <div className={`widget-numbers text-${this.props.widgetData.valGreen ? "success" : "primary"}`}>
+                                        <div className={`widget-numbers text-${
+                                            this.props.widgetData.valGreen
+                                                ? "success"
+                                                : "primary"
+                                        }`}>
                                             {this.props.widgetData.val}
                                         </div>
                                     </div>
@@ -30,13 +37,21 @@ class ProgressWidget extends React.Component {
                                 <div className="widget-progress-wrapper">
                                     <div className="progress-bar-xs progress-bar-animated-alt progress">
                                         <div
-                                            className={`progress-bar bg-${this.props.widgetData.percentageGreen ? "success" : "primary"}`}
+                                            className={`progress-bar bg-${
+                                                this.props.widgetData.percentageGreen
+                                                    ? "success"
+                                                    : "primary"
+                                            }`}
                                             role="progressbar"
                                             style={progressStyle}
                                         />
                                     </div>
                                     <div className="progress-sub-label">
-                                        <div className="sub-label-left"></div>
+                                        <div className="sub-label-left">{
+                                            this.props.widgetData.timer
+                                                ? <Countdown date={this.props.widgetData.timer} />
+                                                : ""
+                                        }</div>
                                         <div className="sub-label-right">{this.props.widgetData.percentage}%</div>
                                     </div>
                                 </div>
