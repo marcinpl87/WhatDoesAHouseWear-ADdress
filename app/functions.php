@@ -36,7 +36,7 @@ function secureData($data) {
 add_action("rest_api_init", function() {
     register_rest_route("mapi", "/finance", [
         "methods" => "get",
-        "callback" => function(WP_REST_Request $params) {
+        "callback" => function() {
             secureData(function() {
                 global $db;
                 return [
@@ -61,7 +61,7 @@ add_action("rest_api_init", function() {
 add_action("rest_api_init", function() {
     register_rest_route("mapi", "/apartments", [
         "methods" => "get",
-        "callback" => function(WP_REST_Request $params) {
+        "callback" => function() {
             secureData(function() {
                 global $db;
                 return [
@@ -69,6 +69,43 @@ add_action("rest_api_init", function() {
                         select *
                         from ".PREFIX."apartments
                         order by id asc
+                    ")->fetchAll(PDO::FETCH_ASSOC),
+                ];
+            });
+        },
+    ]);
+});
+add_action("rest_api_init", function() {
+    register_rest_route("mapi", "/tenantsOnboarding", [
+        "methods" => "get",
+        "callback" => function() {
+            secureData(function() {
+                global $db;
+                return [
+                    "tenants" => $db->query("
+                        select id, name, is_contract, is_deposit, is_1st_rent, is_insurance, is_warranty, is_key, is_protocol
+                        from ".PREFIX."tenants
+                        where status = 1
+                        order by id desc
+                    ")->fetchAll(PDO::FETCH_ASSOC),
+                ];
+            });
+        },
+    ]);
+});
+add_action("rest_api_init", function() {
+    register_rest_route("mapi", "/tenantsOnboardingInApartment/(?P<apartment>\d+)", [
+        "methods" => "get",
+        "callback" => function(WP_REST_Request $params) {
+            secureData(function() use(&$params) {
+                global $db;
+                return [
+                    "tenants" => $db->query("
+                        select id, name, is_contract, is_deposit, is_1st_rent, is_insurance, is_warranty, is_key, is_protocol
+                        from ".PREFIX."tenants
+                        where status = 1
+                        and apartment_id = ".$params->get_params()["apartment"]."
+                        order by id desc
                     ")->fetchAll(PDO::FETCH_ASSOC),
                 ];
             });

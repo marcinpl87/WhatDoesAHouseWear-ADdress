@@ -62,7 +62,9 @@ class TenantsComponent extends React.Component {
     }
     componentDidMount() {
         $.when(
-            $.get("/api.php", {r: "tenantsOnboarding", apartmentId: this.props.apartmentId}),
+            Utils.ajax("get", this.props.apartmentId
+                ? "tenantsOnboardingInApartment/" + this.props.apartmentId
+                : "tenantsOnboarding"),
             $.get("/api.php", {r: "tenants", apartmentId: this.props.apartmentId}),
             Utils.ajax("get", "apartments"),
             Utils.ajax("get", "finance")
@@ -76,7 +78,7 @@ class TenantsComponent extends React.Component {
             });
             this.setState(() => {
                 return {
-                    onboarding: this.createOnboardingStructure(onboardingData[0]),
+                    onboarding: this.createOnboardingStructure(onboardingData[0].tenants),
                     data: this.createTableStructure(
                         tenantData[0],
                         apartmentsData[0].apartments,

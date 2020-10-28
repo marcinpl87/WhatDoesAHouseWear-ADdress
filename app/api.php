@@ -13,24 +13,6 @@ $db->query("SET NAMES UTF8");
 define("PREFIX", "alior_");
 if ($_GET) {
     if ($_GET["r"] == "finance") {
-        echo json_encode(
-            array(
-                "transactions" => $db->query("
-                    select id, date_transaction, value, sender, receiver, title, category_id
-                    from ".PREFIX."data
-                    order by id desc
-                ")->fetchAll(PDO::FETCH_ASSOC),
-                "categories" => $db->query("
-                    select *
-                    from ".PREFIX."categories
-                ")->fetchAll(PDO::FETCH_ASSOC),
-                "rules" => $db->query("
-                    select *
-                    from ".PREFIX."rules
-                ")->fetchAll(PDO::FETCH_ASSOC)
-            ),
-            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
-        );
     }
     else if (isset($_GET["mode"])) {
         echo json_encode(
@@ -43,16 +25,6 @@ if ($_GET) {
         );
     }
     else if ($_GET["r"] == "tenantsOnboarding") {
-        echo json_encode(
-            $db->query("
-                select id, name, is_contract, is_deposit, is_1st_rent, is_insurance, is_warranty, is_key, is_protocol
-                from ".PREFIX."tenants
-                where status = 1
-                ".(isset($_GET["apartmentId"]) ? ("and apartment_id = ".$_GET["apartmentId"]) : "")."
-                order by id desc
-            ")->fetchAll(PDO::FETCH_ASSOC),
-            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
-        );
     }
     else if ($_GET["r"] == "tenants") {
         if (isset($_GET["id"])) {
@@ -151,14 +123,6 @@ if ($_GET) {
         }
     }
     else if ($_GET["r"] == "apartments") {
-        echo json_encode(
-            $db->query("
-                select *
-                from ".PREFIX."apartments
-                order by id asc
-            ")->fetchAll(PDO::FETCH_ASSOC),
-            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
-        );
     }
     else if ($_GET["r"] == "tenantsInApartment") {
         echo json_encode(
