@@ -21,15 +21,15 @@ class PageHome extends React.Component {
         $.when(
             $.get("/api.php?r=charts"),
             Utils.ajax("get", "apartments"),
-            $.get("/api.php?r=tenantsInApartment")
-        ).then((chartsData, apartments, tenantsInApartment) => {
+            Utils.ajax("get", "tenantsStats")
+        ).then((chartsData, apartments, stats) => {
             var allRooms = 0;
             var occupied = 0;
             var rents = 0;
             apartments[0].apartments.map((apartment) => {
                 allRooms += parseInt(apartment.rooms);
             });
-            tenantsInApartment[0].map((el) => {
+            stats[0].stats.map((el) => {
                 if (el.apartment_id !== 0) {
                     occupied += parseInt(el.count);
                     rents += parseInt(el.rents);

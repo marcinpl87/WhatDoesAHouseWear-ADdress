@@ -35,7 +35,7 @@ class ApartmentsTabs extends React.Component {
                 payments: {
                     title: "Płatności",
                     subTitle: "Opłacone w tym miesiącu",
-                    val: (Utils.findArrValById(tenantsInApartmentFlat, apartment.id, 2) || 0) + "zł",
+                    val: parseInt(Utils.findArrValById(tenantsInApartmentFlat, apartment.id, 2) || 0) + "zł",
                     valGreen: false,
                     percentage: "100",
                     percentageGreen: true,
@@ -79,13 +79,13 @@ class ApartmentsTabs extends React.Component {
     componentDidMount() {
         $.when(
             Utils.ajax("get", "apartments"),
-            $.get("/api.php?r=tenantsInApartment")
-        ).then((dataApartments, tenantsInApartment) => {
+            Utils.ajax("get", "tenantsStats")
+        ).then((dataApartments, stats) => {
             this.setState(() => {
                 return {
                     data: this.createTableStructure(
                         dataApartments[0].apartments,
-                        tenantsInApartment[0]
+                        stats[0].stats
                     )
                 }
             });

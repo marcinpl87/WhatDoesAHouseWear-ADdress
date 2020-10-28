@@ -75,6 +75,7 @@ add_action("rest_api_init", function() {
         },
     ]);
 });
+//TENANTS
 add_action("rest_api_init", function() {
     register_rest_route("mapi", "/tenantsOnboarding", [
         "methods" => "get",
@@ -106,6 +107,24 @@ add_action("rest_api_init", function() {
                         where status = 1
                         and apartment_id = ".$params->get_params()["apartment"]."
                         order by id desc
+                    ")->fetchAll(PDO::FETCH_ASSOC),
+                ];
+            });
+        },
+    ]);
+});
+add_action("rest_api_init", function() {
+    register_rest_route("mapi", "/tenantsStats", [
+        "methods" => "get",
+        "callback" => function() {
+            secureData(function() {
+                global $db;
+                return [
+                    "stats" => $db->query("
+                        select apartment_id, COUNT(apartment_id) as count, SUM(rent) as rents
+                        from ".PREFIX."tenants
+                        where status = 1
+                        Group By apartment_id
                     ")->fetchAll(PDO::FETCH_ASSOC),
                 ];
             });

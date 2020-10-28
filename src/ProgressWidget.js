@@ -35,7 +35,8 @@ class ProgressWidget extends React.Component {
                                     </div>
                                 </div>
                                 <div className="widget-progress-wrapper">
-                                    <div className="progress-bar-xs progress-bar-animated-alt progress">
+                                    {this.props.widgetData.percentage
+                                        && <div className="progress-bar-xs progress-bar-animated-alt progress">
                                         <div
                                             className={`progress-bar bg-${
                                                 this.props.widgetData.percentageGreen
@@ -45,14 +46,15 @@ class ProgressWidget extends React.Component {
                                             role="progressbar"
                                             style={progressStyle}
                                         />
-                                    </div>
+                                    </div>}
                                     <div className="progress-sub-label">
                                         <div className="sub-label-left">{
                                             this.props.widgetData.timer
-                                                ? <Countdown date={this.props.widgetData.timer} />
-                                                : ""
+                                                && <Countdown date={this.props.widgetData.timer} />
                                         }</div>
-                                        <div className="sub-label-right">{this.props.widgetData.percentage}%</div>
+                                        <div className="sub-label-right">
+                                            {this.props.widgetData.percentage}{this.props.widgetData.percentage && "%"}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
