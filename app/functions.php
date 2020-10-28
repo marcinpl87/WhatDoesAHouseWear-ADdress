@@ -23,7 +23,7 @@ function secureData($data) {
             array_merge($data(), [
                 "status" => "1",
             ]),
-            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
+            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
         );
     }
     else {

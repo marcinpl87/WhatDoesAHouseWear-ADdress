@@ -31,7 +31,7 @@ class TenantsComponent extends React.Component {
                         && (t.sender !== null)
                         && (x.sender_name.toLowerCase() == t.sender.toLowerCase())
                     ) {
-                        paid += t.value;
+                        paid += parseInt(t.value);
                     }
                 });
                 x.apartment_id = Utils.findArrValById(
