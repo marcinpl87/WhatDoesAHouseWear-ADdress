@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import MTable from './MTable';
 import PageHeader from './PageHeader';
 import LoaderComponent from './LoaderComponent';
+import Utils from './Utils';
 
 class PageFix extends React.Component {
     constructor(props) {
@@ -44,11 +45,11 @@ class PageFix extends React.Component {
     componentDidMount() {
         $.when(
             $.get("/api.php?r="+this.state.dbTable, {id: this.state.id}),
-            $.get("/api.php?r=apartments")
+            Utils.ajax("get", "apartments")
         ).then((tenantData, apartmentsData) => {
             this.setState(() => {
                 return {
-                    data: this.createTableStructure(tenantData[0], apartmentsData[0])
+                    data: this.createTableStructure(tenantData[0], apartmentsData[0].apartments)
                 }
             });
         });

@@ -78,12 +78,15 @@ class ApartmentsTabs extends React.Component {
     }
     componentDidMount() {
         $.when(
-            $.get("/api.php?r=apartments"),
+            Utils.ajax("get", "apartments"),
             $.get("/api.php?r=tenantsInApartment")
         ).then((dataApartments, tenantsInApartment) => {
             this.setState(() => {
                 return {
-                    data: this.createTableStructure(dataApartments[0], tenantsInApartment[0])
+                    data: this.createTableStructure(
+                        dataApartments[0].apartments,
+                        tenantsInApartment[0]
+                    )
                 }
             });
         });

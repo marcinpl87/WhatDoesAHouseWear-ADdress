@@ -64,7 +64,7 @@ class TenantsComponent extends React.Component {
         $.when(
             $.get("/api.php", {r: "tenantsOnboarding", apartmentId: this.props.apartmentId}),
             $.get("/api.php", {r: "tenants", apartmentId: this.props.apartmentId}),
-            $.get("/api.php", {r: "apartments"}),
+            Utils.ajax("get", "apartments"),
             Utils.ajax("get", "finance")
         ).then((onboardingData, tenantData, apartmentsData, financeData) => {
             financeData[0].transactions = financeData[0].transactions.filter((row) => {
@@ -77,7 +77,11 @@ class TenantsComponent extends React.Component {
             this.setState(() => {
                 return {
                     onboarding: this.createOnboardingStructure(onboardingData[0]),
-                    data: this.createTableStructure(tenantData[0], apartmentsData[0], financeData[0].transactions),
+                    data: this.createTableStructure(
+                        tenantData[0],
+                        apartmentsData[0].apartments,
+                        financeData[0].transactions
+                    ),
                 }
             });
         });

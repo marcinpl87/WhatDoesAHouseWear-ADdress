@@ -53,11 +53,14 @@ class PageFixes extends React.Component {
     getData() {
         $.when(
             $.get("/api.php", {r: this.props.headerData.hash}),
-            $.get("/api.php", {r: "apartments"})
+            Utils.ajax("get", "apartments")
         ).then((tenantData, apartmentsData) => {
             this.setState(() => {
                 return {
-                    data: this.createTableStructure(tenantData[0], apartmentsData[0]),
+                    data: this.createTableStructure(
+                        tenantData[0],
+                        apartmentsData[0].apartments
+                    ),
                 }
             });
         });

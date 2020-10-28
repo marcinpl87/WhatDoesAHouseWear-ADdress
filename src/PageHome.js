@@ -5,6 +5,7 @@ import PageHeader from './PageHeader';
 import ProgressWidget from './ProgressWidget';
 import ChartComponent from './ChartComponent';
 import LoaderComponent from './LoaderComponent';
+import Utils from './Utils';
 
 class PageHome extends React.Component {
     constructor(props) {
@@ -19,19 +20,19 @@ class PageHome extends React.Component {
     componentDidMount() {
         $.when(
             $.get("/api.php?r=charts"),
-            $.get("/api.php?r=apartments"),
+            Utils.ajax("get", "apartments"),
             $.get("/api.php?r=tenantsInApartment")
         ).then((chartsData, apartments, tenantsInApartment) => {
             var allRooms = 0;
             var occupied = 0;
             var rents = 0;
-            apartments[0].map((apartment) => {
-                allRooms += apartment.rooms;
+            apartments[0].apartments.map((apartment) => {
+                allRooms += parseInt(apartment.rooms);
             });
             tenantsInApartment[0].map((el) => {
                 if (el.apartment_id !== 0) {
-                    occupied += el.count;
-                    rents += el.rents;
+                    occupied += parseInt(el.count);
+                    rents += parseInt(el.rents);
                 }
             });
             this.setState(() => {

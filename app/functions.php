@@ -58,4 +58,21 @@ add_action("rest_api_init", function() {
         },
     ]);
 });
+add_action("rest_api_init", function() {
+    register_rest_route("mapi", "/apartments", [
+        "methods" => "get",
+        "callback" => function(WP_REST_Request $params) {
+            secureData(function() {
+                global $db;
+                return [
+                    "apartments" => $db->query("
+                        select *
+                        from ".PREFIX."apartments
+                        order by id asc
+                    ")->fetchAll(PDO::FETCH_ASSOC),
+                ];
+            });
+        },
+    ]);
+});
 ?>
