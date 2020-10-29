@@ -32,7 +32,10 @@ const menuElements = [
     ]],
 //    ['fixes', PageFixes, 'pe-7s-server', 'Logi', false],
 //    ['fixes', PageFixes, 'pe-7s-paint-bucket', 'Wygląd', false],
-    ['config', PageConfigs, 'pe-7s-config', 'Ustawienia', true, PageConfig]
+    ['config', PageFixes, 'pe-7s-config', 'Ustawienia', true, PageFix, [
+        ["Klucz", ["text", "key_name"]],
+        ["Wartość", ["text", "val"]],
+    ]],
 ];
 
 class Wrapper extends React.Component {

@@ -24,7 +24,7 @@ class PageFix extends React.Component {
             }
         });
         $.when(
-            $.get("/api.php", {r: this.props.headerData.hash, task: "del", id: this.state.id}),
+            Utils.ajax("delete", this.props.headerData.hash + "/" + this.state.id)
         ).then(() => {
             window.location.hash = window.location.hash.split("/")[0];
         });
@@ -44,12 +44,15 @@ class PageFix extends React.Component {
     }
     componentDidMount() {
         $.when(
-            $.get("/api.php?r="+this.state.dbTable, {id: this.state.id}),
+            Utils.ajax("get", this.props.headerData.hash + "/" + this.state.id),
             Utils.ajax("get", "apartments")
-        ).then((tenantData, apartmentsData) => {
+        ).then((fixData, apartmentsData) => {
             this.setState(() => {
                 return {
-                    data: this.createTableStructure(tenantData[0], apartmentsData[0].apartments)
+                    data: this.createTableStructure(
+                        fixData[0][this.props.headerData.hash],
+                        apartmentsData[0].apartments
+                    )
                 }
             });
         });

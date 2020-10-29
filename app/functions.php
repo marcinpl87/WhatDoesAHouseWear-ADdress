@@ -32,6 +32,66 @@ function secureData($data) {
         ]);
     }
 }
+function crud($db, $table) {
+    add_action("rest_api_init", function() use(&$db, &$table) {
+        register_rest_route("mapi", "/".$table, [
+            "methods" => "get",
+            "callback" => function() use(&$db, &$table) {
+                secureData(function() use(&$db, &$table) {
+                    return [
+                        $table => $db->query("
+                            select *
+                            from ".PREFIX.$table."
+                            order by id desc
+                        ")->fetchAll(PDO::FETCH_ASSOC),
+                    ];
+                });
+            },
+        ]);
+        register_rest_route("mapi", "/".$table."/(?P<id>\d+)", [
+            "methods" => "get",
+            "callback" => function(WP_REST_Request $params) use(&$db, &$table) {
+                secureData(function() use(&$db, &$table, &$params) {
+                    return [
+                        $table => $db->query("
+                            select *
+                            from ".PREFIX.$table."
+                            where id = ".$params->get_params()["id"]."
+                        ")->fetchAll(PDO::FETCH_ASSOC),
+                    ];
+                });
+            },
+        ]);
+        register_rest_route("mapi", "/".$table, [
+            "methods" => "post",
+            "callback" => function() use(&$db, &$table) {
+                secureData(function() use(&$db, &$table) {
+                    return [
+                        "status" => $db->prepare("
+                            INSERT
+                            INTO ".PREFIX.$table."
+                            (date_add) VALUES (now())
+                        ")->execute(),
+                    ];
+                });
+            },
+        ]);
+        register_rest_route("mapi", "/".$table."/(?P<id>\d+)", [
+            "methods" => "delete",
+            "callback" => function(WP_REST_Request $params) use(&$db, &$table) {
+                secureData(function() use(&$db, &$table, &$params) {
+                    return [
+                        "status" => $db->prepare("
+                            DELETE
+                            FROM ".PREFIX.$table."
+                            WHERE id = ".$params->get_params()["id"]
+                        )->execute(),
+                    ];
+                });
+            },
+        ]);
+    });
+}
 
 add_action("rest_api_init", function() {
     register_rest_route("mapi", "/finance", [
@@ -75,7 +135,6 @@ add_action("rest_api_init", function() {
         },
     ]);
 });
-//TENANTS
 add_action("rest_api_init", function() {
     register_rest_route("mapi", "/tenants", [
         "methods" => "get",
@@ -183,4 +242,7 @@ add_action("rest_api_init", function() {
         },
     ]);
 });
+crud($db, "fixes");
+crud($db, "mails");
+crud($db, "config");
 ?>

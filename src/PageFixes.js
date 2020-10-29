@@ -23,13 +23,13 @@ class PageFixes extends React.Component {
             }
         });
         $.when(
-            $.get("/api.php", {r: this.props.headerData.hash, task: "add"}),
+            Utils.ajax("post", this.props.headerData.hash)
         ).then(() => {
             this.getData();
         });
     }
     createTableStructure(data, apartments) {
-        var headers = this.props.headerData.headers.map(function(x) {
+        var headers = this.props.headerData.headers.map((x) => {
             return x[0];
         });
         headers.unshift("Id");
@@ -52,13 +52,13 @@ class PageFixes extends React.Component {
     }
     getData() {
         $.when(
-            $.get("/api.php", {r: this.props.headerData.hash}),
+            Utils.ajax("get", this.props.headerData.hash),
             Utils.ajax("get", "apartments")
-        ).then((tenantData, apartmentsData) => {
+        ).then((fixesData, apartmentsData) => {
             this.setState(() => {
                 return {
                     data: this.createTableStructure(
-                        tenantData[0],
+                        fixesData[0][this.props.headerData.hash],
                         apartmentsData[0].apartments
                     ),
                 }
