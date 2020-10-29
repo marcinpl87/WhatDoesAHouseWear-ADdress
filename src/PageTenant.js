@@ -163,17 +163,17 @@ class PageTenant extends React.Component {
     }
     componentDidMount() {
         $.when(
-            $.get("/api.php?r="+this.state.dbTable, {id: this.state.id}),
+            Utils.ajax("get", this.state.dbTable + "/" + this.state.id),
             Utils.ajax("get", "apartments")
         ).then((tenantData, apartmentsData) => {
             this.setState(() => {
                 return {
                     data: this.createTableStructure(
-                        tenantData[0][0],
+                        tenantData[0].tenant[0],
                         apartmentsData[0].apartments
                     ),
-                    contract: tenantData[0][1][0].val,
-                    tenantObj: tenantData[0][0][0]
+                    contract: tenantData[0].tenant[1][0].val,
+                    tenantObj: tenantData[0].tenant[0][0]
                 }
             });
         });

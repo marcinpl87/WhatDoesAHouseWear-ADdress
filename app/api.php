@@ -27,36 +27,6 @@ if ($_GET) {
     else if ($_GET["r"] == "tenantsOnboarding") {
     }
     else if ($_GET["r"] == "tenants") {
-        if (isset($_GET["id"])) {
-            echo json_encode(
-                array(
-                    $db->query("
-                        select *
-                        from ".PREFIX."tenants
-                        where id = ".$_GET["id"]."
-                        and status = 1
-                    ")->fetchAll(PDO::FETCH_ASSOC),
-                    $db->query("
-                        select val
-                        from ".PREFIX."config
-                        where key_name = \"contract\"
-                    ")->fetchAll(PDO::FETCH_ASSOC)
-                ),
-                JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
-            );
-        }
-        else {
-            echo json_encode(
-                $db->query("
-                    select id, name, apartment_id, room_id, rent, email, sender_name
-                    from ".PREFIX."tenants
-                    where status = 1
-                    ".(isset($_GET["apartmentId"]) ? ("and apartment_id = ".$_GET["apartmentId"]) : "")."
-                    order by id desc
-                ")->fetchAll(PDO::FETCH_ASSOC),
-                JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
-            );
-        }
     }
     else if ($_GET["r"] == "fixes" || $_GET["r"] == "mails") {
         if (isset($_GET["task"]) && $_GET["task"] == "add") {

@@ -65,10 +65,12 @@ class TenantsComponent extends React.Component {
             Utils.ajax("get", this.props.apartmentId
                 ? "tenantsOnboardingInApartment/" + this.props.apartmentId
                 : "tenantsOnboarding"),
-            $.get("/api.php", {r: "tenants", apartmentId: this.props.apartmentId}),
+            Utils.ajax("get", this.props.apartmentId
+                ? "tenantsInApartment/" + this.props.apartmentId
+                : "tenants"),
             Utils.ajax("get", "apartments"),
             Utils.ajax("get", "finance")
-        ).then((onboardingData, tenantData, apartmentsData, financeData) => {
+        ).then((onboardingData, tenantsData, apartmentsData, financeData) => {
             financeData[0].transactions = financeData[0].transactions.filter((row) => {
                 return row.date_transaction.substr(6, 4) == new Date().getFullYear();
             }).filter((row) => {
@@ -80,7 +82,7 @@ class TenantsComponent extends React.Component {
                 return {
                     onboarding: this.createOnboardingStructure(onboardingData[0].tenants),
                     data: this.createTableStructure(
-                        tenantData[0],
+                        tenantsData[0].tenants,
                         apartmentsData[0].apartments,
                         financeData[0].transactions
                     ),
