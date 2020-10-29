@@ -21,14 +21,14 @@ function secureData($data) {
     ) {
         echo json_encode(
             array_merge($data(), [
-                "status" => "1",
+                "session" => "1",
             ]),
             JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
         );
     }
     else {
         echo json_encode([
-            "status" => "0",
+            "session" => "0",
         ]);
     }
 }

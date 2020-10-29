@@ -130,11 +130,6 @@ class PageFinance extends React.Component {
                 this.filterYear();
                 this.filterPayments();
             });
-            if (data.status !== "1") {
-                window.location.reload(true);
-            }
-        }).fail((response) => {
-            window.location.reload(true);
         });
     }
     render() {

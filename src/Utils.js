@@ -25,6 +25,12 @@ class Utils {
         });
         return [this.mRound(sum), sumArr];
     }
+    expiredSessionHandler() {
+        console.log("User session error");
+        setTimeout(() => {
+            location.reload();
+        }, 5000);
+    }
     ajax(method, url) {
         return $.ajax({
             method: method,
@@ -36,6 +42,12 @@ class Utils {
                     $(".app-container").data("nonce")
                 );
             }
+        }).done((data) => {
+            if (data.session !== "1") {
+                this.expiredSessionHandler();
+            }
+        }).fail(() => {
+            this.expiredSessionHandler();
         });
     }
 }
