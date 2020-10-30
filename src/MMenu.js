@@ -15,7 +15,7 @@ class MMenu extends React.Component {
                         aClass = "mm-active";
                     }
                     var href = val[0] == "home" ? "#" : "#"+val[0];
-                    return <li key={index}>
+                    return val[3] && <li key={index}>
                         <a href={href} className={aClass}>
                             <i className={`metismenu-icon ${val[2]}`}></i>{val[3]}
                         </a>

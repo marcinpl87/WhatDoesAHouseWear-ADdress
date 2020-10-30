@@ -19,7 +19,7 @@ class PageHome extends React.Component {
     }
     componentDidMount() {
         $.when(
-            $.get("/api.php?r=charts"),
+            Utils.ajax("get", "config/2"),
             Utils.ajax("get", "apartments"),
             Utils.ajax("get", "tenantsStats")
         ).then((chartsData, apartments, stats) => {
@@ -37,7 +37,7 @@ class PageHome extends React.Component {
             });
             this.setState(() => {
                 return {
-                    data: Object.values(chartsData[0]),
+                    data: Object.values(JSON.parse(chartsData[0].config[0].val)),
                     rents: rents,
                     occupiedRooms: occupied,
                     occupiedRoomsPercentage: Math.round(occupied / allRooms * 100)
@@ -75,6 +75,7 @@ class PageHome extends React.Component {
                 </div>
                 {this.state.data ? this.state.data.map((c, i) => {
                     return <div className="row" key={i}>
+
                         <div className="col-md-12">
                             <ChartComponent config={c} />
                         </div>

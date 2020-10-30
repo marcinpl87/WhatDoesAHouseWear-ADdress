@@ -5,14 +5,13 @@ import $ from 'jquery';
 import StructureTheme from './StructureTheme';
 import MMenu from './MMenu';
 import PageHome from './PageHome';
+// import PageDashboard from './PageDashboard';
 import PageTenants from './PageTenants';
 import PageTenant from './PageTenant';
 import PageFinance from './PageFinance';
 import PageApartments from './PageApartments';
 import PageFixes from './PageFixes';
 import PageFix from './PageFix';
-import PageConfigs from './PageConfigs';
-import PageConfig from './PageConfig';
 
 const menuElements = [
     ['home', PageHome, 'pe-7s-home', 'Strona główna', false],
@@ -36,6 +35,7 @@ const menuElements = [
         ["Klucz", ["text", "key_name"]],
         ["Wartość", ["text", "val"]],
     ]],
+    // ['dash', PageDashboard, 'pe-7s-home', false, false],
 ];
 
 class Wrapper extends React.Component {

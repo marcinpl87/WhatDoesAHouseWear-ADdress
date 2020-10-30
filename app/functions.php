@@ -93,12 +93,11 @@ function crud($db, $table) {
     });
 }
 
-add_action("rest_api_init", function() {
+add_action("rest_api_init", function() use(&$db) {
     register_rest_route("mapi", "/finance", [
         "methods" => "get",
-        "callback" => function() {
-            secureData(function() {
-                global $db;
+        "callback" => function() use(&$db) {
+            secureData(function() use(&$db) {
                 return [
                     "transactions" => $db->query("
                         select id, date_transaction, value, sender, receiver, title, category_id
@@ -117,13 +116,10 @@ add_action("rest_api_init", function() {
             });
         },
     ]);
-});
-add_action("rest_api_init", function() {
     register_rest_route("mapi", "/apartments", [
         "methods" => "get",
-        "callback" => function() {
-            secureData(function() {
-                global $db;
+        "callback" => function() use(&$db) {
+            secureData(function() use(&$db) {
                 return [
                     "apartments" => $db->query("
                         select *
