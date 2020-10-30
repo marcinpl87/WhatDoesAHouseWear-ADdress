@@ -5,7 +5,7 @@ import $ from 'jquery';
 import StructureTheme from './StructureTheme';
 import MMenu from './MMenu';
 import PageHome from './PageHome';
-// import PageDashboard from './PageDashboard';
+import PageDashboard from './PageDashboard';
 import PageTenants from './PageTenants';
 import PageTenant from './PageTenant';
 import PageFinance from './PageFinance';
@@ -35,7 +35,7 @@ const menuElements = [
         ["Klucz", ["text", "key_name"]],
         ["Wartość", ["text", "val"]],
     ]],
-    // ['dash', PageDashboard, 'pe-7s-home', false, false],
+    ['dash', PageDashboard, 'pe-7s-home', false, false],
 ];
 
 class Wrapper extends React.Component {

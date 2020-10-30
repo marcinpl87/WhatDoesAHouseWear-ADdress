@@ -52,11 +52,6 @@ if ($_GET) {
         );
     }
     else if ($_GET["r"] == "charts") {
-        echo $db->query("
-            select val
-            from ".PREFIX."config
-            where key_name = \"charts\"
-        ")->fetchAll(PDO::FETCH_ASSOC)[0]["val"];
     }
 }
 else if ($_POST) {

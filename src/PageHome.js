@@ -19,7 +19,7 @@ class PageHome extends React.Component {
     }
     componentDidMount() {
         $.when(
-            Utils.ajax("get", "config/2"),
+            Utils.ajax("get", "configByName/charts"),
             Utils.ajax("get", "apartments"),
             Utils.ajax("get", "tenantsStats")
         ).then((chartsData, apartments, stats) => {
@@ -75,7 +75,6 @@ class PageHome extends React.Component {
                 </div>
                 {this.state.data ? this.state.data.map((c, i) => {
                     return <div className="row" key={i}>
-
                         <div className="col-md-12">
                             <ChartComponent config={c} />
                         </div>

@@ -130,6 +130,20 @@ add_action("rest_api_init", function() use(&$db) {
             });
         },
     ]);
+    register_rest_route("mapi", "/configByName/(?P<name>\w+)", [
+        "methods" => "get",
+        "callback" => function(WP_REST_Request $params) use(&$db) {
+            secureData(function() use(&$db, &$params) {
+                return [
+                    "config" => $db->query("
+                        select *
+                        from ".PREFIX."config
+                        where key_name = '".$params->get_params()["name"]."'
+                    ")->fetchAll(PDO::FETCH_ASSOC),
+                ];
+            });
+        },
+    ]);
 });
 add_action("rest_api_init", function() {
     register_rest_route("mapi", "/tenants", [
