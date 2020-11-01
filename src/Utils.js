@@ -31,11 +31,12 @@ class Utils {
             location.reload();
         }, 5000);
     }
-    ajax(method, url) {
+    ajax(method, url, data) {
         return $.ajax({
             method: method,
             url: "/wp-json/mapi/" + url,
             dataType: "json",
+            data: data,
             beforeSend: (xhr) => {
                 xhr.setRequestHeader(
                     "X-WP-Nonce",

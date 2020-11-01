@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 
 import DropDownDot from './DropDownDot';
 import ButtonDot from './ButtonDot';
+import Utils from './Utils';
 
 class BadgeButton extends React.Component {
     constructor(props) {
@@ -13,11 +14,14 @@ class BadgeButton extends React.Component {
         this.updateCat = this.updateCat.bind(this);
     }
     updateCat(cat = 0) {
-        $.get("/api.php", {
-            r: "categorise",
-            id: this.props.transactionData[0],
-            cat: cat
-        }, (data) => {
+        Utils.ajax(
+            "post",
+            "categorise",
+            {
+                id: this.props.transactionData[0],
+                category: cat
+            }
+        ).done(() => {
             this.setState((prevState, props) => {
                 return {
                     cat: cat
