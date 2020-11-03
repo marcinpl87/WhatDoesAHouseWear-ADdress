@@ -37,9 +37,6 @@ if ($_GET) {
     else if ($_GET["r"] == "tenantsInApartment") {
     }
     else if ($_GET["r"] == "rules") {
-        echo json_encode(array("status" => $db
-            ->prepare("INSERT INTO ".PREFIX."rules (transaction_column, relation, value, cateogry_id) VALUES (?,?,?,?)")
-            ->execute([$_GET["transaction_column"], $_GET["relation"], $_GET["value"], $_GET["category_id"]])));
     }
     else if ($_GET["r"] == "categorise") {
     }

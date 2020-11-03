@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import Utils from './Utils';
+
 class CategoriseTransactionsAdd extends React.Component {
     constructor(props) {
         super(props);
@@ -19,7 +21,11 @@ class CategoriseTransactionsAdd extends React.Component {
     }
     ruleSave() {
         event.preventDefault();
-        $.get("/api.php?r=rules", this.state, (data) => {
+        Utils.ajax(
+            "post",
+            "rules",
+            this.state
+        ).done((data) => {
             if(data.status) {
                 this.props.onNewRow(this.state);
             }

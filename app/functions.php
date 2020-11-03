@@ -162,6 +162,26 @@ add_action("rest_api_init", function() use(&$db) {
             });
         },
     ]);
+    register_rest_route("mapi", "/rules", [
+        "methods" => "post",
+        "callback" => function(WP_REST_Request $params) use(&$db) {
+            secureData(function() use(&$db, &$params) {
+                return [
+                    "status" => $db->prepare("
+                        INSERT
+                        INTO ".PREFIX."rules
+                        (transaction_column, relation, value, cateogry_id)
+                        VALUES (?,?,?,?)
+                    ")->execute([
+                        $params->get_body_params()["transaction_column"],
+                        $params->get_body_params()["relation"],
+                        $params->get_body_params()["value"],
+                        $params->get_body_params()["category_id"],
+                    ]),
+                ];
+            });
+        },
+    ]);
 });
 add_action("rest_api_init", function() {
     register_rest_route("mapi", "/tenants", [
