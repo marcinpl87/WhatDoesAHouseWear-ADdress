@@ -234,7 +234,7 @@ add_action("rest_api_init", function() {
                 global $db;
                 return [
                     "tenants" => $db->query("
-                        select id, name, apartment_id, room_id, rent, email, sender_name
+                        select *
                         from ".PREFIX."tenants
                         where status = 1
                         order by id desc
@@ -273,40 +273,7 @@ add_action("rest_api_init", function() {
                 global $db;
                 return [
                     "tenants" => $db->query("
-                        select id, name, apartment_id, room_id, rent, email, sender_name
-                        from ".PREFIX."tenants
-                        where status = 1
-                        and apartment_id = ".$params->get_params()["apartment"]."
-                        order by id desc
-                    ")->fetchAll(PDO::FETCH_ASSOC),
-                ];
-            });
-        },
-    ]);
-    register_rest_route("mapi", "/tenantsOnboarding", [
-        "methods" => "get",
-        "callback" => function() {
-            secureData(function() {
-                global $db;
-                return [
-                    "tenants" => $db->query("
-                        select id, name, is_contract, is_deposit, is_1st_rent, is_insurance, is_warranty, is_key, is_protocol
-                        from ".PREFIX."tenants
-                        where status = 1
-                        order by id desc
-                    ")->fetchAll(PDO::FETCH_ASSOC),
-                ];
-            });
-        },
-    ]);
-    register_rest_route("mapi", "/tenantsOnboardingInApartment/(?P<apartment>\d+)", [
-        "methods" => "get",
-        "callback" => function(WP_REST_Request $params) {
-            secureData(function() use(&$params) {
-                global $db;
-                return [
-                    "tenants" => $db->query("
-                        select id, name, is_contract, is_deposit, is_1st_rent, is_insurance, is_warranty, is_key, is_protocol
+                        select *
                         from ".PREFIX."tenants
                         where status = 1
                         and apartment_id = ".$params->get_params()["apartment"]."

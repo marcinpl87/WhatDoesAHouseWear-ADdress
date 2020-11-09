@@ -51,6 +51,9 @@ class Utils {
             this.expiredSessionHandler();
         });
     }
+    objPick(obj, props) {
+        return props.reduce((a, e) => (a[e] = obj[e], a), {});
+    }
 }
 
 export default new Utils();

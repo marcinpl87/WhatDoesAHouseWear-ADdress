@@ -39,9 +39,14 @@ class TenantsComponent extends React.Component {
                     x.apartment_id
                 );
                 x.paid = paid;
-                delete x.email;
-                delete x.sender_name;
-                return Object.values(x);
+                return Object.values(Utils.objPick(x, [
+                    "id",
+                    "name",
+                    "apartment_id",
+                    "room_id",
+                    "rent",
+                    "paid",
+                ]));
             })
         };
     }
@@ -51,6 +56,17 @@ class TenantsComponent extends React.Component {
             clickableHash: "tenants",
             headers: ["Id", "Imię i Nazwisko", "Umowa podpisana", "Kaucja opłacona", "1 czynsz opłacony", "Polisa odebrana", "Poręczenie odebrane", "Klucze wydane", "Protokół podpisany"],
             rows: data.map(x => {
+                var x = Utils.objPick(x, [
+                    "id",
+                    "name",
+                    "is_contract",
+                    "is_deposit",
+                    "is_1st_rent",
+                    "is_insurance",
+                    "is_warranty",
+                    "is_key",
+                    "is_protocol",
+                ]);
                 var checkboxes = Object.values(x).map(binaryValue => {
                     return (binaryValue == "1") ? "☑" : "";
                 });
@@ -60,17 +76,30 @@ class TenantsComponent extends React.Component {
             })
         };
     }
+    createContactsStructure(data) {
+        return {
+            title: false,
+            clickableHash: "tenants",
+            headers: ["Id", "Imię i Nazwisko", "Numer telefonu", "Numer telefonu poręczyciela"],
+            rows: data.map(x => {
+                var x = Utils.objPick(x, [
+                    "id",
+                    "name",
+                    "phone",
+                    "ice_phone",
+                ]);
+                return Object.values(x);
+            })
+        };
+    }
     componentDidMount() {
         $.when(
-            Utils.ajax("get", this.props.apartmentId
-                ? "tenantsOnboardingInApartment/" + this.props.apartmentId
-                : "tenantsOnboarding"),
             Utils.ajax("get", this.props.apartmentId
                 ? "tenantsInApartment/" + this.props.apartmentId
                 : "tenants"),
             Utils.ajax("get", "apartments"),
             Utils.ajax("get", "finance")
-        ).then((onboardingData, tenantsData, apartmentsData, financeData) => {
+        ).then((tenantsData, apartmentsData, financeData) => {
             financeData[0].transactions = financeData[0].transactions.filter((row) => {
                 return row.date_transaction.substr(6, 4) == new Date().getFullYear();
             }).filter((row) => {
@@ -80,7 +109,8 @@ class TenantsComponent extends React.Component {
             });
             this.setState(() => {
                 return {
-                    onboarding: this.createOnboardingStructure(onboardingData[0].tenants),
+                    onboarding: this.createOnboardingStructure(tenantsData[0].tenants),
+                    contacts: this.createContactsStructure(tenantsData[0].tenants),
                     data: this.createTableStructure(
                         tenantsData[0].tenants,
                         apartmentsData[0].apartments,
@@ -99,6 +129,9 @@ class TenantsComponent extends React.Component {
                 </div>
                 <div className="main-card mb-3 card">
                     <MTable tableData={this.state.onboarding} />
+                </div>
+                <div className="main-card mb-3 card">
+                    <MTable tableData={this.state.contacts} />
                 </div>
                 <div className="card-shadow-info border mb-3 card card-body border-info">
                     <h5 className="card-title">Emaile najemców</h5>
