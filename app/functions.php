@@ -182,6 +182,49 @@ add_action("rest_api_init", function() use(&$db) {
             });
         },
     ]);
+    register_rest_route("mapi", "/transactions", [
+        "methods" => "post",
+        "callback" => function(WP_REST_Request $params) use(&$db) {
+            $prep = $db->prepare("INSERT INTO ".PREFIX."data (
+                date_timestamp,
+                date_transaction,
+                date_accounting,
+                sender,
+                receiver,
+                title,
+                value,
+                value2
+            ) VALUES (?,?,?,?,?,?,?,?)");
+            $db->beginTransaction();
+            try {
+                foreach($params->get_body_params()["data"] as &$row) {
+                    $prep->execute([
+                        date("Y-m-d H:i:s", strtotime($row[0])),
+                        $row[0],
+                        $row[0],
+                        $row[2],
+                        $row[3],
+                        $row[4],
+                        str_replace(",", ".", $row[1]),
+                        str_replace(",", ".", $row[1])
+                    ]);
+                }
+                $db->commit();
+                secureData(function() use(&$db, &$params) {
+                    return [
+                        "status" => true,
+                    ];
+                });
+            } catch (Exception $e) {
+                $db->rollBack();
+                secureData(function() use(&$db, &$params) {
+                    return [
+                        "status" => false,
+                    ];
+                });
+            }
+        },
+    ]);
 });
 add_action("rest_api_init", function() {
     register_rest_route("mapi", "/tenants", [

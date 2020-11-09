@@ -44,37 +44,5 @@ if ($_GET) {
     }
 }
 else if ($_POST) {
-    if ($_POST["r"] == "transactions") {
-        $prep = $db->prepare("INSERT INTO ".PREFIX."data (
-            date_timestamp,
-            date_transaction,
-            date_accounting,
-            sender,
-            receiver,
-            title,
-            value,
-            value2
-        ) VALUES (?,?,?,?,?,?,?,?)");
-        $db->beginTransaction();
-        try {
-            foreach($_POST["data"] as &$row) {
-                $prep->execute([
-                    date("Y-m-d H:i:s", strtotime($row[0])),
-                    $row[0],
-                    $row[0],
-                    $row[2],
-                    $row[3],
-                    $row[4],
-                    str_replace(",", ".", $row[1]),
-                    str_replace(",", ".", $row[1])
-                ]);
-            }
-            $db->commit();
-            echo json_encode(array("status" => true));
-        } catch (Exception $e) {
-            $db->rollBack();
-            echo json_encode(array("status" => false));
-        }
-    }
 }
 ?>

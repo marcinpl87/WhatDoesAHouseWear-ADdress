@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import Dropzone from 'dropzone';
 
 import MTable from './MTable';
+import Utils from './Utils';
 
 class CsvUploadComponent extends React.Component {
     constructor(props) {
@@ -19,22 +20,17 @@ class CsvUploadComponent extends React.Component {
                 showSubmit: false
             }
         });
-        $.ajax({
-            type: 'POST',
-            url: "/api.php",
-            data: {r: "transactions", data: this.state.sendToApi},
-            success: function(data) {
+        Utils.ajax(
+            "post",
+            "transactions",
+            {data: this.state.sendToApi}
+        ).done((data) => {
                 if (data.status) {
                     location.reload();
                 }
                 else {
                     alert("API error");
                 }
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                alert("API error");
-                console.log("error", jqXHR, textStatus, errorThrown);
-            }
         });
     }
     replaceBulk(str, findArray, replaceArray) {
