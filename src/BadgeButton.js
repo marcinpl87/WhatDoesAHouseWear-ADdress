@@ -48,7 +48,6 @@ class BadgeButton extends React.Component {
                     var value = this.props.transactionData[rule[1]];
                     var ruleVal = rule[3];
                 }
-                // parseInt
                 switch(rule[2]) { //relation
                     case "1": // ==
                         if(value == ruleVal) {

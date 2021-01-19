@@ -19,10 +19,10 @@ class CategoriseTransactionsComponent extends React.Component {
             return obj
         }, {});
     }
-    getColumnsObs() {
+    getColumnsObj() {
         return {2: "Kwota", 3: "Nadawca", 4: "Odbiorca", 5: "Tytuł"}
     }
-    getRelationObs() {
+    getRelationsObj() {
         return {1: "==", 2: "=>", 3: ">", 4: "<=", 5: "<"}
     }
     getCategoriesObj() {
@@ -44,16 +44,19 @@ class CategoriseTransactionsComponent extends React.Component {
     render() {
         var categories = this.props.paneData.data.categories.map(x => Object.values(x));
         var flatArr = this.state.flatArr;
-        flatArr.map(x => {return x[1] = Number.isInteger(x[1]) ? this.getColumnsObs()[x[1]] : x[1]});
-        flatArr.map(x => {return x[2] = Number.isInteger(x[2]) ? this.getRelationObs()[x[2]] : x[2]});
-        flatArr.map(x => {return x[4] = Number.isInteger(x[4]) ? this.getCategoriesObj()[x[4]].name : x[4]});
+        flatArr.map(x => {
+            x[1] = this.getColumnsObj()[parseInt(x[1])];
+            x[2] = this.getRelationsObj()[parseInt(x[2])];
+            x[4] = this.getCategoriesObj()[parseInt(x[4])].name;
+            return x;
+        });
         var tableData = {
             title: false,
             headers: false,
             rows: flatArr
         };
-        var columnsArr = Object.keys(this.getColumnsObs()).map((key) => {
-            return [Number(key), this.getColumnsObs()[key]];
+        var columnsArr = Object.keys(this.getColumnsObj()).map((key) => {
+            return [Number(key), this.getColumnsObj()[key]];
         });
         return (
             <React.Fragment>
