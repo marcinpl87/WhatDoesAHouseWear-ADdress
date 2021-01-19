@@ -78,7 +78,7 @@ class PageFinance extends React.Component {
         });
     }
     // filterYear(inputDate = new Date().getFullYear(), filter = false) {
-    filterYear(inputDate = "2019", filter = false) {
+    filterYear(inputDate = "2020", filter = false) {
         var oneYear = JSON.parse(JSON.stringify(this.state.dataAPI)); //clone
         oneYear.transactions = oneYear.transactions.filter((row) => {
             return row.date_transaction.substr(6, 4) == inputDate

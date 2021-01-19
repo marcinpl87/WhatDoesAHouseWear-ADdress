@@ -40,30 +40,39 @@ class BadgeButton extends React.Component {
         var proposedCat = 0;
         if (this.state.cat == 0) {
             this.props.rulesData.map((rule) => {
+                if (rule[1] == "2") { //parse to integer only for rules related to money
+                    var value = parseInt(this.props.transactionData[rule[1]]);
+                    var ruleVal = parseInt(rule[3]);
+                }
+                else {
+                    var value = this.props.transactionData[rule[1]];
+                    var ruleVal = rule[3];
+                }
+                // parseInt
                 switch(rule[2]) { //relation
-                    case 1: // ==
-                        if(this.props.transactionData[rule[1]] == rule[3]) {
-                            proposedCat = rule[4];
+                    case "1": // ==
+                        if(value == ruleVal) {
+                            proposedCat = parseInt(rule[4]);
                         }
                     break;
-                    case 2: // =>
-                        if(this.props.transactionData[rule[1]] >= rule[3]) {
-                            proposedCat = rule[4];
+                    case "2": // =>
+                        if(value >= ruleVal) {
+                            proposedCat = parseInt(rule[4]);
                         }
                     break;
-                    case 3: // >
-                        if(this.props.transactionData[rule[1]] > rule[3]) {
-                            proposedCat = rule[4];
+                    case "3": // >
+                        if(value > ruleVal) {
+                            proposedCat = parseInt(rule[4]);
                         }
                     break;
-                    case 4: // <=
-                        if(this.props.transactionData[rule[1]] <= rule[3]) {
-                            proposedCat = rule[4];
+                    case "4": // <=
+                        if(value <= ruleVal) {
+                            proposedCat = parseInt(rule[4]);
                         }
                     break;
-                    case 5: // <
-                        if(this.props.transactionData[rule[1]] < rule[3]) {
-                            proposedCat = rule[4];
+                    case "5": // <
+                        if(value < ruleVal) {
+                            proposedCat = parseInt(rule[4]);
                         }
                     break;
                 }
