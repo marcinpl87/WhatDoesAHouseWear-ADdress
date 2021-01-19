@@ -58,6 +58,12 @@ class PageFinance extends React.Component {
             rows: this.prepareData(data)
         };
     }
+    removeJanuary(sumTaxArr) { //remove january from transactions sum/array and date array
+        sumTaxArr[0] = sumTaxArr[0] - sumTaxArr[1][sumTaxArr[1].length - 1];
+        sumTaxArr[1].pop();
+        sumTaxArr[2].pop();
+        return sumTaxArr;
+    }
     filterMonth(inputDate = new Date((new Date()).getFullYear(), (new Date()).getMonth() - 1, 1), filter = false, isMonth) {
         var selected = inputDate
             .toLocaleDateString("en-US", {year: 'numeric', month: 'numeric'})
@@ -87,7 +93,7 @@ class PageFinance extends React.Component {
         });
         oneYear.monthView = false;
         oneYear.yearReport = Utils.sumTax(oneYear.transactions);
-        oneYear.yearTaxOfficeReport = Utils.sumTax(oneYear.transactions, 7);
+        oneYear.yearTaxOfficeReport = this.removeJanuary(Utils.sumTax(oneYear.transactions, 7));
         this.setState(() => {
             return {
                 dataYear: this.createTableStructure(oneYear)

@@ -32,19 +32,21 @@ class TaxPane extends React.Component {
             + Utils.mRound(taxSum[0], 0) + "zł\n\n";
             if (taxSum[0] < 100000) {
                 taxToPay = Utils.mRound(taxSum[0] * 0.085);
-                msg += "Łącznie suma podatku do zapłacenia: " + taxToPay + "zł\n\n";
             }
             else {
                 var highTax = (taxSum[0] - 100000) * 0.125;
                 taxToPay = Utils.mRound(highTax + 8500);
                 msg += "Suma do zapłacenia 8,5% podatku (do 100k): 8500zł\n"
-                + "Suma do zapłacenia 12,5% podatku (powyżej 100k): " + Utils.mRound(highTax) + "zł\n"
-                + "Łącznie suma podatku do zapłacenia: " + taxToPay + "zł\n\n";
+                + "Suma do zapłacenia 12,5% podatku (powyżej 100k): " + Utils.mRound(highTax) + "zł\n";
             }
+            msg += "Łącznie suma podatku do zapłacenia: " + taxToPay + "zł\n\n";
             var taxPayed = Utils.mRound(taxOfficeSum[0] * -1, 0);
             msg += taxOfficeSum[1].length + " wpłat do urzędu w roku:\n"
-            + Utils.replaceAll(taxOfficeSum[1].reverse().join("zł + "), "-", "") + "zł\n= "
-            + taxPayed + "zł\n\n"
+            taxOfficeSum[1].map((val, i) => {
+                msg += taxOfficeSum[2][i] + ": " + Utils.replaceAll(val, "-", "") + "zł\n";
+            });
+            msg += "\nRoczny podatek do zapłacenia: " + taxToPay + "zł\n"
+            + "Roczny podatek zapłacony: " + taxPayed + "zł\n"
             + "Ile trzeba jeszcze zapłacić podatku: " + Utils.mRound(taxToPay - taxPayed, 2) + "zł";
         }
         else {

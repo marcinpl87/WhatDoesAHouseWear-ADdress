@@ -1,12 +1,12 @@
 class Utils {
-    findArrValById(arr, id, column=1) {
+    findArrValById(arr, id, column = 1) {
         var resultArr = (arr.filter((value) => {
             return value[0]==id;
         }))[0];
         return resultArr ? resultArr[column] : 0;
     }
     replaceAll(str, find, replace) {
-        return str.replace(
+        return String(str).replace(
             new RegExp(find.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1"), 'g'),
             replace
         );
@@ -14,16 +14,18 @@ class Utils {
     mRound(num, position = 2) {
         return Number(parseFloat(num).toFixed(position));
     }
-    sumTax(transactions, cat=5) {
+    sumTax(transactions, cat = 5) {
         var sum = 0;
         var sumArr = [];
+        var dateArr = [];
         transactions.map((el) => {
             if (el.category_id == cat) {
                 sumArr.push(this.mRound(el.value));
                 sum = this.mRound(sum) + this.mRound(el.value);
+                dateArr.push(el.date_transaction);
             }
         });
-        return [this.mRound(sum), sumArr];
+        return [this.mRound(sum), sumArr, dateArr];
     }
     expiredSessionHandler() {
         console.log("User session error");
