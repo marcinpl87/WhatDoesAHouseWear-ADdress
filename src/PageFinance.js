@@ -7,6 +7,7 @@ import LoaderComponent from './LoaderComponent';
 import PageHeader from './PageHeader';
 import TabPane from './TabPane';
 import TaxPane from './TaxPane';
+import TaxPaneYear from './TaxPaneYear';
 import TabPaneUpload from './TabPaneUpload';
 import LongText from './LongText';
 import BadgeButton from './BadgeButton';
@@ -143,6 +144,7 @@ class PageFinance extends React.Component {
             [TabPaneTable, "Wszystkie", this.state.dataAll],
             [TaxPane, "Miesiąc", this.state.dataMonth],
             [TaxPane, "Rok", this.state.dataYear],
+            [TaxPaneYear, "Rok 2", this.state.dataAPI],
             [TabPaneTable, "Płatności", this.state.dataPayments],
             [TabPaneUpload, "Upload", this.state.dataAll]
         ];
