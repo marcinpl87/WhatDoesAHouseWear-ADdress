@@ -2,8 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import Utils from './Utils';
-import LongText from './LongText';
-import BadgeButton from './BadgeButton';
 import TabPaneTable from './TabPaneTable';
 
 class TaxPaneYear extends React.Component {
@@ -27,36 +25,6 @@ class TaxPaneYear extends React.Component {
         oneYear.yearTaxOfficeReport = this.removeJanuary(Utils.sumTax(oneYear.transactions, 7));
         return oneYear;
     }
-    prepareData(data) {
-        var flatArr = data.transactions.map(x => Object.values(x));
-        var flatRules = data.rules.map(x => Object.values(x));
-        flatArr.map((el) => {
-            el[5] = <LongText text={el[5]} />;
-            el[6] = <BadgeButton
-                cat={el[6]}
-                allCat={data.categories}
-                transactionData={el}
-                rulesData={flatRules}
-            />;
-        });
-        return flatArr;
-    }
-    prepareRawData(data) {
-        var flatArr = data.map(x => Object.values(x));
-        flatArr.map((el) => {
-            el[2] = parseFloat(el[2]).toFixed(2);
-        });
-        return flatArr;
-    }
-    createTableStructure(data) {
-        return {
-            data: data,
-            title: false,
-            headers: ["Id", "Data", "Kwota", "Nadawca", "Odbiorca", "Tytuł", "Kategoria_Transakcji____"],
-            rawData: this.prepareRawData(JSON.parse(JSON.stringify(data)).transactions), //clone
-            rows: this.prepareData(data)
-        };
-    }
     removeJanuary(sumTaxArr) { //remove january from transactions sum/array and date array
         sumTaxArr[0] = sumTaxArr[0] - sumTaxArr[1][sumTaxArr[1].length - 1];
         sumTaxArr[1].pop();
@@ -64,7 +32,7 @@ class TaxPaneYear extends React.Component {
         return sumTaxArr;
     }
     render() {
-        var data = this.createTableStructure(this.filterYear(
+        var data = Utils.fin().createTableStructure(this.filterYear(
             this.state.filter,
             this.state.date
         ));

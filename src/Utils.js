@@ -1,3 +1,41 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import LongText from './LongText';
+import BadgeButton from './BadgeButton';
+
+class Fin {
+    prepareData(data) {
+        var flatArr = data.transactions.map(x => Object.values(x));
+        var flatRules = data.rules.map(x => Object.values(x));
+        flatArr.map((el) => {
+            el[5] = <LongText text={el[5]} />;
+            el[6] = <BadgeButton
+                cat={el[6]}
+                allCat={data.categories}
+                transactionData={el}
+                rulesData={flatRules}
+            />;
+        });
+        return flatArr;
+    }
+    prepareRawData(data) {
+        var flatArr = data.map(x => Object.values(x));
+        flatArr.map((el) => {
+            el[2] = parseFloat(el[2]).toFixed(2);
+        });
+        return flatArr;
+    }
+    createTableStructure(data) {
+        return {
+            data: data,
+            title: false,
+            headers: ["Id", "Data", "Kwota", "Nadawca", "Odbiorca", "Tytuł", "Kategoria_Transakcji____"],
+            rawData: this.prepareRawData(JSON.parse(JSON.stringify(data)).transactions), //clone
+            rows: this.prepareData(data)
+        };
+    }
+}
+
 class Utils {
     findArrValById(arr, id, column = 1) {
         var resultArr = (arr.filter((value) => {
@@ -55,6 +93,9 @@ class Utils {
     }
     objPick(obj, props) {
         return props.reduce((a, e) => (a[e] = obj[e], a), {});
+    }
+    fin() {
+        return new Fin();
     }
 }
 

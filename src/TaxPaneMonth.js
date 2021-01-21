@@ -4,8 +4,6 @@ import DatePicker, { registerLocale } from "react-datepicker";
 import pl from "date-fns/locale/pl";
 
 import Utils from './Utils';
-import LongText from './LongText';
-import BadgeButton from './BadgeButton';
 import TabPaneTable from './TabPaneTable';
 registerLocale("pl", pl);
 
@@ -32,44 +30,8 @@ class TaxPaneMonth extends React.Component {
         oneMonth.taxPayed = Utils.sumTax(oneMonth.transactions, 7)[0];
         return oneMonth;
     }
-    prepareData(data) {
-        var flatArr = data.transactions.map(x => Object.values(x));
-        var flatRules = data.rules.map(x => Object.values(x));
-        flatArr.map((el) => {
-            el[5] = <LongText text={el[5]} />;
-            el[6] = <BadgeButton
-                cat={el[6]}
-                allCat={data.categories}
-                transactionData={el}
-                rulesData={flatRules}
-            />;
-        });
-        return flatArr;
-    }
-    prepareRawData(data) {
-        var flatArr = data.map(x => Object.values(x));
-        flatArr.map((el) => {
-            el[2] = parseFloat(el[2]).toFixed(2);
-        });
-        return flatArr;
-    }
-    createTableStructure(data) {
-        return {
-            data: data,
-            title: false,
-            headers: ["Id", "Data", "Kwota", "Nadawca", "Odbiorca", "Tytuł", "Kategoria_Transakcji____"],
-            rawData: this.prepareRawData(JSON.parse(JSON.stringify(data)).transactions), //clone
-            rows: this.prepareData(data)
-        };
-    }
-    removeJanuary(sumTaxArr) { //remove january from transactions sum/array and date array
-        sumTaxArr[0] = sumTaxArr[0] - sumTaxArr[1][sumTaxArr[1].length - 1];
-        sumTaxArr[1].pop();
-        sumTaxArr[2].pop();
-        return sumTaxArr;
-    }
     render() {
-        var data = this.createTableStructure(this.filterMonth(
+        var data = Utils.fin().createTableStructure(this.filterMonth(
             this.state.filter,
             this.state.date
         ));
