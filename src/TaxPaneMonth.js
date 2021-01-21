@@ -1,31 +1,36 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import DatePicker, { registerLocale } from "react-datepicker";
+import pl from "date-fns/locale/pl";
 
 import Utils from './Utils';
 import LongText from './LongText';
 import BadgeButton from './BadgeButton';
 import TabPaneTable from './TabPaneTable';
+registerLocale("pl", pl);
 
-class TaxPaneYear extends React.Component {
+class TaxPaneMonth extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             filter: false,
-            date: new Date().getFullYear()
+            date: new Date((new Date()).getFullYear(), (new Date()).getMonth() - 1, 1)
         };
     }
-    filterYear(filter, inputDate) {
-        var source = JSON.parse(JSON.stringify(this.props.paneData)); //clone
-        var oneYear = source;
-        oneYear.transactions = source.transactions.filter((row) => {
-            return row.date_transaction.substr(6, 4) == inputDate
+    filterMonth(filter, inputDate) {
+        var selected = inputDate
+            .toLocaleDateString("en-US", {year: 'numeric', month: 'numeric'})
+            .split("/");
+        var oneMonth = JSON.parse(JSON.stringify(this.props.paneData)); //clone
+        oneMonth.transactions = oneMonth.transactions.filter((row) => {
+            return row.date_transaction.substr(3, 2) == String("0" + selected[0]).slice(-2)
+                && row.date_transaction.substr(8, 2) == selected[1].slice(-2);
         }).filter((row) => {
             return filter ? row.value > 0 : true;
         });
-        oneYear.monthView = false;
-        oneYear.yearReport = Utils.sumTax(oneYear.transactions);
-        oneYear.yearTaxOfficeReport = this.removeJanuary(Utils.sumTax(oneYear.transactions, 7));
-        return oneYear;
+        oneMonth.monthView = true;
+        oneMonth.taxPayed = Utils.sumTax(oneMonth.transactions, 7)[0];
+        return oneMonth;
     }
     prepareData(data) {
         var flatArr = data.transactions.map(x => Object.values(x));
@@ -64,62 +69,35 @@ class TaxPaneYear extends React.Component {
         return sumTaxArr;
     }
     render() {
-        var data = this.createTableStructure(this.filterYear(
+        var data = this.createTableStructure(this.filterMonth(
             this.state.filter,
             this.state.date
         ));
-        var taxSum = data.data.yearReport;
-        var taxOfficeSum = data.data.yearTaxOfficeReport;
-        var taxToPay = 0;
-        var msg = taxSum[1].length + " transakcji w roku " + this.state.date + ":\n"
-        + taxSum[1].join(" + ") + "\n= "
-        + Utils.mRound(taxSum[0], 0) + "zł\n\n";
-        if (taxSum[0] < 100000) {
-            taxToPay = Utils.mRound(taxSum[0] * 0.085);
-        }
-        else {
-            var highTax = (taxSum[0] - 100000) * 0.125;
-            taxToPay = Utils.mRound(highTax + 8500);
-            msg += "Suma do zapłacenia 8,5% podatku (do 100k): 8500zł\n"
-            + "Suma do zapłacenia 12,5% podatku (powyżej 100k): " + Utils.mRound(highTax) + "zł\n";
-        }
-        msg += "Łącznie suma podatku do zapłacenia: " + taxToPay + "zł\n\n";
-        var taxPayed = Utils.mRound(taxOfficeSum[0] * -1, 0);
-        msg += taxOfficeSum[1].length + " wpłat do urzędu w roku:\n"
-        taxOfficeSum[1].map((val, i) => {
-            msg += taxOfficeSum[2][i] + ": " + Utils.replaceAll(val, "-", "") + "zł\n";
-        });
-        msg += "\nRoczny podatek do zapłacenia: " + taxToPay + "zł\n"
-        + "Roczny podatek zapłacony: " + taxPayed + "zł\n"
-        + "Ile trzeba zapłacić podatku w styczniu " + (this.state.date+1) + ": " + Utils.mRound(taxToPay - taxPayed, 2) + "zł";
-        var yearsArr = [];
-        var i = new Date().getFullYear();
-        do {
-            yearsArr.push(i);
-            i -= 1;
-        }
-        while (i > 2018);
+        var taxSum = Utils.sumTax(data.data.transactions);
+        var msg = taxSum[1].length + " transakcji:\n"
+        + taxSum[1].join(" + ") + " = "
+        + Utils.mRound(taxSum[0]) + "zł\n\n"
+        + "Podatek za poprzedni miesiąc zapłacony w tym miesiącu: " + Utils.replaceAll(
+            data.data.taxPayed,
+            "-",
+            ""
+        ) + "zł";
         return (
             <React.Fragment>
                 <div className="row">
                     <div className="col-md-3">
-                        <div className="form-group">
-                            <select
-                                type="select"
-                                name="year"
-                                className="custom-select"
-                                onChange={(e) => {
-                                    var val = e.currentTarget.value; //because of "This synthetic event is reused..." error
-                                    this.setState(
-                                        () => {return {date: parseInt(val)}}
-                                    );
-                                }}
-                            >
-                                {yearsArr.map((val, index) => {
-                                    return <option key={index} value={val}>{val}</option>
-                                })}
-                            </select>
-                        </div>
+                        <DatePicker
+                            dateFormat={"pl"}
+                            locale="pl"
+                            selected={this.state.date}
+                            onChange={date => {
+                                this.setState(
+                                    () => {return {date: date}}
+                                );
+                            }}
+                            showMonthYearPicker
+                            inline
+                        />
                         <div className="form-group form-check">
                             <input
                                 type="checkbox"
@@ -151,4 +129,4 @@ class TaxPaneYear extends React.Component {
     }
 }
 
-export default TaxPaneYear;
+export default TaxPaneMonth;
