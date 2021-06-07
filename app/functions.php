@@ -16,7 +16,7 @@ const PREFIX = "alior_";
 function secureData($data) {
     header("Content-type: text/csv;charset=utf-8");
     if (
-        !!wp_verify_nonce(getallheaders()["X-Wp-Nonce"], "wp_rest")
+        !!wp_verify_nonce(getallheaders()["x-wp-nonce"], "wp_rest")
         && !!is_user_logged_in()
     ) {
         echo json_encode(

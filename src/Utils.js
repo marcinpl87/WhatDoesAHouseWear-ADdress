@@ -79,7 +79,7 @@ class Utils {
             data: data,
             beforeSend: (xhr) => {
                 xhr.setRequestHeader(
-                    "X-WP-Nonce",
+                    "x-wp-nonce",
                     $(".app-container").data("nonce")
                 );
             }
