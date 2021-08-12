@@ -13,6 +13,13 @@ import PageApartments from './PageApartments';
 import PageFixes from './PageFixes';
 import PageFix from './PageFix';
 
+let hourItems = [];
+for (var hour = 0; hour < 24; hour++) {
+    let whole = hour.toString().padStart(2, "0") + ":";
+    hourItems.push([whole + "00", whole + "00"]);
+    hourItems.push([whole + "30", whole + "30"]);
+}
+
 const menuElements = [
     ['home', PageHome, 'pe-7s-home', 'Strona główna', false],
     ['apartments', PageApartments, 'pe-7s-world', 'Nieruchomości', false],
@@ -23,14 +30,26 @@ const menuElements = [
         ["Data naprawy", ["date", "date_event"]],
         ["Opis", ["text", "description"]],
         ["Cena", ["text", "price"]],
-        ["Mieszkanie", ["list", "apartment_id", "--data--"]]
+        ["Mieszkanie", ["list", "apartment_id", "--data--"]],
     ]],
     ['mails', PageFixes, 'pe-7s-mail', 'Emaile', true, PageFix, [
         ["Data dodania", ["date", "date_add"]],
-        ["Email", ["text", "description"]]
+        ["Email", ["text", "description"]],
     ]],
 //    ['fixes', PageFixes, 'pe-7s-server', 'Logi', false],
 //    ['fixes', PageFixes, 'pe-7s-paint-bucket', 'Wygląd', false],
+    ['tasks', PageFixes, 'pe-7s-note', 'Zadania', true, PageFix, [
+        ["Data dodania", ["date", "date_add"]],
+        ["Data wykonania", ["date", "date_event"]],
+        ["Godzina wykonania", ["list", "hour", hourItems]],
+        ["Nazwa", ["text", "title"]],
+        ["Status", ["list", "status", [
+            ["Todo", "Todo"],
+            ["Doing", "Doing"],
+            ["Done", "Done"],
+        ]]],
+        ["Dodatkowe informacje", ["text", "description"]],
+    ]],
     ['config', PageFixes, 'pe-7s-config', 'Ustawienia', true, PageFix, [
         ["Klucz", ["text", "key_name"]],
         ["Wartość", ["text", "val"]],

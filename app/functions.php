@@ -302,5 +302,6 @@ add_action("rest_api_init", function() {
 });
 crud($db, "fixes");
 crud($db, "mails");
+crud($db, "tasks");
 crud($db, "config");
 ?>
