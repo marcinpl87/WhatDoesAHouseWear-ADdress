@@ -225,6 +225,24 @@ add_action("rest_api_init", function() use(&$db) {
             }
         },
     ]);
+    register_rest_route("mapi", "/dynamicUpdate/(?P<name>\w+)", [
+        "methods" => "post",
+        "callback" => function(WP_REST_Request $params) use(&$db) {
+            secureData(function() use(&$db, &$params) {
+                return [
+                    "status" => $db->prepare("
+                        UPDATE
+                        ".PREFIX.$params->get_params()["name"]."
+                        SET ".$params->get_body_params()["field"]."=?
+                        WHERE id=?
+                    ")->execute([
+                        $params->get_body_params()["val"],
+                        $params->get_body_params()["id"],
+                    ]),
+                ];
+            });
+        },
+    ]);
 });
 add_action("rest_api_init", function() {
     register_rest_route("mapi", "/tenants", [

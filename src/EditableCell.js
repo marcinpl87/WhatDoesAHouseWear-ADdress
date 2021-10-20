@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Utils from './Utils';
 import SanitizeHtml from "sanitize-html";
 import ContentEditable from 'react-contenteditable';
 import EditableCellDate from './EditableCellDate';
@@ -27,12 +28,15 @@ class EditableCell extends React.Component {
         });
         clearTimeout(this.debounce);
         this.debounce = setTimeout(() => {
-            $.get("/api.php?r="+this.props.cellTable, {
-                id: this.props.cellId,
-                field: this.cellName,
-                val: val,
-                mode: "update",
-            }, (data) => {});
+            Utils.ajax(
+                "post",
+                "dynamicUpdate/" + this.props.cellTable,
+                {
+                    id: this.props.cellId,
+                    field: this.cellName,
+                    val: val,
+                }
+            ).done();
         }, 1000);
         this.setState((prevState, props) => {
             return {
