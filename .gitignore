@@ -1,6 +1,8 @@
+wp
 dist
 node_modules
 deploy.sh
+package-lock.json
 app/assets/fonts
 app/connect.php
 app/bundle.css

@@ -88,6 +88,7 @@ service apache2 restart
 
 ##### Frontend setup
 npm install --global gulp
+ln -s $install_dir/../app $install_dir/wp-content/themes/m
 chmod -R 777 $install_dir
 sudo -u m npm install --prefix $install_dir/../
 
