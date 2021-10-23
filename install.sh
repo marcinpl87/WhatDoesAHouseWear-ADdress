@@ -88,7 +88,6 @@ service apache2 restart
 
 ##### Frontend setup
 npm install --global gulp
-chmod 777 $install_dir
-chmod -r 777 $install_dir
+chmod -R 777 $install_dir
 sudo -u m npm install --prefix $install_dir/../
 
