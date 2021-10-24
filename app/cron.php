@@ -1,5 +1,8 @@
 <?php
 include(dirname(__FILE__)."/connect.php");
+include(dirname(__FILE__)."/../../../wp-config.php");
+
+const PREFIX = "alior_";
 
 function notify($db, $msg) {
     global $smsEmail;
@@ -19,9 +22,9 @@ function notify($db, $msg) {
 
 try {
     $dbTask = new PDO(
-        "mysql:dbname=".$dbname.";host=".$servername.";",
-        $username,
-        $password
+        "mysql:dbname=".DB_NAME.";host=".DB_HOST.";",
+        DB_USER,
+        DB_PASSWORD
     );
 } catch (PDOException $e) {
     die("Connection failed: ".$e->getMessage());
@@ -42,7 +45,7 @@ $dbSms->query("SET NAMES UTF8");
 
 $tasks = $dbTask->query("
     select *
-    from alior_tasks
+    from ".PREFIX."tasks
     where status = 'Todo'
     and date_event != '0000-00-00 00:00:00'
 ")->fetchAll(PDO::FETCH_ASSOC);
@@ -62,7 +65,7 @@ foreach ($tasks as $task) {
 }
 $tasks = $dbTask->query("
     select *
-    from alior_tasks
+    from ".PREFIX."tasks
     where status = 'Doing'
     and date_event != '0000-00-00 00:00:00'
 ")->fetchAll(PDO::FETCH_ASSOC);

@@ -3,11 +3,16 @@ Property management software helps landlords and real estate professionals track
 
 # How to install?
 You need any linux, I build this app on Ubuntu 18.04.3 LTS (Bionic Beaver)
+
 ## Installation steps:
-* sudo apt-get update && sudo apt install -y curl nodejs apache2 mysql-server php7.2 libapache2-mod-php7.2 php-mysql php-curl php-json php-cgi phpmyadmin
-* sudo dpkg-reconfigure phpmyadmin
-* sudo service apache2 restart
-* sudo npm install --global gulp
-* sudo mysql_secure_installation
-* git clone git@github.com:marcinpl87/WhatDoesAHouseWear-ADdress.git
-* npm i
+* copy your GIT ~/.ssh/id_rsa and ~/.ssh/id_rsa.pub files
+* $ ssh-add
+* $ git config --global user.email "email@example.com"
+* $ git config --global user.name "name"
+* $ git clone git@github.com:marcinpl87/WhatDoesAHouseWear-ADdress.git
+* $ cd WhatDoesAHouseWear-ADdress
+* $ sudo ./install.sh
+* $ gulp
+* open localhost:3000 in your browser
+* login to wp-admin, select theme and set URLs to /%postname%/
+* add production.sh script with 2 variables: CREDENTIALS and PATHDEST to deploy app to your server
