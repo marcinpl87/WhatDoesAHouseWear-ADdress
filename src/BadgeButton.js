@@ -50,27 +50,33 @@ class BadgeButton extends React.Component {
                 }
                 switch(rule[2]) { //relation
                     case "1": // ==
-                        if(value == ruleVal) {
+                        if (
+                            String(
+                                value
+                            ).toLowerCase() == String(
+                                ruleVal
+                            ).toLowerCase()
+                        ) {
                             proposedCat = parseInt(rule[4]);
                         }
                     break;
                     case "2": // =>
-                        if(value >= ruleVal) {
+                        if (value >= ruleVal) {
                             proposedCat = parseInt(rule[4]);
                         }
                     break;
                     case "3": // >
-                        if(value > ruleVal) {
+                        if (value > ruleVal) {
                             proposedCat = parseInt(rule[4]);
                         }
                     break;
                     case "4": // <=
-                        if(value <= ruleVal) {
+                        if (value <= ruleVal) {
                             proposedCat = parseInt(rule[4]);
                         }
                     break;
                     case "5": // <
-                        if(value < ruleVal) {
+                        if (value < ruleVal) {
                             proposedCat = parseInt(rule[4]);
                         }
                     break;

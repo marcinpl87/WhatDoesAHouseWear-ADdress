@@ -7,7 +7,9 @@ class LongText extends React.Component {
     }
     render() {
         var maxLength = 20;
-        var myStr = this.props.text.toString();
+        var myStr = (this.props.text)
+            ? this.props.text.toString()
+            : "";
         var short = myStr.substring(
             0, maxLength / 2
         ) + "..." + myStr.substr(
