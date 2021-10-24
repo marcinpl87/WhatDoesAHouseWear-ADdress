@@ -7,6 +7,8 @@
 #3) run git config --global user.email "email@example.com"
 #4) run git config --global user.name "name"
 #5) run install.sh script as root
+#6) login to wp-admin, select theme and set URLs to /%postname%/
+#7) add production.sh script with 2 variables: CREDENTIALS and PATHDEST to deploy app to your server
 
 install_dir="/home/m/WhatDoesAHouseWear-ADdress/wp"
 db_name="db"

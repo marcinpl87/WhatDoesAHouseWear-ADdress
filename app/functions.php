@@ -2,9 +2,9 @@
 include("connect.php");
 try {
     $db = new PDO(
-        "mysql:dbname=".$dbname.";host=".$servername.";",
-        $username,
-        $password
+        "mysql:dbname=".DB_NAME.";host=".DB_HOST.";",
+        DB_USER,
+        DB_PASSWORD
     );
 } catch (PDOException $e) {
     die("Connection failed: ".$e->getMessage());

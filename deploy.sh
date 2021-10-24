@@ -1,7 +1,7 @@
 #!/bin/bash
-CREDENTIALS=""
-PATHSRC=""
-PATHDEST=""
+PATHSRC="/home/m/WhatDoesAHouseWear-ADdress/app"
+
+source production.sh #2 variables are defined there: CREDENTIALS, PATHDEST
 
 cd $PATHSRC &&
 find ./ -type f -printf "\n%T@ %P\0" \

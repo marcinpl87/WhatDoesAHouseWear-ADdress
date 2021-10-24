@@ -1,7 +1,7 @@
 wp
 dist
 node_modules
-deploy.sh
+production.sh
 package-lock.json
 app/assets/fonts
 app/connect.php
