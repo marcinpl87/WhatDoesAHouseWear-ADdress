@@ -329,7 +329,7 @@ button,
 .app-header__logo .logo-src {
     height: 23px;
     width: 97px;
-    background: url(/assets/images/logo-inverse.png)
+    background: var(--logoUrl);
 }
 .app-header__menu,
 .app-header__mobile-menu {
@@ -508,7 +508,7 @@ button,
     background: rgba(0, 0, 0, 0.8)
 }
 .app-header.header-text-dark .app-header__logo .logo-src {
-    background: url(/assets/images/logo-inverse.png)
+    background: var(--logoUrl);
 }
 .app-sidebar {
     width: 280px;

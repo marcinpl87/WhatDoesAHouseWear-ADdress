@@ -10,7 +10,11 @@ class LoaderComponent extends React.Component {
         return (
             <div className="vertical-center">
                 <div className="container text-center">
-                    <img src="./assets/images/loading.gif" />
+                    <img
+                        src={`${
+                            $(".app-container").data("path")
+                        }/assets/images/loading.gif`}
+                    />
                 </div>
             </div>
         )
