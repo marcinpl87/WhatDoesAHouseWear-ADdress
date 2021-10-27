@@ -2,7 +2,7 @@
 include(dirname(__FILE__)."/connect.php");
 include(dirname(__FILE__)."/../../../wp-config.php");
 
-const PREFIX = "alior_";
+const PREFIX = "wp_app_";
 
 function notify($db, $msg) {
     global $smsEmail;

@@ -26,8 +26,12 @@ class PageTenant extends React.Component {
             }
         });
     }
-    createTableStructure(data, apartments) {
+    createTableStructure(data, payments, apartments) {
         apartments = apartments.map(a => [a.id, a.name]);
+        payments = payments.map(p => [
+            p.month,
+            p.payments.join(" + ")
+        ]);
         return [{
             dbTable: this.state.dbTable,
             id: this.state.id,
@@ -60,6 +64,10 @@ class PageTenant extends React.Component {
                 ["Konto bankowe", ["text", "account"]],
                 ["Notatki", ["text", "notes"]]
             ]
+        }, {
+            title: "Wpłaty",
+            headers: ["Miesiąc", "Kwota"],
+            rows: payments
         }, {
             dbTable: this.state.dbTable,
             id: this.state.id,
@@ -164,12 +172,14 @@ class PageTenant extends React.Component {
     componentDidMount() {
         $.when(
             Utils.ajax("get", this.state.dbTable + "/" + this.state.id),
+            Utils.ajax("get", "tenantPayments/" + this.state.id),
             Utils.ajax("get", "apartments")
-        ).then((tenantData, apartmentsData) => {
+        ).then((tenantData, payments, apartmentsData) => {
             this.setState(() => {
                 return {
                     data: this.createTableStructure(
                         tenantData[0].tenant[0],
+                        payments[0].tenantPayments,
                         apartmentsData[0].apartments
                     ),
                     contract: tenantData[0].tenant[1][0].val,

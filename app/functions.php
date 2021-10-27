@@ -1,5 +1,4 @@
 <?php
-include("connect.php");
 try {
     $db = new PDO(
         "mysql:dbname=".DB_NAME.";host=".DB_HOST.";",
@@ -11,7 +10,7 @@ try {
 }
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $db->query("SET NAMES UTF8");
-const PREFIX = "alior_";
+const PREFIX = "wp_app_";
 
 function secureData($data) {
     header("Content-type: application/json;charset=utf-8");
@@ -91,6 +90,45 @@ function crud($db, $table) {
             },
         ]);
     });
+}
+function getPaymentsByTenant($db, $id) {
+    $tenant = $db->query("
+        select *
+        from ".PREFIX."tenants
+        where id = ".$id."
+        and status = 1
+    ")->fetchAll(PDO::FETCH_ASSOC)[0];
+    $start = (new DateTime())
+        ->setTimestamp(
+            strtotime(
+                $tenant["contract_date_start"]
+            )
+        )
+        ->modify("first day of this month");
+    $end = (new DateTime())
+        ->modify("last day of this month");
+    $interval = DateInterval::createFromDateString("1 month");
+    $return = [];
+    foreach ((new DatePeriod(
+        $start,
+        $interval,
+        $end
+    )) as $dt) {
+        $tenantPayments = [];
+        foreach ($db->query("
+            select *
+            from ".PREFIX."data
+            where sender = '".$tenant["sender_name"]."'
+            and Left(date_timestamp, 7) = '".$dt->format("Y-m")."'
+        ")->fetchAll(PDO::FETCH_ASSOC) as $transaction) {
+            $tenantPayments[] = $transaction["value"];
+        }
+        $return[] = [
+            "month" => $dt->format("Y-m"),
+            "payments" => $tenantPayments,
+        ];
+    }
+    return $return;
 }
 
 add_action("rest_api_init", function() use(&$db) {
@@ -244,12 +282,11 @@ add_action("rest_api_init", function() use(&$db) {
         },
     ]);
 });
-add_action("rest_api_init", function() {
+add_action("rest_api_init", function() use(&$db) {
     register_rest_route("mapi", "/tenants", [
         "methods" => "get",
-        "callback" => function() {
-            secureData(function() {
-                global $db;
+        "callback" => function() use(&$db) {
+            secureData(function() use(&$db) {
                 return [
                     "tenants" => $db->query("
                         select *
@@ -263,9 +300,8 @@ add_action("rest_api_init", function() {
     ]);
     register_rest_route("mapi", "/tenants/(?P<id>\d+)", [
         "methods" => "get",
-        "callback" => function(WP_REST_Request $params) {
-            secureData(function() use(&$params) {
-                global $db;
+        "callback" => function(WP_REST_Request $params) use(&$db) {
+            secureData(function() use(&$db, &$params) {
                 return [
                     "tenant" => array(
                         $db->query("
@@ -286,9 +322,8 @@ add_action("rest_api_init", function() {
     ]);
     register_rest_route("mapi", "/tenantsInApartment/(?P<apartment>\d+)", [
         "methods" => "get",
-        "callback" => function(WP_REST_Request $params) {
-            secureData(function() use(&$params) {
-                global $db;
+        "callback" => function(WP_REST_Request $params) use(&$db) {
+            secureData(function() use(&$db, &$params) {
                 return [
                     "tenants" => $db->query("
                         select *
@@ -303,9 +338,8 @@ add_action("rest_api_init", function() {
     ]);
     register_rest_route("mapi", "/tenantsStats", [
         "methods" => "get",
-        "callback" => function() {
-            secureData(function() {
-                global $db;
+        "callback" => function() use(&$db) {
+            secureData(function() use(&$db) {
                 return [
                     "stats" => $db->query("
                         select apartment_id, COUNT(apartment_id) as count, SUM(rent) as rents
@@ -313,6 +347,19 @@ add_action("rest_api_init", function() {
                         where status = 1
                         Group By apartment_id
                     ")->fetchAll(PDO::FETCH_ASSOC),
+                ];
+            });
+        },
+    ]);
+    register_rest_route("mapi", "/tenantPayments/(?P<id>\d+)", [
+        "methods" => "get",
+        "callback" => function(WP_REST_Request $params) use(&$db) {
+            secureData(function() use(&$db, &$params) {
+                return [
+                    "tenantPayments" => getPaymentsByTenant(
+                        $db,
+                        $params->get_params()["id"]
+                    ),
                 ];
             });
         },
