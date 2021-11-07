@@ -28,7 +28,11 @@ class PageTenant extends React.Component {
     }
     createTableStructure(data, payments, apartments) {
         apartments = apartments.map(a => [a.id, a.name]);
-        payments = payments.map(p => [
+        payments.rent = payments.rent.map(p => [
+            p.month,
+            p.payments.join(" + ")
+        ]);
+        payments.utils = payments.utils.map(p => [
             p.month,
             p.payments.join(" + ")
         ]);
@@ -65,9 +69,13 @@ class PageTenant extends React.Component {
                 ["Notatki", ["text", "notes"]]
             ]
         }, {
-            title: "Wpłaty",
+            title: "Wpłaty - czynsz",
             headers: ["Miesiąc", "Kwota"],
-            rows: payments
+            rows: payments.rent
+        }, {
+            title: "Wpłaty - media",
+            headers: ["Miesiąc", "Kwota"],
+            rows: payments.utils
         }, {
             dbTable: this.state.dbTable,
             id: this.state.id,
@@ -179,7 +187,7 @@ class PageTenant extends React.Component {
                 return {
                     data: this.createTableStructure(
                         tenantData[0].tenant[0],
-                        payments[0].tenantPayments,
+                        payments[0],
                         apartmentsData[0].apartments
                     ),
                     contract: tenantData[0].tenant[1][0].val,
@@ -199,6 +207,9 @@ class PageTenant extends React.Component {
                             <div className="main-card mb-3 card">
                                 <MTable tableData={this.state.data[0]} />
                             </div>
+                            <div className="main-card mb-3 card">
+                                <MTable tableData={this.state.data[3]} />
+                            </div>
                         </div>
                         <div className="col-md-6">
                             <div className="main-card mb-3 card">
@@ -208,10 +219,13 @@ class PageTenant extends React.Component {
                                 <MTable tableData={this.state.data[2]} />
                             </div>
                             <div className="main-card mb-3 card">
-                                <MTable tableData={this.state.data[3]} />
+                                <MTable tableData={this.state.data[4]} />
                             </div>
                             <div className="main-card mb-3 card">
-                                <MTable tableData={this.state.data[4]} />
+                                <MTable tableData={this.state.data[5]} />
+                            </div>
+                            <div className="main-card mb-3 card">
+                                <MTable tableData={this.state.data[6]} />
                             </div>
                         </div>
                     </div>

@@ -91,7 +91,7 @@ function crud($db, $table) {
         ]);
     });
 }
-function getPaymentsByTenant($db, $id) {
+function getPaymentsByTenant($db, $id, $category) {
     $tenant = $db->query("
         select *
         from ".PREFIX."tenants
@@ -104,7 +104,11 @@ function getPaymentsByTenant($db, $id) {
                 $tenant["contract_date_start"]
             )
         )
-        ->modify("first day of this month");
+        ->modify(
+            ($category == 6)
+                ? "first day of next month"
+                : "first day of this month"
+        );
     $end = (new DateTime())
         ->modify("last day of this month");
     $interval = DateInterval::createFromDateString("1 month");
@@ -119,6 +123,7 @@ function getPaymentsByTenant($db, $id) {
             select *
             from ".PREFIX."data
             where sender = '".$tenant["sender_name"]."'
+            and category_id = '".$category."'
             and Left(date_timestamp, 7) = '".$dt->format("Y-m")."'
         ")->fetchAll(PDO::FETCH_ASSOC) as $transaction) {
             $tenantPayments[] = $transaction["value"];
@@ -356,9 +361,15 @@ add_action("rest_api_init", function() use(&$db) {
         "callback" => function(WP_REST_Request $params) use(&$db) {
             secureData(function() use(&$db, &$params) {
                 return [
-                    "tenantPayments" => getPaymentsByTenant(
+                    "rent" => getPaymentsByTenant(
                         $db,
-                        $params->get_params()["id"]
+                        $params->get_params()["id"],
+                        5
+                    ),
+                    "utils" => getPaymentsByTenant(
+                        $db,
+                        $params->get_params()["id"],
+                        6
                     ),
                 ];
             });
