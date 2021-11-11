@@ -92,14 +92,93 @@ class TenantsComponent extends React.Component {
             })
         };
     }
+    toJSONLocal(date) {
+        var local = new Date(date);
+        local.setMinutes(
+            date.getMinutes()
+            - date.getTimezoneOffset()
+        );
+        return local
+            .toJSON()
+            .slice(
+                0,
+                10
+            );
+    }
+    getYearMonthDate(i) {
+        var dateStr = this.toJSONLocal(
+            new Date(
+                (new Date()).getFullYear(),
+                (new Date()).getMonth() - i,
+                1
+            )
+        );
+        return dateStr.substring(
+            0,
+            dateStr.length - 3
+        );
+    }
+    getLastXMonthsDates(max) {
+        var returnArr = [];
+        for (var i = 0; i < max; i++) {
+            returnArr.push(
+                this.getYearMonthDate(i)
+            );
+        }
+        return returnArr;
+    }
+    filterMonth(data, month) {
+        var filetered = data
+            .find(
+                d => d.month == month
+            );
+        return (filetered === undefined)
+            ? "-----"
+            : filetered
+                .payments
+                .join(" + ");
+    }
+    createPaymentsStructure(data) {
+        return {
+            title: "Płatności",
+            clickableHash: "tenants",
+            headers: [
+                "Id",
+                "Imię i Nazwisko",
+            ].concat(
+                this.getLastXMonthsDates(6)
+            ),
+            rows: data.map(x => {
+                return [
+                    x.id,
+                    x.name,
+                ].concat(
+                    this
+                        .getLastXMonthsDates(6)
+                        .map(
+                            m => this.filterMonth(
+                                x.rent,
+                                m
+                            )
+                        )
+                );
+            })
+        };
+    }
     componentDidMount() {
         $.when(
             Utils.ajax("get", this.props.apartmentId
                 ? "tenantsInApartment/" + this.props.apartmentId
                 : "tenants"),
             Utils.ajax("get", "apartments"),
+            Utils.ajax("get", "tenantsPayments"),
             Utils.ajax("get", "finance")
-        ).then((tenantsData, apartmentsData, financeData) => {
+        ).then((
+            tenantsData,
+            apartmentsData,
+            tenantsPaymentsData,
+            financeData
+        ) => {
             financeData[0].transactions = financeData[0].transactions.filter((row) => {
                 return row.date_transaction.substr(6, 4) == new Date().getFullYear();
             }).filter((row) => {
@@ -109,8 +188,15 @@ class TenantsComponent extends React.Component {
             });
             this.setState(() => {
                 return {
-                    onboarding: this.createOnboardingStructure(tenantsData[0].tenants),
-                    contacts: this.createContactsStructure(tenantsData[0].tenants),
+                    onboarding: this.createOnboardingStructure(
+                        tenantsData[0].tenants
+                    ),
+                    contacts: this.createContactsStructure(
+                        tenantsData[0].tenants
+                    ),
+                    payments: this.createPaymentsStructure(
+                        tenantsPaymentsData[0].payments
+                    ),
                     data: this.createTableStructure(
                         tenantsData[0].tenants,
                         apartmentsData[0].apartments,
@@ -132,6 +218,9 @@ class TenantsComponent extends React.Component {
                 </div>
                 <div className="main-card mb-3 card">
                     <MTable tableData={this.state.contacts} />
+                </div>
+                <div className="main-card mb-3 card">
+                    <MTable tableData={this.state.payments} />
                 </div>
                 <div className="card-shadow-info border mb-3 card card-body border-info">
                     <h5 className="card-title">Emaile najemców</h5>
