@@ -135,6 +135,20 @@ function getPaymentsByTenant($db, $id, $category) {
     }
     return $return;
 }
+function getRentAndUtils($db, $id) {
+    return [
+        "rent" => getPaymentsByTenant(
+            $db,
+            $id,
+            5
+        ),
+        "utils" => getPaymentsByTenant(
+            $db,
+            $id,
+            6
+        ),
+    ];
+}
 
 add_action("rest_api_init", function() use(&$db) {
     register_rest_route("mapi", "/finance", [
@@ -360,17 +374,37 @@ add_action("rest_api_init", function() use(&$db) {
         "methods" => "get",
         "callback" => function(WP_REST_Request $params) use(&$db) {
             secureData(function() use(&$db, &$params) {
+                return getRentAndUtils(
+                    $db,
+                    $params->get_params()["id"]
+                );
+            });
+        },
+    ]);
+    register_rest_route("mapi", "/tenantsPayments", [
+        "methods" => "get",
+        "callback" => function(WP_REST_Request $params) use(&$db) {
+            secureData(function() use(&$db, &$params) {
+                $return = [];
+                foreach ($db->query("
+                    select *
+                    from ".PREFIX."tenants
+                    where status = 1
+                    order by id desc
+                ")->fetchAll(PDO::FETCH_ASSOC) as $tenant) {
+                    $return[] = array_merge(
+                        [
+                            "id" => $tenant["id"],
+                            "name" => $tenant["name"],
+                        ],
+                        getRentAndUtils(
+                            $db,
+                            $tenant["id"]
+                        )
+                    );
+                }
                 return [
-                    "rent" => getPaymentsByTenant(
-                        $db,
-                        $params->get_params()["id"],
-                        5
-                    ),
-                    "utils" => getPaymentsByTenant(
-                        $db,
-                        $params->get_params()["id"],
-                        6
-                    ),
+                    "payments" => $return,
                 ];
             });
         },
