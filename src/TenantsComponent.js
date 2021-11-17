@@ -138,9 +138,16 @@ class TenantsComponent extends React.Component {
                 .payments
                 .join(" + ");
     }
-    createPaymentsStructure(data) {
+    createPaymentsStructure(data, type) {
+        var subTitle = "";
+        if (type == "rent") {
+            subTitle = " - czynsz";
+        }
+        else if (type == "utils") {
+            subTitle = " - media";
+        }
         return {
-            title: "Płatności",
+            title: "Płatności" + subTitle,
             clickableHash: "tenants",
             headers: [
                 "Id",
@@ -157,7 +164,7 @@ class TenantsComponent extends React.Component {
                         .getLastXMonthsDates(6)
                         .map(
                             m => this.filterMonth(
-                                x.rent,
+                                x[type],
                                 m
                             )
                         )
@@ -194,8 +201,13 @@ class TenantsComponent extends React.Component {
                     contacts: this.createContactsStructure(
                         tenantsData[0].tenants
                     ),
-                    payments: this.createPaymentsStructure(
-                        tenantsPaymentsData[0].payments
+                    paymentsRent: this.createPaymentsStructure(
+                        tenantsPaymentsData[0].payments,
+                        "rent"
+                    ),
+                    paymentsUtils: this.createPaymentsStructure(
+                        tenantsPaymentsData[0].payments,
+                        "utils"
                     ),
                     data: this.createTableStructure(
                         tenantsData[0].tenants,
@@ -220,7 +232,10 @@ class TenantsComponent extends React.Component {
                     <MTable tableData={this.state.contacts} />
                 </div>
                 <div className="main-card mb-3 card">
-                    <MTable tableData={this.state.payments} />
+                    <MTable tableData={this.state.paymentsRent} />
+                </div>
+                <div className="main-card mb-3 card">
+                    <MTable tableData={this.state.paymentsUtils} />
                 </div>
                 <div className="card-shadow-info border mb-3 card card-body border-info">
                     <h5 className="card-title">Emaile najemców</h5>
