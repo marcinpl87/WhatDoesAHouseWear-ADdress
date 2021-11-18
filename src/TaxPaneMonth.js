@@ -39,6 +39,16 @@ class TaxPaneMonth extends React.Component {
         var msg = taxSum[1].length + " transakcji:\n"
         + taxSum[1].join(" + ") + " = "
         + Utils.mRound(taxSum[0]) + "zł\n\n"
+        + "Podatek w tym miesiącu (8,5%): "
+        + Utils.mRound(
+            taxSum[0] * 0.085
+        )
+        + "zł\n"
+        + "Podatek w tym miesiącu (12,5%): "
+        + Utils.mRound(
+            taxSum[0] * 0.125
+        )
+        + "zł\n"
         + "Podatek za poprzedni miesiąc zapłacony w tym miesiącu: " + Utils.replaceAll(
             data.data.taxPayed,
             "-",
