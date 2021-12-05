@@ -1,4 +1,8 @@
 <?php
+const CATEGORY_RENT = 5;
+const CATEGORY_UTILS = 6;
+const CATEGORY_TAX = 7;
+
 try {
     $db = new PDO(
         "mysql:dbname=".DB_NAME.";host=".DB_HOST.";",
@@ -72,7 +76,7 @@ function getPaymentsByTenant($db, $id, $category) {
                 )
             )
             ->modify(
-                ($category == 6)
+                ($category == CATEGORY_UTILS)
                     ? "first day of next month"
                     : "first day of this month"
             ),
@@ -91,12 +95,12 @@ function getRentAndUtils($db, $id) {
         "rent" => getPaymentsByTenant(
             $db,
             $id,
-            5
+            CATEGORY_RENT
         ),
         "utils" => getPaymentsByTenant(
             $db,
             $id,
-            6
+            CATEGORY_UTILS
         ),
     ];
 }
@@ -191,6 +195,23 @@ function crud($db, $table) {
         ]);
     });
 }
+function getPaymentByMonth($db, $month, $category) {
+    $return = [];
+    foreach ($db->query("
+        select *
+        from ".PREFIX."data
+        where category_id = ".$category."
+        and Left(
+            date_timestamp,
+            7
+        ) = '".$month."'
+    ")->fetchAll(
+        PDO::FETCH_ASSOC
+    ) as $transaction) {
+        $return[] = $transaction["value"];
+    }
+    return $return;
+}
 
 add_action("rest_api_init", function() use(&$db) {
     register_rest_route("mapi", "/finance", [
@@ -211,6 +232,90 @@ add_action("rest_api_init", function() use(&$db) {
                         select *
                         from ".PREFIX."rules
                     ")->fetchAll(PDO::FETCH_ASSOC),
+                ];
+            });
+        },
+    ]);
+    register_rest_route("mapi", "/taxReport", [
+        "methods" => "get",
+        "callback" => function() use(&$db) {
+            secureData(function() use(&$db) {
+                $balance = 0;
+                $months = [];
+                foreach ((new DatePeriod(
+                    (new DateTime())->modify(
+                        "first day of january this year"
+                    ),
+                    DateInterval::createFromDateString(
+                        "1 month"
+                    ),
+                    (new DateTime())->modify(
+                        "last day of this month"
+                    )
+                )) as $i => $dt) {
+                    $rentByMonth = getPaymentByMonth(
+                        $db,
+                        $dt->format(
+                            "Y-m"
+                        ),
+                        CATEGORY_RENT
+                    );
+                    $taxByMonth = getPaymentByMonth(
+                        $db,
+                        (clone $dt)->modify(
+                            "first day of next month"
+                        )->format(
+                            "Y-m"
+                        ),
+                        CATEGORY_TAX
+                    );
+                    $taxPayed = empty(
+                        $taxByMonth
+                    )
+                        ? 0
+                        : $taxByMonth[0];
+                    $balance += (
+                        array_sum(
+                            $rentByMonth
+                        ) * -0.085
+                    ) - $taxPayed;
+                    $months[] = [
+                        $i,
+                        $dt->format(
+                            "Y-m"
+                        ),
+                        empty(
+                            $rentByMonth
+                        )
+                            ? "0"
+                            : implode(
+                                " + ",
+                                $rentByMonth
+                            ),
+                        round(
+                            array_sum(
+                                $rentByMonth
+                            ),
+                            2
+                        ),
+                        round(
+                            array_sum(
+                                $rentByMonth
+                            ) * 0.085,
+                            2
+                        ),
+                        round(
+                            $taxPayed,
+                            2
+                        ) * -1,
+                        round(
+                            $balance,
+                            2
+                        ),
+                    ];
+                }
+                return [
+                    "months" => $months,
                 ];
             });
         },
