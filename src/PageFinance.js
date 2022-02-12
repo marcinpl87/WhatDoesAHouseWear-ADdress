@@ -10,6 +10,7 @@ import TaxPaneYear from './TaxPaneYear';
 import TaxPaneMonth from './TaxPaneMonth';
 import TabPaneUpload from './TabPaneUpload';
 import TabsComponent from './TabsComponent';
+import LongText from './LongText';
 
 class PageFinance extends React.Component {
     constructor(props) {
@@ -17,6 +18,7 @@ class PageFinance extends React.Component {
         this.state = {
             dataAll: {},
             dataAPI: {},
+            taxReport: false,
             dataPayments: false
         };
     }
@@ -35,21 +37,57 @@ class PageFinance extends React.Component {
             }
         });
     }
+    createTaxStructure(data) {
+        return {
+            data: data,
+            title: false,
+            headers: [
+                "Id",
+                "Miesiąc",
+                "Transakcje",
+                "Przychód",
+                "Należny podatek",
+                "Zapłacony podatek",
+                "Saldo podatku",
+            ],
+            rows: data.months.map((x) => {
+                var row = Object.values(x);
+                row[2] = <LongText text={row[2]} />;
+                return row;
+            }),
+        };
+    }
     componentDidMount() {
-        Utils.ajax(
-            "get",
-            "finance"
-        ).done((data) => {
-            data.firstYear = new Date().getFullYear();
-            data.transactions.map((row) => {
-                data.firstYear = data.firstYear >= row.date_transaction.substr(6, 4)
+        $.when(
+            Utils.ajax(
+                "get",
+                "taxReport"
+            ),
+            Utils.ajax(
+                "get",
+                "finance"
+            )
+        ).then((
+            taxData,
+            financeData
+        ) => {
+            financeData[0].firstYear = new Date().getFullYear();
+            financeData[0].transactions.map((row) => {
+                financeData[0].firstYear = (
+                    financeData[0].firstYear >= row.date_transaction.substr(6, 4)
+                )
                     ? row.date_transaction.substr(6, 4)
-                    : data.firstYear;
+                    : financeData[0].firstYear;
             });
             this.setState(() => {
                 return {
-                    dataAll: Utils.fin().createTableStructure(data),
-                    dataAPI: data,
+                    dataAll: Utils.fin().createTableStructure(
+                        financeData[0]
+                    ),
+                    dataAPI: financeData[0],
+                    taxReport: this.createTaxStructure(
+                        taxData[0]
+                    ),
                 }
             }, () => {
                 this.filterPayments();
@@ -62,6 +100,7 @@ class PageFinance extends React.Component {
             [TaxPaneMonth, "Miesiąc", this.state.dataAPI],
             [TaxPaneYear, "Rok", this.state.dataAPI],
             [TabPaneTable, "Płatności", this.state.dataPayments],
+            [TabPaneTable, "Raport", this.state.taxReport],
             [TabPaneUpload, "Upload", this.state.dataAll]
         ];
         return (
