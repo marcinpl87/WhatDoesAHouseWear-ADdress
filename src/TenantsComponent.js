@@ -178,7 +178,12 @@ class TenantsComponent extends React.Component {
                 ? "tenantsInApartment/" + this.props.apartmentId
                 : "tenants"),
             Utils.ajax("get", "apartments"),
-            Utils.ajax("get", "tenantsPayments"),
+            Utils.ajax(
+                "get",
+                "tenantsPayments/" + (
+                    parseInt(this.props.apartmentId) || ""
+                )
+            ),
             Utils.ajax("get", "finance")
         ).then((
             tenantsData,

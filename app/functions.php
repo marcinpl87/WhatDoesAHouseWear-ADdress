@@ -528,7 +528,7 @@ add_action("rest_api_init", function() use(&$db) {
             });
         },
     ]);
-    register_rest_route("mapi", "/tenantsPayments", [
+    register_rest_route("mapi", "/tenantsPayments(?:/(?P<id>\d+))?", [
         "methods" => "get",
         "callback" => function(WP_REST_Request $params) use(&$db) {
             secureData(function() use(&$db, &$params) {
@@ -537,6 +537,11 @@ add_action("rest_api_init", function() use(&$db) {
                     select *
                     from ".PREFIX."tenants
                     where status = 1
+                    ".(
+                        $params->get_params()["id"]
+                            ? "and apartment_id = ".$params->get_params()["id"]
+                            : ""
+                    )."
                     order by id desc
                 ")->fetchAll(PDO::FETCH_ASSOC) as $tenant) {
                     $return[] = array_merge(
