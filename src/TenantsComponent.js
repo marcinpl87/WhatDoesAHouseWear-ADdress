@@ -92,6 +92,21 @@ class TenantsComponent extends React.Component {
             })
         };
     }
+    createNotesStructure(data) {
+        return {
+            title: false,
+            clickableHash: "tenants",
+            headers: ["Id", "Imię i Nazwisko", "Notatki"],
+            rows: data.map(x => {
+                var x = Utils.objPick(x, [
+                    "id",
+                    "name",
+                    "notes",
+                ]);
+                return Object.values(x);
+            })
+        };
+    }
     toJSONLocal(date) {
         var local = new Date(date);
         local.setMinutes(
@@ -206,6 +221,9 @@ class TenantsComponent extends React.Component {
                     contacts: this.createContactsStructure(
                         tenantsData[0].tenants
                     ),
+                    notes: this.createNotesStructure(
+                        tenantsData[0].tenants
+                    ),
                     paymentsRent: this.createPaymentsStructure(
                         tenantsPaymentsData[0].payments,
                         "rent"
@@ -235,6 +253,9 @@ class TenantsComponent extends React.Component {
                 </div>
                 <div className="main-card mb-3 card">
                     <MTable tableData={this.state.contacts} />
+                </div>
+                <div className="main-card mb-3 card">
+                    <MTable tableData={this.state.notes} />
                 </div>
                 <div className="main-card mb-3 card">
                     <MTable tableData={this.state.paymentsRent} />
