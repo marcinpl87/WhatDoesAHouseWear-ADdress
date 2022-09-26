@@ -67,6 +67,9 @@ function getPaymentsByTenant($db, $id, $category) {
         where id = ".$id."
         and status = 1
     ")->fetchAll(PDO::FETCH_ASSOC)[0];
+    if ($tenant["contract_date_start"] == "") { //to avoid creating 1970-01-01...
+        $tenant["contract_date_start"] = "first day of this month"; //...date...
+    } //...in DateTime()->setTimestamp and generating 50 years of payments history
     return sortPaymentsByPeriods(
         $db,
         (new DateTime())
