@@ -36,6 +36,11 @@ function secureData($data) {
     }
 }
 function senderNameCompareQuery($senderName) {
+    $senderName = str_replace(
+        "\\",
+        "\\\\",
+        strip_tags($senderName)
+    );
     $nameCompare = "";
     if (strpos(
         $senderName,
