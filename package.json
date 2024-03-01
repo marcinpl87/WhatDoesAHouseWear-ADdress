@@ -13,7 +13,7 @@
         "bootstrap": "4.3.1",
         "chart.js": "2.9.4",
         "dropzone": "4.3.0",
-        "sanitize-html": "2.3.2",
+        "sanitize-html": "2.12.1",
         "pixeden-stroke-7-icon": "1.2.3",
         "@fortawesome/fontawesome-free": "5.6.3",
         "hamburgers": "1.1.3"
